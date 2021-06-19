@@ -94,69 +94,69 @@ export default {
           id: 1,
           label: "منبع دریافت پیام",
           inputType: "select",
-          value: () => this.infoSourceSelected,
-          options: () => this.infoSources,
+          value: this.infoSourceSelected,
+          options: this.infoSources,
           input: (val) => this.setInfoSourceSelected(val),
         },
         {
           id: 2,
           label: "وسیله دریافت پیام",
           inputType: "select",
-          value: () => this.infoDeviceSelected,
-          options: () => this.infoDevices,
+          value: this.infoDeviceSelected,
+          options: this.infoDevices,
           input: (val) => this.setInfoDeviceSelected(val),
         },
         {
           id: 3,
           label: "تعداد مجروحان هر تصادف",
           inputType: "number",
-          value: () => this.injuriesCountSelected,
+          value: this.injuriesCountSelected,
           input: (val) => this.setInjuriesCountSelected(val),
         },
         {
           id: 4,
           label: "تعداد فوتی‌های هر تصادف",
           inputType: "number",
-          value: () => this.deadCountSelected,
+          value: this.deadCountSelected,
           input: (val) => this.setDeadCountSelected(val),
         },
         {
           id: 5,
           label: "تعداد وسایل در هر تصادف",
           inputType: "number",
-          value: () => this.vehicleCountSelected,
+          value: this.vehicleCountSelected,
           input: (val) => this.setVehicleCountSelected(val),
         },
         {
           id: 6,
           label: "انواع وسایل در هر تصادف",
           inputType: "select",
-          value: () => this.vehicleTypeSelected,
-          options: () => this.vehicleTypes,
+          value: this.vehicleTypeSelected,
+          options: this.vehicleTypes,
           input: (val) => this.setVehicleTypeSelected(val),
         },
         {
           id: 7,
           label: "انواع برخورد",
           inputType: "select",
-          value: () => this.incidentTypeSelected,
-          options: () => this.incidentTypes,
+          value: this.incidentTypeSelected,
+          options: this.incidentTypes,
           input: (val) => this.setIncidentTypeSelected(val),
         },
         {
           id: 8,
           label: "شکل برخورد",
           inputType: "select",
-          value: () => this.incidentPartSelected,
-          options: () => this.incidentParts,
+          value: this.incidentPartSelected,
+          options: this.incidentParts,
           input: (val) => this.setIncidentPartSelected(val),
         },
         {
           id: 9,
           label: "علت تامه تصادف",
           inputType: "select",
-          value: () => this.incidentReasonSelected,
-          options: () => this.incidentReasons,
+          value: this.incidentReasonSelected,
+          options: this.incidentReasons,
           input: (val) => this.setIncidentReasonSelected(val),
         },
       ];
@@ -185,10 +185,16 @@ export default {
       setIncidentPartSelected: "filters/setIncidentPartSelected",
       setIncidentReasonSelected: "filters/setIncidentReasonSelected",
       addRemovedFilterIds: "filters/addRemovedFilterIds",
+      deleteRemovedFilterIds: "filters/deleteRemovedFilterIds",
     }),
     setFilterTypeId(val) {
-      this.filterTypeId = val;
-      this.addRemovedFilterIds(val);
+      if (val === null) {
+        this.deleteRemovedFilterIds(this.filterTypeId);
+        this.filterTypeId = val;
+      } else {
+        this.filterTypeId = val;
+        this.addRemovedFilterIds(val);
+      }
     },
   },
   created() {

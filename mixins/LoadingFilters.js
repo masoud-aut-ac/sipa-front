@@ -12,59 +12,66 @@ export default {
       setIncidentReasons: "filters/setIncidentReasons",
     }),
     getProvinces() {
+      let vm = this;
       return this.$axios({
         method: "get",
         url: "Province",
       }).then((response) => {
-        this.provinceOptions = response.data.detail.provinces;
+        vm.setProvinces(response.data.detail.provinces);
       });
     },
     getInfoSources() {
+      let vm = this;
       return this.$axios({
         method: "get",
         url: "InfoSources",
       }).then((response) => {
-        this.infoSourcesOptions = response.data.detail.infoSources;
+        vm.setInfoSources(response.data.detail.infoSources);
       });
     },
     getInfoDevices() {
+      let vm = this;
       return this.$axios({
         method: "get",
         url: "InfoDevices",
       }).then((response) => {
-        this.infoDevicesOptions = response.data.detail.infoDevices;
+        vm.setInfoDevices(response.data.detail.infoDevices);
       });
     },
     getVehicleTypes() {
+      let vm = this;
       return this.$axios({
         method: "get",
         url: "VehicleType",
       }).then((response) => {
-        this.vehicleTypeOptions = response.data.detail.vehicleTypes;
+        vm.setVehicleTypes(response.data.detail.vehicleTypes);
       });
     },
     getIncidentTypes() {
+      let vm = this;
       return this.$axios({
         method: "get",
         url: "IncidentType",
       }).then((response) => {
-        this.incidentTypeOptions = response.data.detail.incidentTypes;
+        vm.setIncidentTypes(response.data.detail.incidentTypes);
       });
     },
     getIncidentParts() {
+      let vm = this;
       return this.$axios({
         method: "get",
         url: "IncidentPart",
       }).then((response) => {
-        this.incidentPartOptions = response.data.detail.incidentParts;
+        vm.setIncidentParts(response.data.detail.incidentParts);
       });
     },
     getIncidentReasons() {
+      let vm = this;
       return this.$axios({
         method: "get",
         url: "IncidentReason",
       }).then((response) => {
-        this.incidentReasonOptions = response.data.detail.incidentsReasons;
+        vm.setIncidentReasons(response.data.detail.incidentsReasons);
       });
     },
     loadAllFilters() {

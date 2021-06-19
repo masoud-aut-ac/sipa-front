@@ -24,15 +24,42 @@ export default {
         state.incidentTypeSelected = payload;
     },
     setIncidentPartSelected(state, payload) {
-        state.IncidentPartSelected = payload;
+        state.incidentPartSelected = payload;
     },
     setIncidentReasonSelected(state, payload) {
-        state.IncidentReasonSelected = payload;
+        state.incidentReasonSelected = payload;
     },
     addRemovedFilterIds(state, payload) {
         state.removedFilterIds.push(payload);
     },
+    deleteRemovedFilterIds(state, payload) {
+        state.removedFilterIds = state.removedFilterIds.filter(x => x !== payload);
+    },
     setRemovedFilterIds(state, payload) {
         state.removedFilterIds = payload;
+    },
+    setInfoSources(state, payload) {
+        state.infoSources = payload;
+    },
+    setInfoDevices(state, payload) {
+        state.infoDevices = payload;
+    },
+    setVehicleTypes(state, payload) {
+        state.vehicleTypes = payload;
+    },
+    setIncidentTypes(state, payload) {
+        state.incidentTypes = payload;
+    },
+    setIncidentParts(state, payload) {
+        state.incidentParts = payload;
+    },
+    setIncidentReasons(state, payload) {
+        state.incidentReasons = payload;
+    },
+    setProvinces(state, payload) {
+        state.provinces = payload;
+    },
+    setProvinceSelected(state, payload) {
+        state.provinceSelected = payload;
     },
 }

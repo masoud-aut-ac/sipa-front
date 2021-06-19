@@ -16,6 +16,7 @@ import AppFilterSingle from "~/components/App/AppFilterSingle.vue";
 export default {
   data() {
     return {
+      counter: 0,
       items: [{ id: 0 }],
     };
   },
@@ -24,15 +25,16 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setRemovedFilterIds: "filters/setRemovedFilterIds"
+      setRemovedFilterIds: "filters/setRemovedFilterIds",
     }),
     addFilter() {
-      this.items.push({id: 1});
+      this.counter++;
+      this.items.push({ id: this.counter });
     },
   },
   mounted() {
     this.setRemovedFilterIds([]);
-  }
+  },
 };
 </script>
 
@@ -51,7 +53,7 @@ export default {
   outline: none !important;
 }
 .v-text-field.v-text-field--solo.v-input--dense > .v-input__control {
-  min-height: 28px!important;
-  font-size: 14px!important;
+  min-height: 28px !important;
+  font-size: 14px !important;
 }
 </style>
