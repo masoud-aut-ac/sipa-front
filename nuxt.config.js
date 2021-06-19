@@ -34,7 +34,7 @@ export default {
   plugins: [
     { src: '~/plugins/highcharts.js', ssr: false },
     { src: '~/plugins/vuex-persist.js', ssr: false },
-    { src: '~/plugins/leaflet.ajax.min.js' },
+    // { src: '~/plugins/leaflet.ajax.min.js' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

@@ -1,7 +1,11 @@
 <template>
   <div>
     <!-- this div contains the map -->
-    <div id="map-wrap" class="z-0 rounded-lg shadow-md m-4 mr-20" style="direction: rtl; height: 96vh;">
+    <div
+      id="map-wrap"
+      class="z-0 rounded-lg shadow-md m-4 mr-20"
+      style="direction: rtl; height: 96vh"
+    >
       <!-- this div contains map guide -->
       <div
         class="
@@ -9,8 +13,7 @@
           bottom-0
           left-0
           min-w-full
-          bg-white
-          bg-opacity-50
+          bg-white bg-opacity-50
           text-center
           py-2
           pr-6
@@ -61,16 +64,18 @@
 <script>
 import { mapMutations } from "vuex";
 import { mapGetters } from "vuex";
+import OstanGeoJson from "~/mixins/OstanGeoJson.js";
 import * as L from "leaflet";
 import { SimpleMapScreenshoter } from "leaflet-simple-map-screenshoter";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 
 export default {
+  mixins: [OstanGeoJson],
   data() {
     return {
       map: {},
       tileLayer: {},
-      ostan: {}
+      ostan: {},
     };
   },
   props: {
@@ -188,9 +193,12 @@ export default {
     },
     drawOstan() {
       let vm = this;
-
-      vm.ostan = L.geoJSON.ajax("~/data/ostan.geojson").addTo(vm.map);
-    }
+      vm.ostan = L.geoJSON(this.geoJsonContent, {
+        style: function (feature) {
+          return { color: feature.properties.OBJECTID === 1 ? "red":"blue", };
+        },
+      }).addTo(vm.map);
+    },
   },
 
   mounted() {
@@ -224,7 +232,7 @@ export default {
   border-top-right-radius: 2px;
 }
 .leaflet-control-attribution {
-  visibility: hidden!important;
+  visibility: hidden !important;
 }
 </style>
 
