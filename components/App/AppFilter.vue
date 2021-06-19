@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 import AppFilterSingle from "~/components/App/AppFilterSingle.vue";
 
 export default {
@@ -22,10 +23,16 @@ export default {
     AppFilterSingle,
   },
   methods: {
+    ...mapMutations({
+      setRemovedFilterIds: "filters/setRemovedFilterIds"
+    }),
     addFilter() {
       this.items.push({id: 1});
     },
   },
+  mounted() {
+    this.setRemovedFilterIds([]);
+  }
 };
 </script>
 
@@ -42,5 +49,9 @@ export default {
 }
 .v-btn:focus {
   outline: none !important;
+}
+.v-text-field.v-text-field--solo.v-input--dense > .v-input__control {
+  min-height: 28px!important;
+  font-size: 14px!important;
 }
 </style>

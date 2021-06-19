@@ -42,9 +42,9 @@
       </v-list>
       <template v-slot:append>
         <v-list>
-          <v-list-item class="text-center">
+          <v-list-item class="text-center" @click="logout">
             <v-list-item-icon>
-              <v-icon @click="logout">mdi-location-exit</v-icon>
+              <v-icon>mdi-location-exit</v-icon>
             </v-list-item-icon>
           </v-list-item>
         </v-list>
@@ -67,6 +67,9 @@ export default {
     ...mapMutations({
       setSidebar: "index/setSidebar",
     }),
+    async logout() {
+      await this.$auth.logout();
+    },
   },
   watch: {
     mini(value) {

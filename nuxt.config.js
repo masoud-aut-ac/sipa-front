@@ -33,6 +33,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~/plugins/highcharts.js', ssr: false },
+    { src: '~/plugins/vuex-persist.js', ssr: false },
     { src: '~/plugins/leaflet.ajax.min.js' },
   ],
 
@@ -51,10 +52,38 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     'nuxt-leaflet',
+    '@nuxtjs/auth-next',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    baseURL: 'http://api.sipa.racinsoft.ir/'
+  },
+
+  auth: {
+    redirect: {
+      home: '/',
+      logout: '/login'
+    },
+    user: {
+      autoFetch: false
+    },
+    strategies: {
+      local: {
+        token: {
+          property: 'detail.token',
+        },
+        user: {
+          autoFetch: false
+        },
+        endpoints: {
+          login: { url: 'http://79.175.176.126/racinOAuth/api/authenticate', method: 'post' },
+          // user: { url: 'me', method: 'get', propertyName: 'data' },
+          logout: false
+        }
+      }
+    }
+  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {

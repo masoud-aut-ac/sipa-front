@@ -21,14 +21,16 @@ import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 
 export default {
+  middleware: "auth",
+
   data() {
     return {
       mapType: 1,
       mapTypeOptions: [
         {id:0, label: "سهم داده‌های سامانه از داده‌های پلیس"},
-        {id:1, label: "نقشه تعداد تصادف‌ها"},
-        {id:2, label: "نقشه تعداد مجروح‌ها"},
-        {id:3, label: "نقشه تعداد فوتی‌ها"},
+        {id:1, label: "تعداد تصادف‌ها"},
+        {id:2, label: "تعداد مجروح‌ها"},
+        {id:3, label: "تعداد فوتی‌ها"},
       ]
     }
   },

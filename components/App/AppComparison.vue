@@ -29,9 +29,13 @@
           dir="rtl"
           class="style-chooser"
           :disabled="!hasComparison"
+          v-on:input="limiter"
         ></selectvue>
       </div>
     </div>
+    <p class="text-red text-xs" v-if="IsLimited">
+      امکان مقایسه برای حداکثر 4 مورد وجود دارد
+    </p>
     <v-btn dark block color="#332A7C" class="mt-4">جستجو</v-btn>
   </div>
 </template>
@@ -52,14 +56,26 @@ export default {
       ],
       province: null,
       provinces: [
-        {id:0, label: "تهران"},
-        {id:1, label: "مازندران"},
-        {id:2, label: "گیلان"},
-      ]
+        { id: 0, label: "تهران" },
+        { id: 1, label: "مازندران" },
+        { id: 2, label: "گیلان" },
+        { id: 3, label: "خراسان رضوی" },
+        { id: 4, label: "اصفهان" },
+      ],
+      IsLimited: false,
     };
   },
   components: {
     selectvue: vSelect,
+  },
+  methods: {
+    limiter(e) {
+      if (e.length > 4) {
+        this.IsLimited = true;
+        console.log(" you can only select two", e);
+        e.pop();
+      } else this.IsLimited = false;
+    },
   },
 };
 </script>

@@ -2,111 +2,197 @@
   <div class="my-4 shadow-md">
     <div class="bg-orange-100 rounded-t">
       <selectvue
-        v-model="filterType"
-        :options="filterTypeOptions"
-        :reduce="(label) => label.id"
+        :value="
+          filterTypeId !== null ? filterTypeOptions[filterTypeId].label : null
+        "
+        @input="setFilterTypeId"
+        :options="getFilterTypeOptions"
+        :reduce="(option) => option.id"
+        label="label"
         placeholder="نوع فیلتر را انتخاب کنید"
         dir="rtl"
         class="style-chooser"
       ></selectvue>
     </div>
-    <div class="bg-white rounded-b" v-if="filterType === 0">
-      <selectvue
-        v-model="filterLocation"
-        :options="filterLocationOptions"
-        :reduce="(label) => label.id"
-        placeholder="انتخاب کنید"
-        dir="rtl"
-        class="style-chooser"
-      ></selectvue>
-    </div>
-    <div class="bg-white rounded-b" v-if="filterType === 1">
-      <selectvue
-        v-model="filterIncidentType"
-        :options="filterIncidentTypeOptions"
-        :reduce="(label) => label.id"
-        placeholder="انتخاب کنید"
-        dir="rtl"
-        class="style-chooser"
-      ></selectvue>
-    </div>
-    <div class="bg-white rounded-b" v-if="filterType === 2">
-      <selectvue
-        v-model="filterIncidentPart"
-        :options="filterIncidentPartOptions"
-        :reduce="(label) => label.id"
-        placeholder="انتخاب کنید"
-        dir="rtl"
-        class="style-chooser"
-      ></selectvue>
-    </div>
-    <div class="bg-white rounded-b" v-if="filterType === 3">
-      <v-text-field
-        type="number"
-        v-model="InjuriesCount"
-        placeholder="تعداد مجروحان را وارد کنید"
-        solo
-        dense
-        flat
-      ></v-text-field>
-    </div>
-    <div class="bg-white rounded-b h-8" v-if="filterType === 4">
-      <input
-        class="p-1 min-w-full"
-        v-model="date"
-        id="my-custom-input"
-        placeholder="انتخاب کنید"
-      />
-      <datePicker
-        v-model="date"
-        popover
-        range
-        color="#FFA000"
-        element="my-custom-input"
-      ></datePicker>
+    <div v-if="filterTypeId !== null">
+      <div
+        class="bg-white rounded-b"
+        v-if="filterTypeOptions[filterTypeId].inputType == 'select'"
+      >
+        <selectvue
+          :value="filterTypeOptions[filterTypeId].value"
+          @input="filterTypeOptions[filterTypeId].input"
+          :options="filterTypeOptions[filterTypeId].options"
+          :label="filterTypeId === 0 ? 'persianName' : 'name'"
+          :reduce="(option) => option.id"
+          placeholder="انتخاب کنید"
+          dir="rtl"
+          class="style-chooser"
+        ></selectvue>
+      </div>
+      <div class="bg-white rounded-b" v-else>
+        <v-text-field
+          :value="filterTypeOptions[filterTypeId].value"
+          @input="filterTypeOptions[filterTypeId].input"
+          type="number"
+          placeholder=" تایپ کنید"
+          solo
+          dense
+          flat
+        ></v-text-field>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
+import LoadingFilters from "~/mixins/LoadingFilters.js";
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
-import VuePersianDatetimePicker from "vue-persian-datetime-picker";
 
 export default {
+  mixins: [LoadingFilters],
   data() {
     return {
-      filterType: null,
-      filterTypeOptions: [
-        { id: 0, label: "مکان" },
-        { id: 1, label: "نوع برخورد" },
-        { id: 2, label: "شکل برخورد" },
-        { id: 3, label: "تعداد مجرحان" },
-        { id: 4, label: "زمان" },
-      ],
-      filterLocation: null,
-      filterLocationOptions: [
-        { id: 0, label: "استان تهران" },
-        { id: 1, label: "استان مازندران" },
-        { id: 2, label: "استان گیلان" },
-      ],
-      filterIncidentType: null,
-      filterIncidentTypeOptions: [
-        { id: 0, label: "عابر پیاده و سواری" },
-        { id: 1, label: "دوچرخه و سواری" },
-        { id: 2, label: "واژگونی" },
-      ],
-      filterIncidentPart: null,
-      filterIncidentPartOptions: [
-        { id: 0, label: "جلو به پهلو" },
-        { id: 1, label: "پهلو به پهلو" },
-      ],
-      date: null,
+      filterTypeId: null,
     };
+  },
+  computed: {
+    ...mapGetters({
+      hasLoadedFilters: "filters/getHasLoadedFilters",
+      provinceSelected: "filters/getProvinceSelected",
+      infoSourceSelected: "filters/getInfoSourceSelected",
+      infoDeviceSelected: "filters/getInfoDeviceSelected",
+      injuriesCountSelected: "filters/getInjuriesCountSelected",
+      deadCountSelected: "filters/getDeadCountSelected",
+      vehicleCountSelected: "filters/getVehicleCountSelected",
+      vehicleTypeSelected: "filters/getVehicleTypeSelected",
+      incidentTypeSelected: "filters/getIncidentTypeSelected",
+      incidentPartSelected: "filters/getIncidentPartSelected",
+      incidentReasonSelected: "filters/getIncidentReasonSelected",
+      provinces: "filters/getProvinces",
+      infoSources: "filters/getInfoSources",
+      infoDevices: "filters/getInfoDevices",
+      vehicleTypes: "filters/getVehicleTypes",
+      incidentTypes: "filters/getIncidentTypes",
+      incidentParts: "filters/getIncidentParts",
+      incidentReasons: "filters/getIncidentReasons",
+      removedFilterIds: "filters/getRemovedFilterIds",
+    }),
+    filterTypeOptions() {
+      return [
+        {
+          id: 0,
+          label: "مکان",
+          inputType: "select",
+          value: this.provinceSelected,
+          options: this.provinces,
+          input: (val) => this.setProvinceSelected(val),
+        },
+        {
+          id: 1,
+          label: "منبع دریافت پیام",
+          inputType: "select",
+          value: () => this.infoSourceSelected,
+          options: () => this.infoSources,
+          input: (val) => this.setInfoSourceSelected(val),
+        },
+        {
+          id: 2,
+          label: "وسیله دریافت پیام",
+          inputType: "select",
+          value: () => this.infoDeviceSelected,
+          options: () => this.infoDevices,
+          input: (val) => this.setInfoDeviceSelected(val),
+        },
+        {
+          id: 3,
+          label: "تعداد مجروحان هر تصادف",
+          inputType: "number",
+          value: () => this.injuriesCountSelected,
+          input: (val) => this.setInjuriesCountSelected(val),
+        },
+        {
+          id: 4,
+          label: "تعداد فوتی‌های هر تصادف",
+          inputType: "number",
+          value: () => this.deadCountSelected,
+          input: (val) => this.setDeadCountSelected(val),
+        },
+        {
+          id: 5,
+          label: "تعداد وسایل در هر تصادف",
+          inputType: "number",
+          value: () => this.vehicleCountSelected,
+          input: (val) => this.setVehicleCountSelected(val),
+        },
+        {
+          id: 6,
+          label: "انواع وسایل در هر تصادف",
+          inputType: "select",
+          value: () => this.vehicleTypeSelected,
+          options: () => this.vehicleTypes,
+          input: (val) => this.setVehicleTypeSelected(val),
+        },
+        {
+          id: 7,
+          label: "انواع برخورد",
+          inputType: "select",
+          value: () => this.incidentTypeSelected,
+          options: () => this.incidentTypes,
+          input: (val) => this.setIncidentTypeSelected(val),
+        },
+        {
+          id: 8,
+          label: "شکل برخورد",
+          inputType: "select",
+          value: () => this.incidentPartSelected,
+          options: () => this.incidentParts,
+          input: (val) => this.setIncidentPartSelected(val),
+        },
+        {
+          id: 9,
+          label: "علت تامه تصادف",
+          inputType: "select",
+          value: () => this.incidentReasonSelected,
+          options: () => this.incidentReasons,
+          input: (val) => this.setIncidentReasonSelected(val),
+        },
+      ];
+    },
+    getFilterTypeOptions() {
+      let res = this.filterTypeOptions.filter(
+        (x) => !this.removedFilterIds.some((y) => y === x.id)
+      );
+      return res;
+    },
   },
   components: {
     selectvue: vSelect,
-    datePicker: VuePersianDatetimePicker,
+  },
+  methods: {
+    ...mapMutations({
+      setHasLoadedFilters: "filters/setHasLoadedFilters",
+      setProvinceSelected: "filters/setProvinceSelected",
+      setInfoSourceSelected: "filters/setInfoSourceSelected",
+      setInfoDeviceSelected: "filters/setInfoDeviceSelected",
+      setInjuriesCountSelected: "filters/setInjuriesCountSelected",
+      setDeadCountSelected: "filters/setDeadCountSelected",
+      setVehicleCountSelected: "filters/setVehicleCountSelected",
+      setVehicleTypeSelected: "filters/setVehicleTypeSelected",
+      setIncidentTypeSelected: "filters/setIncidentTypeSelected",
+      setIncidentPartSelected: "filters/setIncidentPartSelected",
+      setIncidentReasonSelected: "filters/setIncidentReasonSelected",
+      addRemovedFilterIds: "filters/addRemovedFilterIds",
+    }),
+    setFilterTypeId(val) {
+      this.filterTypeId = val;
+      this.addRemovedFilterIds(val);
+    },
+  },
+  created() {
+    if (!this.hasLoadedFilters) this.loadAllFilters();
   },
 };
 </script>

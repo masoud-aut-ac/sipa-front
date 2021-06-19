@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg p-8 shadow-md">
+  <div class="bg-white rounded-lg p-6 shadow-md">
     <div class="flex items-stretch m-2">
       <span> <v-icon x-small color="#FFA000">mdi-circle</v-icon></span>
       <p class="mr-2">منبع دریافت پیام</p>
@@ -107,7 +107,7 @@ export default {
               [11, 8],
               [12, 1],
             ],
-          borderRadius: 4
+          borderRadius: 4,
           },
         ],
       };
