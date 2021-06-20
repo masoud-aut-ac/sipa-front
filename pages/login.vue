@@ -10,7 +10,7 @@
       position: relative;
     "
   >
-    <div class="max-w-xs mx-auto pt-48">
+    <div class="max-w-xs mx-auto lg:pt-48">
       <div class="pb-2 pt-2">
         <div class="grid grid-cols-2 border-b-2 border-white">
           <p class="font-serif text-white font-bold pr-2 py-3 text-xl">ورود</p>

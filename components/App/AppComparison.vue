@@ -43,34 +43,33 @@
 <script>
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   data() {
     return {
-      hasComparison: false,
-      comparison: null,
-      comparisonOptions: [
-        { id: 0, label: "استان" },
-        { id: 1, label: "نوع تصادف" },
-        { id: 2, label: "شکل برخورد" },
-      ],
-      province: null,
-      provinces: [
-        { id: 0, label: "تهران" },
-        { id: 1, label: "مازندران" },
-        { id: 2, label: "گیلان" },
-        { id: 3, label: "خراسان رضوی" },
-        { id: 4, label: "اصفهان" },
-      ],
       IsLimited: false,
     };
+  },
+  computed: {
+    ...mapGetters({
+      hasComparison: "filters/getHasComparison",
+      comparisonDetail: "filters/getComparisonDetail",
+      allFilters: "filters/getFilterDetails"
+    }),
   },
   components: {
     selectvue: vSelect,
   },
   methods: {
+    ...mapMutations({
+      setHasComparison: "filters/setHasComparison",
+      setComparisonDetail: "filters/setComparisonDetail",
+      addRemovedFilterIds: "filters/addRemovedFilterIds",
+      deleteRemovedFilterIds: "filters/deleteRemovedFilterIds",
+    }),
     limiter(e) {
-      if (e.length > 4) {
+      if (e.length > 3) {
         this.IsLimited = true;
         console.log(" you can only select two", e);
         e.pop();

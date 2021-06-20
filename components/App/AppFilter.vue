@@ -12,7 +12,7 @@
       dark
       x-small
       color="#FFA000"
-      @click="addFilter()"
+      @click="counter++"
       :disabled="counter > 8"
     >
       <v-icon dark> mdi-plus </v-icon>
@@ -48,9 +48,6 @@ export default {
     },
   },
   methods: {
-    addFilter() {
-      this.counter++;
-    },
     emitter() {
       this.$nuxt.$emit("update-sipa-charts");
     },

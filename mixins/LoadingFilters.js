@@ -3,13 +3,7 @@ import { mapMutations } from "vuex";
 export default {
   methods: {
     ...mapMutations({
-      setProvinces: "filters/setProvinces",
-      setInfoSources: "filters/setInfoSources",
-      setInfoDevices: "filters/setInfoDevices",
-      setVehicleTypes: "filters/setVehicleTypes",
-      setIncidentTypes: "filters/setIncidentTypes",
-      setIncidentParts: "filters/setIncidentParts",
-      setIncidentReasons: "filters/setIncidentReasons",
+      loadFilterOptions: "filters/loadFilterOptions",
     }),
     getProvinces() {
       let vm = this;
@@ -17,7 +11,9 @@ export default {
         method: "get",
         url: "Province",
       }).then((response) => {
-        vm.setProvinces(response.data.detail.provinces);
+        vm.loadFilterOptions({
+          englishLabel: "province", options: response.data.detail.provinces
+        });
       });
     },
     getInfoSources() {
@@ -26,7 +22,9 @@ export default {
         method: "get",
         url: "InfoSources",
       }).then((response) => {
-        vm.setInfoSources(response.data.detail.infoSources);
+        vm.loadFilterOptions({
+          englishLabel: "infoSource", options: response.data.detail.infoSources
+        });
       });
     },
     getInfoDevices() {
@@ -35,7 +33,9 @@ export default {
         method: "get",
         url: "InfoDevices",
       }).then((response) => {
-        vm.setInfoDevices(response.data.detail.infoDevices);
+        vm.loadFilterOptions({
+          englishLabel: "infoDevice", options: response.data.detail.infoDevices
+        });
       });
     },
     getVehicleTypes() {
@@ -44,7 +44,9 @@ export default {
         method: "get",
         url: "VehicleType",
       }).then((response) => {
-        vm.setVehicleTypes(response.data.detail.vehicleTypes);
+        vm.loadFilterOptions({
+          englishLabel: "vehicleType", options: response.data.detail.vehicleTypes
+        });
       });
     },
     getIncidentTypes() {
@@ -53,7 +55,9 @@ export default {
         method: "get",
         url: "IncidentType",
       }).then((response) => {
-        vm.setIncidentTypes(response.data.detail.incidentTypes);
+        vm.loadFilterOptions({
+          englishLabel: "incidentType", options: response.data.detail.incidentTypes
+        });
       });
     },
     getIncidentParts() {
@@ -62,7 +66,9 @@ export default {
         method: "get",
         url: "IncidentPart",
       }).then((response) => {
-        vm.setIncidentParts(response.data.detail.incidentParts);
+        vm.loadFilterOptions({
+          englishLabel: "incidentPart", options: response.data.detail.incidentParts
+        });
       });
     },
     getIncidentReasons() {
@@ -71,7 +77,9 @@ export default {
         method: "get",
         url: "IncidentReason",
       }).then((response) => {
-        vm.setIncidentReasons(response.data.detail.incidentsReasons);
+        vm.loadFilterOptions({
+          englishLabel: "incidentReason", options: response.data.detail.incidentsReasons
+        });
       });
     },
     loadAllFilters() {

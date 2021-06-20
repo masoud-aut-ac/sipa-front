@@ -2,33 +2,6 @@ export default {
     setDate(state, payload) {
         state.date = payload;
     },
-    setInfoSourceSelected(state, payload) {
-        state.infoSourceSelected = payload;
-    },
-    setInfoDeviceSelected(state, payload) {
-        state.infoDeviceSelected = payload;
-    },
-    setInjuriesCountSelected(state, payload) {
-        state.injuriesCountSelected = payload;
-    },
-    setDeadCountSelected(state, payload) {
-        state.deadCountSelected = payload;
-    },
-    setVehicleCountSelected(state, payload) {
-        state.vehicleCountSelected = payload;
-    },
-    setVehicleTypeSelected(state, payload) {
-        state.vehicleTypeSelected = payload;
-    },
-    setIncidentTypeSelected(state, payload) {
-        state.incidentTypeSelected = payload;
-    },
-    setIncidentPartSelected(state, payload) {
-        state.incidentPartSelected = payload;
-    },
-    setIncidentReasonSelected(state, payload) {
-        state.incidentReasonSelected = payload;
-    },
     addRemovedFilterIds(state, payload) {
         state.removedFilterIds.push(payload);
     },
@@ -38,29 +11,18 @@ export default {
     setRemovedFilterIds(state, payload) {
         state.removedFilterIds = payload;
     },
-    setInfoSources(state, payload) {
-        state.infoSources = payload;
+    loadFilterOptions(state, payload) {
+        let filter = state.details.find(x => x.englishLabel === payload.englishLabel);
+        filter.options = payload.options;
     },
-    setInfoDevices(state, payload) {
-        state.infoDevices = payload;
+    setFilterValue(state, payload) {
+        let filter = state.details.find(x => x.id === payload.id);
+        filter.value = payload.value;
     },
-    setVehicleTypes(state, payload) {
-        state.vehicleTypes = payload;
+    setHasComparsion(state, payload) {
+        state.hasComparsion = payload;
     },
-    setIncidentTypes(state, payload) {
-        state.incidentTypes = payload;
-    },
-    setIncidentParts(state, payload) {
-        state.incidentParts = payload;
-    },
-    setIncidentReasons(state, payload) {
-        state.incidentReasons = payload;
-    },
-    setProvinces(state, payload) {
-        state.provinces = payload;
-    },
-    setProvinceSelected(state, payload) {
-        state.provinceSelected = payload;
-    },
-
+    setComparsionDetail(state, payload) {
+        state.comparsionDetail = payload;
+    }
 }
