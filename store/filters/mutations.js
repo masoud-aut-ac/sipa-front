@@ -62,4 +62,5 @@ export default {
     setProvinceSelected(state, payload) {
         state.provinceSelected = payload;
     },
+
 }

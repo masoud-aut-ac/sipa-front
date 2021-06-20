@@ -25,7 +25,7 @@ import VuePersianDatetimePicker from "vue-persian-datetime-picker";
 export default {
   data() {
     return {
-      date: null,
+      date: ["1398/01/01", "1398/12/29"],
     };
   },
   computed: {

@@ -1,5 +1,5 @@
 export default () => ({
-    date: ["1400/01/01", "1400/03/31"],
+    date: ["1398/01/01", "1398/12/29"],
     hasLoadedFilters: false,
     provinceSelected: null,
     infoSourceSelected: null,

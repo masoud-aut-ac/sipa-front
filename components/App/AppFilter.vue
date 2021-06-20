@@ -1,39 +1,62 @@
 <template>
   <div class="bg-gray-200 rounded-lg p-4 mb-4">
     <p>فیلتر اطلاعات</p>
-    <AppFilterSingle v-for="item in items" :key="item.id" />
-    <v-btn class="my-2" fab dark x-small color="#FFA000" @click="addFilter()">
+    <AppFilterSingle
+      :filterTypeId="removedFilterIds[i - 1]"
+      v-for="i in countOfFilters"
+      :key="i"
+    />
+    <v-btn
+      class="my-2"
+      fab
+      dark
+      x-small
+      color="#FFA000"
+      @click="addFilter()"
+      :disabled="counter > 8"
+    >
       <v-icon dark> mdi-plus </v-icon>
     </v-btn>
-    <v-btn dark block color="#332A7C" class="mt-4">جستجو</v-btn>
+    <v-btn dark block color="#332A7C" class="mt-4" @click="emitter()"
+      >جستجو</v-btn
+    >
   </div>
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapGetters } from "vuex";
 import AppFilterSingle from "~/components/App/AppFilterSingle.vue";
 
 export default {
   data() {
     return {
-      counter: 0,
-      items: [{ id: 0 }],
+      counter: 1,
     };
   },
   components: {
     AppFilterSingle,
   },
-  methods: {
-    ...mapMutations({
-      setRemovedFilterIds: "filters/setRemovedFilterIds",
+  computed: {
+    ...mapGetters({
+      removedFilterIds: "filters/getRemovedFilterIds",
     }),
-    addFilter() {
-      this.counter++;
-      this.items.push({ id: this.counter });
+    countOfFilters() {
+      if (this.removedFilterIds.length + 1 < this.counter)
+        this.counter = this.removedFilterIds.length + 1;
+      this.counter = this.counter > 1 ? this.counter : 1;
+      return this.counter;
     },
   },
-  mounted() {
-    this.setRemovedFilterIds([]);
+  methods: {
+    addFilter() {
+      this.counter++;
+    },
+    emitter() {
+      this.$nuxt.$emit("update-sipa-charts");
+    },
+  },
+  created() {
+    this.counter = this.removedFilterIds.length;
   },
 };
 </script>

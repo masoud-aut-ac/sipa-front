@@ -5,13 +5,12 @@
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
           <AppFilterDate class="col-span-1" />
           <AppFilterChips class="col-span-1 lg:col-span-3" />
-          <AppChartColumn class="col-span-1 lg:col-span-2" />
-          <AppChartColumn class="col-span-1 lg:col-span-2" />
-          <AppChartPie class="col-span-1 lg:col-span-2" />
-          <AppChartPie class="col-span-1 lg:col-span-2" />
+        </div>
+        <div class="pt-2">
+          <charts-container></charts-container>
         </div>
       </div>
-      <AppSearchInfo class="col-span-12 lg:col-span-3" />
+      <AppSearchInfo class="col-span-12 lg:col-span-3"  />
     </div>
   </div>
 </template>
@@ -21,8 +20,7 @@ import { mapGetters } from "vuex";
 import AppFilterChips from "~/components/App/AppFilterChips.vue";
 import AppFilterDate from "~/components/App/AppFilterDate.vue";
 import AppSearchInfo from "~/components/App/AppSearchInfo.vue";
-import AppChartColumn from "~/components/App/AppChartColumn.vue";
-import AppChartPie from "~/components/App/AppChartPie.vue";
+import ChartsContainer from "~/components/Index/ChartsContainer.vue";
 
 export default {
   middleware: "auth",
@@ -36,8 +34,7 @@ export default {
     AppFilterChips,
     AppFilterDate,
     AppSearchInfo,
-    AppChartColumn,
-    AppChartPie,
+    ChartsContainer,
   },
 };
 </script>

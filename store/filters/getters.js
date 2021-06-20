@@ -59,4 +59,20 @@ export default {
     getIncidentReasons(state) {
         return state.incidentReasons;
     },
+    getFilters(state) {
+        return {
+            startTime: state.date[0].replaceAll("/", "-") + " 00:00",
+            endTime: state.date[1].replaceAll("/", "-") + " 23:59",
+            provineEnglishName: state.provinceSelected,
+            infoSource: state.infoSourceSelected,
+            infoDevice: state.infoDeviceSelected,
+            injuredCount: parseInt(state.injuriesCountSelected),
+            deadCount: parseInt(state.deadCountSelected),
+            vehicleCount: parseInt(state.vehicleCountSelected),
+            vehicleType: state.vehicleTypeSelected,
+            incidentType: state.incidentTypeSelected,
+            incidentPart: state.incidentPartSelected,
+            incidentReason: state.incidentReasonSelected,
+        }
+    }
 }

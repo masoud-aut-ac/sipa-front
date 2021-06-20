@@ -1,19 +1,19 @@
 <template>
   <div class="bg-white rounded-lg p-6 shadow-md">
-    <div class="flex items-stretch m-2">
-      <span> <v-icon x-small color="#FFA000">mdi-circle</v-icon></span>
-      <p class="mr-2">منبع دریافت پیام</p>
-    </div>
     <highcharts :options="chartOptions"></highcharts>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    graphData: {
+      type: Array,
+      required: true,
+    },
+  },
   data() {
-    return {
-      graphData: [],
-    };
+    return {};
   },
   computed: {
     chartOptions() {
@@ -52,32 +52,19 @@ export default {
             fontFamily: "IRANSans",
           },
         },
-        series: [
-          {
+        series: this.graphData.map((x) => {
+          return {
+            data: x.slices,
             dataLabels: {
               enabled: true,
               format:
-                "<b>{point.name}</b>:<br />{point.percentage:.1f} %<br />total: {point.total}",
+                "<b>{point.name}</b>:<br />{point.percentage:.1f} %",
               style: {
                 fontFamily: "IRANSans",
               },
             },
-            data: [
-              {
-                y: 45,
-                name: "savari",
-              },
-              {
-                y: 35,
-                name: "وانت",
-              },
-              {
-                y: 20,
-                name: "موتورسیکلت",
-              },
-            ],
-          },
-        ],
+          };
+        }),
       };
     },
   },

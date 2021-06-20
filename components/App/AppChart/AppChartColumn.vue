@@ -1,19 +1,19 @@
 <template>
   <div class="bg-white rounded-lg p-6 shadow-md">
-    <div class="flex items-stretch m-2">
-      <span> <v-icon x-small color="#FFA000">mdi-circle</v-icon></span>
-      <p class="mr-2">منبع دریافت پیام</p>
-    </div>
     <highcharts :options="chartOptions"></highcharts>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    graphData: {
+      type: Array,
+      required: true,
+    },
+  },
   data() {
-    return {
-      graphData: [],
-    };
+    return {};
   },
   computed: {
     chartOptions() {
@@ -91,42 +91,33 @@ export default {
             fontFamily: "IRANSans",
           },
         },
-        series: [
-          {
-            data: [
-              [1, 5],
-              [2, 3],
-              [3, 7],
-              [4, 5],
-              [5, 8],
-              [6, 1],
-              [7, 5],
-              [8, 3],
-              [9, 7],
-              [10, 5],
-              [11, 8],
-              [12, 1],
-            ],
-          borderRadius: 4,
-          },
-        ],
+        series: this.graphData.map((x) => {
+          return { data: x.slices, borderRadius: 4 };
+        }),
+        //  [
+        //   {
+        //     data: [
+        //       [1, 5],
+        //       [2, 3],
+        //       [3, 7],
+        //       [4, 5],
+        //       [5, 8],
+        //       [6, 1],
+        //       [7, 5],
+        //       [8, 3],
+        //       [9, 7],
+        //       [10, 5],
+        //       [11, 8],
+        //       [12, 1],
+        //     ],
+        //   borderRadius: 4,
+        //   },
+        // ],
       };
     },
   },
 
-  methods: {
-    // getChartColumnValues() {
-    //   let vm = this;
-    //   return this.$axios({
-    //     method: "get",
-    //     url: "chart",
-    //   }).then((response) => {
-    //     this.graphData = response.data.detail;
-    //   });
-    // },
-  },
-  created() {
-    // this.getChartColumnValues();
-  },
+  methods: {},
+  created() {},
 };
 </script>

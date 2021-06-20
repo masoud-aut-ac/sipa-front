@@ -3,7 +3,7 @@
     <div class="bg-orange-100 rounded-t">
       <selectvue
         :value="
-          filterTypeId !== null ? filterTypeOptions[filterTypeId].label : null
+          filterTypeId != null ? filterTypeOptions[filterTypeId].label : null
         "
         @input="setFilterTypeId"
         :options="getFilterTypeOptions"
@@ -14,7 +14,7 @@
         class="style-chooser"
       ></selectvue>
     </div>
-    <div v-if="filterTypeId !== null">
+    <div v-if="filterTypeId != null">
       <div
         class="bg-white rounded-b"
         v-if="filterTypeOptions[filterTypeId].inputType == 'select'"
@@ -53,10 +53,13 @@ import "vue-select/dist/vue-select.css";
 
 export default {
   mixins: [LoadingFilters],
+  props: {
+    filterTypeId: {
+      type: Number,
+    },
+  },
   data() {
-    return {
-      filterTypeId: null,
-    };
+    return {};
   },
   computed: {
     ...mapGetters({
@@ -188,8 +191,11 @@ export default {
       deleteRemovedFilterIds: "filters/deleteRemovedFilterIds",
     }),
     setFilterTypeId(val) {
+      if (this.filterTypeId !== null)
+        this.deleteRemovedFilterIds(this.filterTypeId);
       if (val === null) {
         this.deleteRemovedFilterIds(this.filterTypeId);
+        this.filterTypeOptions[this.filterTypeId].input(null);
         this.filterTypeId = val;
       } else {
         this.filterTypeId = val;
