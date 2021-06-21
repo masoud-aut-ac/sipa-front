@@ -5,7 +5,13 @@
       <p class="mr-2">{{ title }}</p>
     </div>
     <app-chart-column :graphData="graphSlices" v-if="chartMode === 'Column'" />
-    <app-chart-pie :graphData="graphSlices" v-else />
+    <template v-else>
+      <app-chart-pie
+        :graphData="graphSlices[i]"
+        v-for="(item, i) in graphSlices"
+        :key="i"
+      />
+    </template>
   </div>
 </template>
 
@@ -41,27 +47,60 @@ export default {
   methods: {
     fetchChartData() {
       let vm = this;
-      let body = {
-        ...this.getFilters,
-        graphCategory: this.graphCategory,
-      };
-      this.$axios({
-        method: "post",
-        url: "GraphData",
-        data: body,
-      }).then((res) => {
-        let slices = res.data.detail.graphSlices;
-        slices = slices.map((x) => {
-          return { name: x.name, y: x.percent };
+      const bodies = this.apiRequestBodies;
+      bodies.forEach((b) => {
+        vm.$axios({
+          method: "post",
+          url: "GraphData",
+          data: b,
+        }).then((res) => {
+          let slices = res.data.detail.graphSlices;
+          slices = slices.map((x) => {
+            return { name: x.name, y: x.percent };
+          });
+          vm.graphSlices.push({ slices });
         });
-        vm.graphSlices.push({ slices });
       });
     },
   },
   computed: {
     ...mapGetters({
       getFilters: "filters/getFilters",
+      hasComparison: "filters/getHasComparison",
+      comparisonDetail: "filters/getComparisonDetail",
+      allFilters: "filters/getFilterDetails",
     }),
+    apiRequestBodies() {
+      let res = [];
+      if (
+        this.hasComparison &&
+        this.comparisonDetail != null &&
+        this.comparisonDetail.values != null
+      ) {
+        const compareFilter = this.allFilters.find(
+          (x) => x.id === this.comparisonDetail.filterId
+        );
+        for (let i = 0; i < this.comparisonDetail.values.length; i++) {
+          const compareValue = this.comparisonDetail.values[i];
+          let body = {
+            ...this.getFilters,
+            graphCategory: this.graphCategory,
+          };
+          body[compareFilter.apiRequestLabel] =
+            compareFilter.englishLabel === "province"
+              ? compareFilter.options.find((x) => x.id === compareValue)
+                  .englishName
+              : compareValue;
+          res.push(body);
+        }
+      } else {
+        res.push({
+          ...this.getFilters,
+          graphCategory: this.graphCategory,
+        });
+      }
+      return res;
+    },
   },
   created() {
     this.fetchChartData();

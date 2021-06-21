@@ -21,7 +21,7 @@
           :value="selectedFilter.value"
           @input="(val) => setFilterValue({ id: filterTypeId, value: val })"
           :options="selectedFilter.options"
-          :label="filterTypeId === 0 ? 'persianName' : 'name'"
+          :label="'name'"
           :reduce="(option) => option.id"
           placeholder="انتخاب کنید"
           dir="rtl"

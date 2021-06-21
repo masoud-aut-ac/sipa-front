@@ -19,10 +19,10 @@ export default {
         let filter = state.details.find(x => x.id === payload.id);
         filter.value = payload.value;
     },
-    setHasComparsion(state, payload) {
-        state.hasComparsion = payload;
+    setHasComparison(state, payload) {
+        state.hasComparison = payload;
     },
-    setComparsionDetail(state, payload) {
-        state.comparsionDetail = payload;
+    setComparisonDetail(state, payload) {
+        state.comparisonDetail = payload;
     }
 }

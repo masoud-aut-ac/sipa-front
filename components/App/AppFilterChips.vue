@@ -1,25 +1,11 @@
 <template>
-  <div class="bg-white rounded-lg p-2 shadow-md"     >
+  <div class="bg-white rounded-lg p-2 shadow-md">
     <div class="flex items-stretch m-2">
       <span><v-icon color="#FFA000" class="mt-1">mdi-filter</v-icon></span>
-      <p class="leading-8 mr-1 cursor-pointer">
-        فیلترها
-      </p>
+      <p class="leading-8 mr-1 cursor-pointer">فیلترها</p>
       <div class="mx-4">
-        <v-chip v-if="chip1" close @click:close="chip1 = false">
-          استان تهران
-        </v-chip>
-
-        <v-chip v-if="chip2" close @click:close="chip2 = false"> سواری </v-chip>
-
-        <v-chip v-if="chip3" close @click:close="chip3 = false">
-          جلو به پهلو
-        </v-chip>
-
-        <v-chip v-if="chip2" close @click:close="chip2 = false"> سواری </v-chip>
-
-        <v-chip v-if="chip3" close @click:close="chip3 = false">
-          جلو به پهلو
+        <v-chip v-for="(item, i) in selectedFilters" :key="i">
+          {{ item.name }}
         </v-chip>
       </div>
     </div>
@@ -32,17 +18,18 @@ import { mapMutations } from "vuex";
 
 export default {
   data() {
-    return {
-      chip1: true,
-      chip2: true,
-      chip3: true,
-      chip4: true,
-    };
+    return {};
   },
   computed: {
     ...mapGetters({
       getSideSheet: "index/getSideSheet",
+      allFilters: "filters/getFilterDetails",
     }),
+    selectedFilters() {
+      return this.allFilters
+        .filter((x) => x.value != null)
+        .map((x) => x.options.find((y) => y.id === x.value));
+    },
   },
   methods: {
     ...mapMutations({

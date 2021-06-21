@@ -8,7 +8,7 @@
 export default {
   props: {
     graphData: {
-      type: Array,
+      type: Object,
       required: true,
     },
   },
@@ -52,19 +52,18 @@ export default {
             fontFamily: "IRANSans",
           },
         },
-        series: this.graphData.map((x) => {
-          return {
-            data: x.slices,
+        series: [
+          {
+            data: this.graphData.slices,
             dataLabels: {
               enabled: true,
-              format:
-                "<b>{point.name}</b>:<br />{point.percentage:.1f} %",
+              format: "<b>{point.name}</b>:<br />{point.percentage:.1f} %",
               style: {
                 fontFamily: "IRANSans",
               },
             },
-          };
-        }),
+          },
+        ],
       };
     },
   },

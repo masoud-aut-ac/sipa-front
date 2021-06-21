@@ -2,7 +2,7 @@
   <div class="bg-gray-200 rounded-lg p-4 mb-4">
     <p>فیلتر اطلاعات</p>
     <AppFilterSingle
-      :filterTypeId="removedFilterIds[i - 1]"
+      :filterTypeId="getRemovedFilterIds[i - 1]"
       v-for="i in countOfFilters"
       :key="i"
     />
@@ -17,7 +17,13 @@
     >
       <v-icon dark> mdi-plus </v-icon>
     </v-btn>
-    <v-btn dark block color="#332A7C" class="mt-4" @click="emitter()"
+    <v-btn
+      :disabled="hasComparison"
+      dark
+      block
+      color="#332A7C"
+      class="mt-4"
+      @click="emitter()"
       >جستجو</v-btn
     >
   </div>
@@ -39,12 +45,23 @@ export default {
   computed: {
     ...mapGetters({
       removedFilterIds: "filters/getRemovedFilterIds",
+      comparisonDetail: "filters/getComparisonDetail",
+      hasComparison: "filters/getHasComparison",
     }),
     countOfFilters() {
-      if (this.removedFilterIds.length + 1 < this.counter)
-        this.counter = this.removedFilterIds.length + 1;
+      if (this.getRemovedFilterIds.length + 1 < this.counter)
+        this.counter = this.getRemovedFilterIds.length + 1;
       this.counter = this.counter > 1 ? this.counter : 1;
       return this.counter;
+    },
+    getRemovedFilterIds() {
+      let res = this.removedFilterIds;
+      if (this.comparisonDetail != null) {
+        res = this.removedFilterIds.filter(
+          (x) => x !== this.comparisonDetail.filterId
+        );
+      }
+      return res;
     },
   },
   methods: {

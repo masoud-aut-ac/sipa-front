@@ -12,7 +12,7 @@ export default {
         url: "Province",
       }).then((response) => {
         vm.loadFilterOptions({
-          englishLabel: "province", options: response.data.detail.provinces
+          englishLabel: "province", options: response.data.detail.provinces.map(x => { return { ...x, name: x.persianName } })
         });
       });
     },

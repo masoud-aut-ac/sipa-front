@@ -18,12 +18,12 @@ export default {
         if (provinceFilter.value != null)
             res['provinceEnlighName'] = provinceFilter
                 .options
-                .find(x => x.id === selectedProvince.value)
+                .find(x => x.id === provinceFilter.value)
                 .englishName;
         return res;
     },
     getHasComparison(state) {
-        return state.hasComparsion;
+        return state.hasComparison;
     },
     getComparisonDetail(state) {
         return state.comparisonDetail;
