@@ -6,7 +6,8 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate"
+    "generate": "nuxt generate",
+    "deploy": "nuxt start --port 3006",
   },
   "dependencies": {
     "@nuxtjs/auth-next": "^5.0.0-1622918202.e815752",
