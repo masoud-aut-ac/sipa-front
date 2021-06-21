@@ -26,4 +26,10 @@ export default {
     getMapMaxLng(state) {
         return state.mapMaxLng;
     },
+    getMapID(state) {
+        return state.mapID;
+    },
+    getMapLevel(state) {
+        return state.mapLevel;
+    },
 }

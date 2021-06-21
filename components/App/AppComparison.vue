@@ -37,11 +37,11 @@
       </div>
     </div>
     <p class="text-red text-xs" v-if="IsLimited">
-      امکان مقایسه برای حداکثر 3 مورد وجود دارد
+      امکان مقایسه حداکثر برای 2 مورد وجود دارد
     </p>
     <v-btn
       :disabled="!hasComparison"
-      dark
+      :dark="hasComparison"
       block
       color="#332A7C"
       class="mt-4"

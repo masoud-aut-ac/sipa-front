@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg p-6 shadow-md">
+  <div>
     <highcharts :options="chartOptions"></highcharts>
   </div>
 </template>
@@ -52,12 +52,18 @@ export default {
             fontFamily: "IRANSans",
           },
         },
+        accessibility: {
+          point: {
+            valueSuffix: "%",
+          },
+        },
         series: [
           {
             data: this.graphData.slices,
             dataLabels: {
-              enabled: true,
-              format: "<b>{point.name}</b>:<br />{point.percentage:.1f} %",
+              connectorShape: 'crookedLine',
+              useHTML: "<p></p>",
+              format: "<b>{point.name}</b> : % {point.percentage:.1f} ",
               style: {
                 fontFamily: "IRANSans",
               },

@@ -82,6 +82,39 @@ export default {
         });
       });
     },
+    getInjuriesCount() {
+      let vm = this;
+      vm.loadFilterOptions({
+        englishLabel: "injuredCount", options: [
+          { id: 0, name: "صفر" },
+          { id: 1, name: "یک" },
+          { id: 2, name: "دو" },
+          { id: 3, name: "سه و بیشتر" },
+        ]
+      })
+    },
+    getDeadCount() {
+      let vm = this;
+      vm.loadFilterOptions({
+        englishLabel: "deadCount", options: [
+          { id: 0, name: "صفر" },
+          { id: 1, name: "یک" },
+          { id: 2, name: "دو" },
+          { id: 3, name: "سه و بیشتر" },
+        ]
+      })
+    },
+    // getVehicleCount() {
+    //   let vm = this;
+    //   vm.loadFilterOptions({
+    //     englishLabel: "vehicleCount", options: [
+    //       { id: 0, name: "نامشخص" },
+    //       { id: 1, name: "یک" },
+    //       { id: 2, name: "دو" },
+    //       { id: 3, name: "سه و بیشتر" },
+    //     ]
+    //   })
+    // },
     loadAllFilters() {
       this.getProvinces();
       this.getInfoSources();
@@ -90,6 +123,9 @@ export default {
       this.getIncidentTypes();
       this.getIncidentParts();
       this.getIncidentReasons();
+      this.getInjuriesCount();
+      this.getDeadCount();
+      // this.getVehicleCount();
     }
   },
 }

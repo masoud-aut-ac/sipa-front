@@ -31,7 +31,6 @@
     <app-chart
       :graphCategory="4"
       :title="'تعداد وسایل در هر تصادف'"
-      v-show="showGraph('vehicleCount')"
       :chartMode="'Pie'"
       class="col-span-1 lg:col-span-2"
     />
@@ -99,11 +98,9 @@ export default {
   },
   methods: {
     showGraph(graphEnglishLabel) {
-      console.log(graphEnglishLabel);
       let res =
         this.allFilters.find((x) => x.englishLabel === graphEnglishLabel)
           .value === null;
-      console.log(res);
       return res;
     },
   },

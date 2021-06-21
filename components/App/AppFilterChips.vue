@@ -3,9 +3,9 @@
     <div class="flex items-stretch m-2">
       <span><v-icon color="#FFA000" class="mt-1">mdi-filter</v-icon></span>
       <p class="leading-8 mr-1 cursor-pointer">فیلترها</p>
-      <div class="mx-4">
-        <v-chip v-for="(item, i) in selectedFilters" :key="i">
-          {{ item.name }}
+      <div>
+        <v-chip class="mr-1" v-for="(item, i) in selectedFilters" :key="i">
+          {{ item.value.name + " " + item.chipLabel}}
         </v-chip>
       </div>
     </div>
@@ -28,7 +28,12 @@ export default {
     selectedFilters() {
       return this.allFilters
         .filter((x) => x.value != null)
-        .map((x) => x.options.find((y) => y.id === x.value));
+        .map((x) => {
+          return {
+            chipLabel: x.labelChip,
+            value: x.options.find((y) => y.id === x.value),
+          };
+        });
     },
   },
   methods: {

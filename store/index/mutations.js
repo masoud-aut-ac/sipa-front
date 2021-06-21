@@ -26,4 +26,10 @@ export default {
     setMapMaxLng(state, payload) {
         state.mapMaxLng = payload;
     },
+    setMapID(state, payload) {
+        state.mapID = payload;
+    },
+    setMapLevel(state, payload) {
+        state.mapLevel = payload;
+    },
 }

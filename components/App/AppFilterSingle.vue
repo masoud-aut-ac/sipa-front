@@ -13,33 +13,17 @@
       ></selectvue>
     </div>
     <div v-if="filterTypeId != null">
-      <div
-        class="bg-white rounded-b"
-        v-if="selectedFilter.inputType == 'select'"
-      >
+      <div class="bg-white rounded-b">
         <selectvue
           :value="selectedFilter.value"
           @input="(val) => setFilterValue({ id: filterTypeId, value: val })"
           :options="selectedFilter.options"
-          :label="'name'"
+          label='name'
           :reduce="(option) => option.id"
           placeholder="انتخاب کنید"
           dir="rtl"
           class="style-chooser"
         ></selectvue>
-      </div>
-      <div class="bg-white rounded-b" v-else>
-        <v-text-field
-          :value="selectedFilter.value"
-          @input="
-            (val) => setFilterValue({ id: filterTypeId, value: parseInt(val) })
-          "
-          type="number"
-          placeholder=" تایپ کنید"
-          solo
-          dense
-          flat
-        ></v-text-field>
       </div>
     </div>
   </div>
@@ -47,12 +31,10 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import LoadingFilters from "~/mixins/LoadingFilters.js";
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 
 export default {
-  mixins: [LoadingFilters],
   props: {
     filterTypeId: {
       type: Number,
@@ -60,7 +42,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      hasLoadedFilters: "filters/getHasLoadedFilters",
       removedFilterIds: "filters/getRemovedFilterIds",
       allFilters: "filters/getFilterDetails",
     }),
@@ -97,9 +78,7 @@ export default {
       }
     },
   },
-  created() {
-    if (!this.hasLoadedFilters) this.loadAllFilters();
-  },
+
 };
 </script>
 

@@ -38,9 +38,9 @@
 
     <!-- this div contains mode switch -->
     <div class="absolute bottom-14 left-8" style="z-index: 409">
-      <button class="mx-1" title="Light" @click="setTheMode('light')">
+      <button class="mx-1" title="Satellite" @click="setTheMode('satellite')">
         <img
-          src="/light.png"
+          src="/satellite.png"
           class="border-solid rounded-md border-2 border-white shadow-md"
         />
       </button>
@@ -50,9 +50,9 @@
           class="border-solid rounded-md border-2 border-white shadow-md"
         />
       </button>
-      <button class="mx-1" title="Satellite" @click="setTheMode('satellite')">
+      <button class="mx-1" title="Light" @click="setTheMode('light')">
         <img
-          src="/satellite.png"
+          src="/light.png"
           class="border-solid rounded-md border-2 border-white shadow-md"
         />
       </button>
@@ -64,39 +64,25 @@
 <script>
 import { mapMutations } from "vuex";
 import { mapGetters } from "vuex";
-import OstanGeoJson from "~/mixins/OstanGeoJson.js";
+import ProvincesGeoJson from "~/mixins/ProvincesGeoJson.js";
 import * as L from "leaflet";
 import { SimpleMapScreenshoter } from "leaflet-simple-map-screenshoter";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 
 export default {
-  mixins: [OstanGeoJson],
+  mixins: [ProvincesGeoJson],
   data() {
     return {
       map: {},
       tileLayer: {},
-      ostan: {},
+      provinces: {},
+      provincesData: [],
+      mapGuideFirst: null,
+      mapGuideSecond: null,
+      mapGuideThird: null,
+      mapGuideFourth: null,
+      mapGuideFifth: null,
     };
-  },
-  props: {
-    mapGuide: {
-      type: Array,
-      default: function () {
-        return [
-          { caption: "کم", color: "#00FF00" },
-          { caption: "نسبتا کم", color: "#F7FF00" },
-          { caption: "نسبتا زیاد", color: "#FF9900" },
-          { caption: "زیاد", color: "#FF0000" },
-        ];
-      },
-    },
-    mapColor: {
-      type: Array,
-      default: function () {
-        return ["#00FF00", "#F7FF00", "#FF9900", "#FF0000", "#6f737c"];
-      },
-    },
-    pointClick: {},
   },
   computed: {
     ...mapGetters({
@@ -107,9 +93,40 @@ export default {
       getMapMinLng: "index/getMapMinLng",
       getMapMaxLat: "index/getMapMaxLat",
       getMapMaxLng: "index/getMapMaxLng",
+      getMapID: "index/getMapID",
+      getMapLevel: "index/getMapLevel",
+      getDate: "filters/getDate",
     }),
+    mapColors() {
+      return this.getMode === "satellite"
+        ? ["#feff99", "#fad874", "#f5b957", "#bd7642", "#893332"]
+        : ["#cdc9eb", "#8a83c5", "#5d55a0", "#39337a", "#1a1452"];
+    },
+    mapGuide() {
+      return this.getMode === "satellite"
+        ? [
+            { caption: this.mapGuideFirst, color: "#feff99" },
+            { caption: this.mapGuideSecond, color: "#fad874" },
+            { caption: this.mapGuideThird, color: "#f5b957" },
+            { caption: this.mapGuideFourth, color: "#bd7642" },
+            { caption: this.mapGuideFifth, color: "#893332" },
+          ]
+        : [
+            { caption: this.mapGuideFirst, color: "#cdc9eb" },
+            { caption: this.mapGuideSecond, color: "#8a83c5" },
+            { caption: this.mapGuideThird, color: "#5d55a0" },
+            { caption: this.mapGuideFourth, color: "#39337a" },
+            { caption: this.mapGuideFifth, color: "#1a1452" },
+          ];
+    },
     tileUrl() {
       return this.getMapAddress(this.getMode);
+    },
+    startDate() {
+      return this.getDate[0].replaceAll("/", "-") + " 00:00";
+    },
+    endDate() {
+      return this.getDate[1].replaceAll("/", "-") + " 23:59";
     },
   },
   methods: {
@@ -144,6 +161,24 @@ export default {
           break;
       }
       return res;
+    },
+    getMapData() {
+      let vm = this;
+      return vm
+        .$axios({
+          method: "post",
+          url: "MapData",
+          data: {
+            mapLevel: this.getMapLevel,
+            mapID: this.getMapID,
+            startTime: this.startDate,
+            endTime: this.endDate,
+          },
+        })
+        .then((response) => {
+          vm.provincesData = response.data.detail;
+        })
+        .then((r) => this.drawProvinces());
     },
     drawMap() {
       let vm = this;
@@ -181,9 +216,6 @@ export default {
       });
 
       vm.map.on("moveend", function () {
-        // console.log(vm.map.getBounds());
-        // console.log(vm.map.getZoom());
-        // console.log(vm.map.getCenter());
         vm.setMapCenter(vm.map.getCenter());
         vm.setMapMinLat(vm.map.getBounds()._southWest.lat);
         vm.setMapMinLng(vm.map.getBounds()._southWest.lng);
@@ -191,24 +223,72 @@ export default {
         vm.setMapMaxLng(vm.map.getBounds()._northEast.lng);
       });
     },
-    drawOstan() {
+    drawProvinces() {
       let vm = this;
-      vm.ostan = L.geoJSON(this.geoJsonContent, {
+      vm.provinces = L.geoJSON(this.geoJsonContent, {
         style: function (feature) {
-          return { color: feature.properties.OBJECTID === 1 ? "red":"blue", };
+          return {
+            color:
+              vm.mapColors[
+                vm.provincesData.polygons.filter(
+                  (x) => x.englishName === feature.properties.engName
+                )[0].colorLevel
+              ],
+            fillOpacity: 0.7,
+            stroke: false,
+          };
         },
-      }).addTo(vm.map);
+      })
+        .bindTooltip(
+          function (layer) {
+            return layer.feature.properties.ostn_name;
+          },
+          { className: "font-serif" }
+        )
+        .addTo(vm.map);
+
+      vm.mapGuideFirst =
+        "کمتر از " + vm.provincesData.mapColorsGuide[0].toString();
+      vm.mapGuideSecond =
+        " از " +
+        vm.provincesData.mapColorsGuide[0].toString() +
+        " تا " +
+        vm.provincesData.mapColorsGuide[1].toString();
+      vm.mapGuideThird =
+        " از " +
+        vm.provincesData.mapColorsGuide[1].toString() +
+        " تا " +
+        vm.provincesData.mapColorsGuide[2].toString();
+      vm.mapGuideFourth =
+        " از " +
+        vm.provincesData.mapColorsGuide[2].toString() +
+        " تا " +
+        vm.provincesData.mapColorsGuide[3].toString();
+      vm.mapGuideFifth =
+        "بیشتر از " + vm.provincesData.mapColorsGuide[3].toString();
     },
   },
 
+  created() {
+    this.getMapData();
+  },
   mounted() {
     this.drawMap();
-    this.drawOstan();
   },
 
   watch: {
     getMode(value) {
       this.tileLayer.setUrl(this.getMapAddress(value));
+      this.provinces.remove();
+      this.getMapData();
+    },
+    getMapID(val) {
+      this.provinces.remove();
+      this.getMapData();
+    },
+    getDate(val) {
+      this.provinces.remove();
+      this.getMapData();
     },
   },
 };

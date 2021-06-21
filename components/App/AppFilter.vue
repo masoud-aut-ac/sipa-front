@@ -9,7 +9,7 @@
     <v-btn
       class="my-2"
       fab
-      dark
+      :dark="counter < 8"
       x-small
       color="#FFA000"
       @click="counter++"
@@ -19,7 +19,7 @@
     </v-btn>
     <v-btn
       :disabled="hasComparison"
-      dark
+      :dark="!hasComparison"
       block
       color="#332A7C"
       class="mt-4"
@@ -32,8 +32,10 @@
 <script>
 import { mapGetters } from "vuex";
 import AppFilterSingle from "~/components/App/AppFilterSingle.vue";
+import LoadingFilters from "~/mixins/LoadingFilters.js";
 
 export default {
+    mixins: [LoadingFilters],
   data() {
     return {
       counter: 1,
@@ -71,6 +73,7 @@ export default {
   },
   created() {
     this.counter = this.removedFilterIds.length;
+    this.loadAllFilters();
   },
 };
 </script>
@@ -92,5 +95,8 @@ export default {
 .v-text-field.v-text-field--solo.v-input--dense > .v-input__control {
   min-height: 28px !important;
   font-size: 14px !important;
+}
+.theme--dark.v-btn.v-btn--disabled.v-btn--has-bg {
+  background-color: rgb(173, 173, 173)!important
 }
 </style>

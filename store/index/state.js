@@ -8,4 +8,6 @@ export default () => ({
     mapMinLng: 51.112174987792976,
     mapMaxLat: 35.7643434796672,
     mapMaxLng: 51.65565490722657,
+    mapID: 1,
+    mapLevel: 0,
 })

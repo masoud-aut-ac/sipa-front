@@ -56,7 +56,8 @@ export default {
         }).then((res) => {
           let slices = res.data.detail.graphSlices;
           slices = slices.map((x) => {
-            return { name: x.name, y: x.percent };
+            // return { name: x.name, y: x.percent };
+            return [ x.name, x.percent ];
           });
           vm.graphSlices.push({ slices });
         });

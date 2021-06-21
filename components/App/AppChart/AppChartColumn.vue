@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg p-6 shadow-md">
+  <div>
     <highcharts :options="chartOptions"></highcharts>
   </div>
 </template>
@@ -40,7 +40,7 @@ export default {
         title: {
           text: "",
         },
-        colors: ["#332A7C"],
+        colors: ["#332A7C", "#FFA000", "#5147A1", "#87DFF0", "#F25767"],
         credits: {
           enabled: false,
         },
@@ -71,7 +71,7 @@ export default {
           visible: true,
           title: {
             enabled: true,
-            text: "منبع‌های دریافت پیام",
+            text: "",
             style: {
               fontSize: "0.6rem",
               direction: "rtl",
@@ -85,6 +85,7 @@ export default {
               fontFamily: "IRANSans",
             },
           },
+          categories: this.getCategories,
         },
         tooltip: {
           style: {
@@ -92,28 +93,21 @@ export default {
           },
         },
         series: this.graphData.map((x) => {
-          return { data: x.slices, borderRadius: 4 };
+          return {
+            data: x.slices,
+            borderRadius: 4,
+            dataLabels: {
+              enabled: true,
+              format: '{point.y:,.0f} %',
+            },
+          };
         }),
-        //  [
-        //   {
-        //     data: [
-        //       [1, 5],
-        //       [2, 3],
-        //       [3, 7],
-        //       [4, 5],
-        //       [5, 8],
-        //       [6, 1],
-        //       [7, 5],
-        //       [8, 3],
-        //       [9, 7],
-        //       [10, 5],
-        //       [11, 8],
-        //       [12, 1],
-        //     ],
-        //   borderRadius: 4,
-        //   },
-        // ],
       };
+    },
+    getCategories() {
+      let res = [];
+      this.graphData.forEach((x) => x.slices.forEach((y) => res.push(y[0])));
+      return res;
     },
   },
 
