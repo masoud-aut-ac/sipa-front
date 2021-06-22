@@ -118,15 +118,18 @@ export default {
         this.setComparisonDetail(null);
         this.filterTypeId = null;
       }
-        this.$nuxt.$emit("update-sipa-charts");
+      if (!val) this.$nuxt.$emit("update-sipa-charts");
     },
     setFilterTypeId(val) {
       this.setComparisonDetail(null);
-      if (this.filterTypeId !== null)
+      if (this.filterTypeId !== null) {
         this.deleteRemovedFilterIds(this.filterTypeId);
+        this.$nuxt.$emit("update-sipa-charts");
+      }
       if (val === null) {
         this.deleteRemovedFilterIds(this.filterTypeId);
         this.filterTypeId = val;
+        this.$nuxt.$emit("update-sipa-charts");
       } else {
         this.filterTypeId = val;
         this.addRemovedFilterIds(val);

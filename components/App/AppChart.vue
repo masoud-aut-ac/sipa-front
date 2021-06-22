@@ -4,7 +4,11 @@
       <span> <v-icon x-small color="#FFA000">mdi-circle</v-icon></span>
       <p class="mr-2">{{ title }}</p>
     </div>
-    <app-chart-column :graphData="graphSlices" :compareTitles="compareTitles" v-if="chartMode === 'Column'" />
+    <app-chart-column
+      :graphData="graphSlices"
+      :compareTitles="compareTitles"
+      v-if="chartMode === 'Column'"
+    />
     <template v-else>
       <app-chart-pie
         :graphData="graphSlices[i]"
@@ -39,6 +43,7 @@ export default {
   data() {
     return {
       graphSlices: [],
+      requestID: null,
     };
   },
   components: {
@@ -48,6 +53,8 @@ export default {
   methods: {
     fetchChartData() {
       this.graphSlices = [];
+      let myRequestID = Math.random();
+      this.requestID = myRequestID;
       let vm = this;
       const bodies = this.apiRequestBodies;
       bodies.forEach((b) => {
@@ -56,12 +63,14 @@ export default {
           url: "GraphData",
           data: b,
         }).then((res) => {
-          let slices = res.data.detail.graphSlices;
-          slices = slices.map((x) => {
-            // return { name: x.name, y: x.percent };
-            return [x.name, x.percent];
-          });
-          vm.graphSlices.push({ slices });
+          if (myRequestID === vm.requestID) {
+            let slices = res.data.detail.graphSlices;
+            slices = slices.map((x) => {
+              // return { name: x.name, y: x.percent };
+              return [x.name, x.percent];
+            });
+            vm.graphSlices.push({ slices });
+          }
         });
       });
     },
@@ -78,7 +87,8 @@ export default {
       if (
         this.hasComparison &&
         this.comparisonDetail != null &&
-        this.comparisonDetail.values != null
+        this.comparisonDetail.values != null &&
+        this.comparisonDetail.values[0] != null
       ) {
         const compareFilter = this.allFilters.find(
           (x) => x.id === this.comparisonDetail.filterId
@@ -94,7 +104,8 @@ export default {
       if (
         this.hasComparison &&
         this.comparisonDetail != null &&
-        this.comparisonDetail.values != null
+        this.comparisonDetail.values != null &&
+        this.comparisonDetail.values[0] != null
       ) {
         const compareFilter = this.allFilters.find(
           (x) => x.id === this.comparisonDetail.filterId
