@@ -26,7 +26,7 @@
               class="w-4 h-4 m-2"
               :style="{ 'background-color': m.color }"
             ></div>
-            <p class="font-serif text-xs my-2">
+            <p class="font-serif text-sm my-2">
               {{ m.caption }}
             </p>
           </div>
@@ -225,7 +225,7 @@ export default {
                   (x) => x.englishName === feature.properties.engName
                 )[0].colorLevel
               ],
-            fillOpacity: 0.9,
+            fillOpacity: 0.7,
             stroke: false,
           };
         },

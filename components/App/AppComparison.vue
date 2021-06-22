@@ -37,7 +37,7 @@
       </div>
     </div>
     <p class="text-red text-xs" v-if="IsLimited">
-      امکان مقایسه حداکثر برای 2 مورد وجود دارد
+      امکان مقایسه حداکثر برای 3 مورد وجود دارد
     </p>
     <!-- <v-btn
       :disabled="!hasComparison"
@@ -99,7 +99,7 @@ export default {
       this.$nuxt.$emit("update-sipa-charts");
     },
     limiter(e) {
-      if (e.length > 2) {
+      if (e.length > 3) {
         this.IsLimited = true;
         console.log(" you can only select two", e);
         e.pop();

@@ -18,7 +18,7 @@
       "
     >
       <v-list-item style="direction: rtl">
-        <img src="~/static/logoBW.png" height="32" width="32" />
+        <img src="~/static/logo.png" height="32" width="32" />
       </v-list-item>
 
       <v-divider></v-divider>

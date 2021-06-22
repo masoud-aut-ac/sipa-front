@@ -49,7 +49,7 @@ export default {
         title: {
           text: "",
         },
-        colors: ["#332A7C", "#FFA000", "#5147A1", "#87DFF0", "#F25767"],
+        colors: ["#332A7C", "#FFA000", "#736bb4", "#87DFF0", "#F25767"],
         credits: {
           enabled: false,
         },
