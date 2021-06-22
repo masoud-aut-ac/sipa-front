@@ -5,7 +5,7 @@ export default {
   ssr: false,
 
   // Target: https://go.nuxtjs.dev/config-target
-  target: 'static',
+
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -87,7 +87,7 @@ export default {
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
+    //customVariables: ['~/assets/variables.scss'],
     theme: {
       dark: true,
       themes: {
@@ -106,5 +106,6 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+	babel: { compact: true }
   }
 }
