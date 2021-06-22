@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-white rounded-lg p-2 shadow-md"
+    class="bg-white rounded-lg p-1 shadow-md"
 
   >
     <div class="flex items-stretch m-2 mt-3">
@@ -47,6 +47,7 @@ export default {
   watch: {
     date(val) {
       this.setDate(val);
+      this.$nuxt.$emit("update-sipa-charts");
     },
   },
 };

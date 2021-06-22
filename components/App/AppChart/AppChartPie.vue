@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div
+      v-if="compareTitle != null"
+      class="bg-gray-100 rounded p-1 text-center mt-4 mb-2"
+    >
+      {{ compareTitle }}
+    </div>
     <highcharts :options="chartOptions"></highcharts>
   </div>
 </template>
@@ -11,6 +17,9 @@ export default {
       type: Object,
       required: true,
     },
+    compareTitle: {
+      type: String
+    }
   },
   data() {
     return {};
@@ -48,6 +57,11 @@ export default {
           enabled: false,
         },
         tooltip: {
+          formatter: function () {
+            return (
+              this.point.name + ": %" + +parseFloat(this.point.y).toFixed(0)
+            );
+          },
           style: {
             fontFamily: "IRANSans",
           },
@@ -61,9 +75,9 @@ export default {
           {
             data: this.graphData.slices,
             dataLabels: {
-              connectorShape: 'crookedLine',
+              connectorShape: "crookedLine",
               useHTML: "<p></p>",
-              format: "<b>{point.name}</b> : % {point.percentage:.1f} ",
+              format: "{point.name} : %{point.percentage:.0f} ",
               style: {
                 fontFamily: "IRANSans",
               },
@@ -72,21 +86,6 @@ export default {
         ],
       };
     },
-  },
-
-  methods: {
-    // getChartColumnValues() {
-    //   let vm = this;
-    //   return this.$axios({
-    //     method: "get",
-    //     url: "chart",
-    //   }).then((response) => {
-    //     this.graphData = response.data.detail;
-    //   });
-    // },
-  },
-  created() {
-    // this.getChartColumnValues();
   },
 };
 </script>

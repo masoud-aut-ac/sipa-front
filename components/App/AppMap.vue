@@ -44,12 +44,12 @@
           class="border-solid rounded-md border-2 border-white shadow-md"
         />
       </button>
-      <button class="mx-1" title="Dark" @click="setTheMode('dark')">
+      <!-- <button class="mx-1" title="Dark" @click="setTheMode('dark')">
         <img
           src="/dark.png"
           class="border-solid rounded-md border-2 border-white shadow-md"
         />
-      </button>
+      </button> -->
       <button class="mx-1" title="Light" @click="setTheMode('light')">
         <img
           src="/light.png"
@@ -98,25 +98,15 @@ export default {
       getDate: "filters/getDate",
     }),
     mapColors() {
-      return this.getMode === "satellite"
-        ? ["#feff99", "#fad874", "#f5b957", "#bd7642", "#893332"]
-        : ["#cdc9eb", "#8a83c5", "#5d55a0", "#39337a", "#1a1452"];
+      return ["#ffe9c5", "#ffc461", "#ffa000", "#cb7f00", "#8d5800"];
     },
     mapGuide() {
-      return this.getMode === "satellite"
-        ? [
-            { caption: this.mapGuideFirst, color: "#feff99" },
-            { caption: this.mapGuideSecond, color: "#fad874" },
-            { caption: this.mapGuideThird, color: "#f5b957" },
-            { caption: this.mapGuideFourth, color: "#bd7642" },
-            { caption: this.mapGuideFifth, color: "#893332" },
-          ]
-        : [
-            { caption: this.mapGuideFirst, color: "#cdc9eb" },
-            { caption: this.mapGuideSecond, color: "#8a83c5" },
-            { caption: this.mapGuideThird, color: "#5d55a0" },
-            { caption: this.mapGuideFourth, color: "#39337a" },
-            { caption: this.mapGuideFifth, color: "#1a1452" },
+      return [
+            { caption: this.mapGuideFirst, color: "#ffe9c5" },
+            { caption: this.mapGuideSecond, color: "#ffc461" },
+            { caption: this.mapGuideThird, color: "#ffa000" },
+            { caption: this.mapGuideFourth, color: "#cb7f00" },
+            { caption: this.mapGuideFifth, color: "#8d5800" },
           ];
     },
     tileUrl() {
@@ -153,6 +143,7 @@ export default {
           break;
         case "light":
           res =
+          // 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png'
             "https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWlub29oYXJpciIsImEiOiJja2xkbGE2ZmgwcnY2MnFtMWtoOWl5dnpkIn0.umSsa-Et5gB6J96rzM4oWw";
           break;
         case "satellite":
@@ -234,7 +225,7 @@ export default {
                   (x) => x.englishName === feature.properties.engName
                 )[0].colorLevel
               ],
-            fillOpacity: 0.7,
+            fillOpacity: 0.9,
             stroke: false,
           };
         },
@@ -243,7 +234,7 @@ export default {
           function (layer) {
             return layer.feature.properties.ostn_name;
           },
-          { className: "font-serif" }
+          { className: "font-serif", sticky: true }
         )
         .addTo(vm.map);
 
@@ -279,8 +270,8 @@ export default {
   watch: {
     getMode(value) {
       this.tileLayer.setUrl(this.getMapAddress(value));
-      this.provinces.remove();
-      this.getMapData();
+      // this.provinces.remove();
+      // this.getMapData();
     },
     getMapID(val) {
       this.provinces.remove();

@@ -16,9 +16,9 @@
       <div class="bg-white rounded-b">
         <selectvue
           :value="selectedFilter.value"
-          @input="(val) => setFilterValue({ id: filterTypeId, value: val })"
+          @input="setFilter"
           :options="selectedFilter.options"
-          label='name'
+          label="name"
           :reduce="(option) => option.id"
           placeholder="انتخاب کنید"
           dir="rtl"
@@ -77,8 +77,11 @@ export default {
         this.addRemovedFilterIds(val);
       }
     },
+    setFilter(val) {
+      this.setFilterValue({ id: filterTypeId, value: val });
+      this.$nuxt.$emit("update-sipa-charts");
+    },
   },
-
 };
 </script>
 

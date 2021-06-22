@@ -4,10 +4,11 @@
       <span> <v-icon x-small color="#FFA000">mdi-circle</v-icon></span>
       <p class="mr-2">{{ title }}</p>
     </div>
-    <app-chart-column :graphData="graphSlices" v-if="chartMode === 'Column'" />
+    <app-chart-column :graphData="graphSlices" :compareTitles="compareTitles" v-if="chartMode === 'Column'" />
     <template v-else>
       <app-chart-pie
         :graphData="graphSlices[i]"
+        :compareTitle="compareTitles[i]"
         v-for="(item, i) in graphSlices"
         :key="i"
       />
@@ -46,6 +47,7 @@ export default {
   },
   methods: {
     fetchChartData() {
+      this.graphSlices = [];
       let vm = this;
       const bodies = this.apiRequestBodies;
       bodies.forEach((b) => {
@@ -57,7 +59,7 @@ export default {
           let slices = res.data.detail.graphSlices;
           slices = slices.map((x) => {
             // return { name: x.name, y: x.percent };
-            return [ x.name, x.percent ];
+            return [x.name, x.percent];
           });
           vm.graphSlices.push({ slices });
         });
@@ -71,6 +73,22 @@ export default {
       comparisonDetail: "filters/getComparisonDetail",
       allFilters: "filters/getFilterDetails",
     }),
+    compareTitles() {
+      let res = [];
+      if (
+        this.hasComparison &&
+        this.comparisonDetail != null &&
+        this.comparisonDetail.values != null
+      ) {
+        const compareFilter = this.allFilters.find(
+          (x) => x.id === this.comparisonDetail.filterId
+        );
+        res = compareFilter.options
+          .filter((x) => this.comparisonDetail.values.some((y) => y === x.id))
+          .map((x) => x.name);
+      }
+      return res;
+    },
     apiRequestBodies() {
       let res = [];
       if (

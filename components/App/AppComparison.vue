@@ -39,7 +39,7 @@
     <p class="text-red text-xs" v-if="IsLimited">
       امکان مقایسه حداکثر برای 2 مورد وجود دارد
     </p>
-    <v-btn
+    <!-- <v-btn
       :disabled="!hasComparison"
       :dark="hasComparison"
       block
@@ -47,7 +47,7 @@
       class="mt-4"
       @click="emitter()"
       >جستجو</v-btn
-    >
+    > -->
   </div>
 </template>
 
@@ -106,18 +106,19 @@ export default {
       } else {
         this.setComparisonDetail({ filterId: this.filterTypeId, values: e });
         this.IsLimited = false;
+        this.$nuxt.$emit("update-sipa-charts");
       }
     },
     toggleHasComparison(val) {
-      console.log(val);
       if (val) {
         this.setHasComparison(val);
       } else {
         this.setHasComparison(val);
-        this.deleteRemovedFilterIds(this.fitlerTypeId);
+        this.deleteRemovedFilterIds(this.filterTypeId);
         this.setComparisonDetail(null);
-        this.fitlerTypeId = null;
+        this.filterTypeId = null;
       }
+        this.$nuxt.$emit("update-sipa-charts");
     },
     setFilterTypeId(val) {
       this.setComparisonDetail(null);

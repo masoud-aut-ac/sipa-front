@@ -11,13 +11,13 @@
       fab
       :dark="counter < 8"
       x-small
-      color="#FFA000"
+      color="#332A7C"
       @click="counter++"
       :disabled="counter > 8"
     >
       <v-icon dark> mdi-plus </v-icon>
     </v-btn>
-    <v-btn
+    <!-- <v-btn
       :disabled="hasComparison"
       :dark="!hasComparison"
       block
@@ -25,7 +25,7 @@
       class="mt-4"
       @click="emitter()"
       >جستجو</v-btn
-    >
+    > -->
   </div>
 </template>
 

@@ -3,7 +3,7 @@
     <div class="grid grid-cols-12 gap-4">
       <div class="col-span-12 lg:col-span-9 mt-4 mb-7">
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
-          <AppFilterDate class="col-span-1" />
+          <AppFilterDate class="col-span-1 pt-2" />
           <AppFilterChips class="col-span-1 lg:col-span-3" />
         </div>
         <div class="pt-2">

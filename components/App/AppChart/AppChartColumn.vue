@@ -11,6 +11,9 @@ export default {
       type: Array,
       required: true,
     },
+    compareTitles: {
+      type: Array,
+    },
   },
   data() {
     return {};
@@ -45,7 +48,7 @@ export default {
           enabled: false,
         },
         legend: {
-          enabled: false,
+          enabled: this.compareTitles[0] != null,
         },
         yAxis: {
           visible: true,
@@ -88,19 +91,31 @@ export default {
           categories: this.getCategories,
         },
         tooltip: {
+          formatter: function () {
+            return (
+              this.point.name + ": %" + +parseFloat(this.point.y).toFixed(0)
+            );
+          },
           style: {
             fontFamily: "IRANSans",
           },
         },
-        series: this.graphData.map((x) => {
-          return {
+        series: this.graphData.map((x, i) => {
+          let res = {
             data: x.slices,
             borderRadius: 4,
             dataLabels: {
               enabled: true,
-              format: '{point.y:,.0f} %',
+              useHTML: "<p></p>",
+              format: "{point.y:,.0f}",
+              style: {
+                fontFamily: "IRANSans",
+                fontWeight: "normal",
+              },
             },
           };
+          if (this.compareTitles[i] != null) res.name = this.compareTitles[i];
+          return res;
         }),
       };
     },
