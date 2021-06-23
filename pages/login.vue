@@ -14,7 +14,7 @@
       <div class="pb-2 pt-2">
         <div class="grid grid-cols-2 border-b-2 border-white">
           <p class="font-serif text-white font-bold pr-2 py-3 text-xl">ورود</p>
-          <img src="logoBW.png" class="pr-24" style=""/>
+          <img src="logo.png" class="pr-24" style=""/>
         </div>
       </div>
       <div v-if="isLoadingData" class="text-center">

@@ -38,7 +38,7 @@ export default {
           animation: false,
           type: "column",
           zoomType: "x",
-          height: "250rem",
+          height: "280rem",
         },
         title: {
           text: "",
