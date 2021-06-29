@@ -67,7 +67,7 @@ export default {
             let slices = res.data.detail.graphSlices;
             slices = slices.map((x) => {
               // return { name: x.name, y: x.percent };
-              return [x.name, x.percent];
+              return [x.name, x.percent < 1.0 ? 0 : x.percent];
             });
             vm.graphSlices.push({ slices });
           }
