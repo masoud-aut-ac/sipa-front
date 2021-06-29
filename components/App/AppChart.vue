@@ -4,19 +4,29 @@
       <span> <v-icon x-small color="#FFA000">mdi-circle</v-icon></span>
       <p class="mr-2">{{ title }}</p>
     </div>
-    <app-chart-column
-      :graphData="graphSlices"
-      :compareTitles="compareTitles"
-      v-if="chartMode === 'Column'"
-    />
-    <template v-else>
-      <app-chart-pie
-        :graphData="graphSlices[i]"
-        :compareTitle="compareTitles[i]"
-        v-for="(item, i) in graphSlices"
-        :key="i"
+    <v-progress-circular
+      v-if="isLoadingData"
+      :size="40"
+      :width="4"
+      indeterminate
+      style="margin: 25% 45%"
+      color="#FFA000"
+    ></v-progress-circular>
+    <div v-else>
+      <app-chart-column
+        :graphData="graphSlices"
+        :compareTitles="compareTitles"
+        v-if="chartMode === 'Column'"
       />
-    </template>
+      <template v-else>
+        <app-chart-pie
+          :graphData="graphSlices[i]"
+          :compareTitle="compareTitles[i]"
+          v-for="(item, i) in graphSlices"
+          :key="i"
+        />
+      </template>
+    </div>
   </div>
 </template>
 
@@ -44,6 +54,7 @@ export default {
     return {
       graphSlices: [],
       requestID: null,
+      isLoadingData: true,
     };
   },
   components: {
@@ -52,6 +63,7 @@ export default {
   },
   methods: {
     fetchChartData() {
+      this.isLoadingData = true;
       this.graphSlices = [];
       let myRequestID = Math.random();
       this.requestID = myRequestID;
@@ -71,7 +83,7 @@ export default {
             });
             vm.graphSlices.push({ slices });
           }
-        });
+        }).then((r) => this.isLoadingData = false);
       });
     },
   },

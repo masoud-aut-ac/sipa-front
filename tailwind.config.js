@@ -7,6 +7,9 @@ module.exports = {
     './src/**/*.jsx',
     './src/**/*.html',
   ],
+  extend: {
+    animation: ['motion-safe', 'motion-reduce'],
+  },
   theme: {
     fontFamily: {
       'serif': ['IRANSans']

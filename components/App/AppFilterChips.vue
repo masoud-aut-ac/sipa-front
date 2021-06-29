@@ -1,20 +1,30 @@
 <template>
-  <div class="bg-white rounded-lg p-2 shadow-md">
+  <div class="bg-white rounded-lg p-2 shadow-md" style="direction: rtl">
     <div class="flex items-stretch m-2">
       <span><v-icon color="#FFA000" class="mt-1">mdi-filter</v-icon></span>
       <p class="leading-8 mr-1 cursor-pointer">فیلترها</p>
       <div>
         <v-chip class="mr-1" v-for="(item, i) in selectedFilters" :key="i">
-          {{ item.value.name + " " + item.chipLabel}}
+          {{ item.value.name + " " + item.chipLabel }}
         </v-chip>
       </div>
+      <v-spacer></v-spacer>
+      <v-btn
+        v-if="!getSideSheet"
+        fab
+        dark
+        x-small
+        color="#332A7C"
+        @click="toggleSideSheet"
+      >
+        <v-icon> mdi-tune-vertical-variant </v-icon>
+      </v-btn>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { mapMutations } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   data() {
@@ -40,6 +50,10 @@ export default {
     ...mapMutations({
       setSideSheet: "index/setSideSheet",
     }),
+    toggleSideSheet() {
+      this.setSideSheet(true);
+      this.$nuxt.$emit("update-sipa-charts");
+    },
   },
 };
 </script>

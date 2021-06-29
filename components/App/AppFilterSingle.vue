@@ -39,6 +39,9 @@ export default {
     filterTypeId: {
       type: Number,
     },
+    allowedFilterTypes: {
+      type: Array
+    }
   },
   computed: {
     ...mapGetters({
@@ -47,9 +50,11 @@ export default {
     }),
     filterTypeOptions() {
       let removedFilters = this.removedFilterIds;
-      return this.allFilters.filter(
+      let res = this.allFilters.filter(
         (x) => !removedFilters.some((y) => x.id === y)
       );
+      res = res.filter(x=> this.allowedFilterTypes.some(y=> x.englishLabel === y ));
+      return res;
     },
     selectedFilter() {
       let vm = this;

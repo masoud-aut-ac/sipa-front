@@ -3,8 +3,8 @@
     <!-- this div contains the map -->
     <div
       id="map-wrap"
-      class="z-0 rounded-lg shadow-md m-4 mr-20"
-      style="direction: rtl; height: 96vh"
+      class="z-0 rounded-lg shadow-md"
+      style="direction: rtl; height: 100vh"
     >
       <!-- this div contains map guide -->
       <div
@@ -37,23 +37,23 @@
     <!-- end of map -->
 
     <!-- this div contains mode switch -->
-    <div class="absolute bottom-14 left-8" style="z-index: 409">
+    <div class="absolute bottom-14 left-8 z-40">
       <button class="mx-1" title="Satellite" @click="setTheMode('satellite')">
         <img
           src="/satellite.png"
-          class="border-solid rounded-md border-2 border-white shadow-md"
+          class="border-solid rounded-md border-2 border-gray-200 shadow-md"
         />
       </button>
       <!-- <button class="mx-1" title="Dark" @click="setTheMode('dark')">
         <img
           src="/dark.png"
-          class="border-solid rounded-md border-2 border-white shadow-md"
+          class="border-solid rounded-md border-2 border-gray-200 shadow-md"
         />
       </button> -->
       <button class="mx-1" title="Light" @click="setTheMode('light')">
         <img
           src="/light.png"
-          class="border-solid rounded-md border-2 border-white shadow-md"
+          class="border-solid rounded-md border-2 border-gray-200 shadow-md"
         />
       </button>
     </div>

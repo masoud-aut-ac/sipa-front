@@ -2,6 +2,7 @@
   <div class="bg-gray-200 rounded-lg p-4 mb-4">
     <p>فیلتر اطلاعات</p>
     <AppFilterSingle
+      :allowedFilterTypes="allowedFilterTypes"
       :filterTypeId="getRemovedFilterIds[i - 1]"
       v-for="i in countOfFilters"
       :key="i"
@@ -17,15 +18,6 @@
     >
       <v-icon dark> mdi-plus </v-icon>
     </v-btn>
-    <!-- <v-btn
-      :disabled="hasComparison"
-      :dark="!hasComparison"
-      block
-      color="#332A7C"
-      class="mt-4"
-      @click="emitter()"
-      >جستجو</v-btn
-    > -->
   </div>
 </template>
 
@@ -35,7 +27,12 @@ import AppFilterSingle from "~/components/App/AppFilterSingle.vue";
 import LoadingFilters from "~/mixins/LoadingFilters.js";
 
 export default {
-    mixins: [LoadingFilters],
+  mixins: [LoadingFilters],
+  props: {
+    allowedFilterTypes: {
+      type: Array,
+    },
+  },
   data() {
     return {
       counter: 1,
@@ -46,6 +43,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      allFilters: "filters/getFilterDetails",
       removedFilterIds: "filters/getRemovedFilterIds",
       comparisonDetail: "filters/getComparisonDetail",
       hasComparison: "filters/getHasComparison",
@@ -57,7 +55,12 @@ export default {
       return this.counter;
     },
     getRemovedFilterIds() {
-      let res = this.removedFilterIds;
+      let res = this.allFilters
+        .filter((x) =>
+          this.allowedFilterTypes.some((y) => x.englishLabel === y)
+        )
+        .filter((x) => this.removedFilterIds.some((y) => x.id === y))
+        .map((x) => x.id);
       if (this.comparisonDetail != null) {
         res = this.removedFilterIds.filter(
           (x) => x !== this.comparisonDetail.filterId
@@ -97,6 +100,6 @@ export default {
   font-size: 14px !important;
 }
 .theme--dark.v-btn.v-btn--disabled.v-btn--has-bg {
-  background-color: rgb(173, 173, 173)!important
+  background-color: rgb(173, 173, 173) !important;
 }
 </style>

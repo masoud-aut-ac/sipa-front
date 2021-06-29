@@ -1,11 +1,13 @@
 <template>
-  <div
-    class="bg-white rounded-lg p-1 shadow-md"
-
-  >
+  <div class="bg-white rounded-lg p-1 shadow-md" style="direction: rtl">
     <div class="flex items-stretch m-2 mt-3">
       <span><v-icon color="#FFA000">mdi-calendar-month</v-icon></span>
-      <input class="px-2" style="direction:rtl" v-model="date" id="my-custom-input" />
+      <input
+        class="px-2"
+        style="direction: rtl"
+        v-model="date"
+        id="my-custom-input"
+      />
       <datePicker
         v-model="date"
         popover
@@ -42,7 +44,7 @@ export default {
     }),
   },
   created() {
-      this.date = this.getDate
+    this.date = this.getDate;
   },
   watch: {
     date(val) {

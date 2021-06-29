@@ -1,19 +1,41 @@
 <template>
   <div class="font-serif text-sm" style="direction: rtl">
-    <div class="absolute top-8 mr-24 z-50">
-      <AppFilterDate class="" />
-    <div class="bg-orange-100 w-72 shadow-md rounded-lg mt-2">
-      <selectvue
-        v-model="mapType"
-        :options="mapTypeOptions"
-        label="Value"
-        :reduce="(option) => option.Key"
-        placeholder="انتخاب کنید"
-        dir="rtl"
-        class="style-chooser text-sm px-1"
-        :clearable="false"
-      ></selectvue>
+    <div class="absolute top-4 mr-20 z-50">
+      <AppFilterDate />
+      <AppMapTypeSwitch />
+      <v-btn
+        v-if="!getSideSheet"
+        fab
+        dark
+        x-small
+        color="#332A7C"
+        class="mx-2"
+        title="فیلتر اطلاعات"
+        @click="setSideSheet(true)"
+      >
+        <v-icon> mdi-tune-vertical-variant </v-icon>
+      </v-btn>
+      <!-- <div class="bg-orange-100 w-72 shadow-md rounded-lg mt-2">
+        <selectvue
+          v-model="mapType"
+          :options="mapTypeOptions"
+          label="Value"
+          :reduce="(option) => option.Key"
+          placeholder="انتخاب کنید"
+          dir="rtl"
+          class="style-chooser text-sm px-1"
+          :clearable="false"
+        ></selectvue>
+      </div> -->
     </div>
+    <div
+      v-if="this.getSideSheet"
+      class="absolute top-0 left-0 w-80 overflow-auto h-screen z-50"
+    >
+      <AppSearchInfo
+        :allowedFilterTypes="allowedFilterTypes"
+        :isMapPage="true"
+      />
     </div>
     <AppMap />
   </div>
@@ -28,11 +50,18 @@ import "vue-select/dist/vue-select.css";
 
 export default {
   middleware: "auth",
-
   data() {
     return {
       mapType: null,
       mapTypeOptions: [],
+      allowedFilterTypes: [
+        "infoSource",
+        "infoDevice",
+        "vehicleType",
+        "incidentType",
+        "incidentPart",
+        "incidentReason",
+      ],
     };
   },
   components: {
@@ -42,12 +71,14 @@ export default {
   },
   computed: {
     ...mapGetters({
+      getSideSheet: "index/getSideSheet",
       getMapID: "index/getMapID",
       getMapLevel: "index/getMapLevel",
     }),
   },
   methods: {
     ...mapMutations({
+      setSideSheet: "index/setSideSheet",
       setMapID: "index/setMapID",
     }),
     getMapList() {
