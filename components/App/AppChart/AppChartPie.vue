@@ -18,8 +18,8 @@ export default {
       required: true,
     },
     compareTitle: {
-      type: String
-    }
+      type: String,
+    },
   },
   data() {
     return {};
@@ -77,7 +77,14 @@ export default {
             dataLabels: {
               connectorShape: "crookedLine",
               useHTML: "<p></p>",
-              format: "{point.name} : %{point.percentage:.0f} ",
+              formatter: function () {
+                var per = this.percentage;
+                if (per > 1) {
+                  return this.point.name + ": %" + parseFloat(per).toFixed(0);
+                }
+                return null;
+              },
+              // format: "{point.name} : %{point.percentage:.0f} ",
               style: {
                 fontFamily: "IRANSans",
               },
