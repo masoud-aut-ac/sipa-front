@@ -1,25 +1,28 @@
 <template>
   <div class="bg-white rounded-lg p-1 shadow-md p-2 font-serif">
-    <button
-      v-for="t in mapTypes"
-      :key="t.id"
-      class="
-        p-2
-        px-3
-        bg-gray-100
-        text-xs
-        transition
-        duration-100
-        ease-in-out
-        transform
-        hover:scale-110
-        hover:shadow-sm
-      "
-      :class="{ selected: t.isSelected }"
-      @click="selectType(t.id)"
-    >
-      {{ t.text }}
-    </button>
+    <div class="flex items-stretch m-1">
+      <v-icon color="#FFA000" class="ml-2">mdi-poll</v-icon>
+      <button
+        v-for="t in mapTypes"
+        :key="t.id"
+        class="
+          p-2
+          px-4
+          bg-gray-100
+          text-xs
+          transition
+          duration-100
+          ease-in-out
+          transform
+          hover:scale-110
+          hover:shadow-sm
+        "
+        :class="{ selected: t.isSelected }"
+        @click="selectType(t.id)"
+      >
+        {{ t.text }}
+      </button>
+    </div>
   </div>
 </template>
 
@@ -30,9 +33,9 @@ export default {
   data() {
     return {
       mapTypes: [
-        { id: 0, text: "تعداد تصادف", isSelected: true },
-        { id: 1, text: "تعداد مجروح", isSelected: false },
-        { id: 2, text: "تعداد فوتی", isSelected: false },
+        { id: 0, text: "تصادف", isSelected: true },
+        { id: 1, text: "مجروح", isSelected: false },
+        { id: 2, text: "فوتی", isSelected: false },
       ],
     };
   },
@@ -52,7 +55,7 @@ export default {
     }),
   },
   created() {
-    this.setMapID(this.mapTypes.find(y => y.isSelected === true).id);
+    this.setMapID(this.mapTypes.find((y) => y.isSelected === true).id);
   },
 };
 </script>

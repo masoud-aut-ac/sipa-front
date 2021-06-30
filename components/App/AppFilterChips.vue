@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white rounded-lg p-2 shadow-md" style="direction: rtl">
-    <div class="flex items-stretch m-2">
+    <div class="flex items-stretch m-1">
       <span><v-icon color="#FFA000" class="mt-1">mdi-filter</v-icon></span>
       <p class="leading-8 mr-1 cursor-pointer">فیلترها</p>
       <div>
