@@ -74,16 +74,18 @@ export default {
           method: "post",
           url: "GraphData",
           data: b,
-        }).then((res) => {
-          if (myRequestID === vm.requestID) {
-            let slices = res.data.detail.graphSlices;
-            slices = slices.map((x) => {
-              // return { name: x.name, y: x.percent };
-              return [x.name, x.percent < 1.0 ? 0 : x.percent];
-            });
-            vm.graphSlices.push({ slices });
-          }
-        }).then((r) => this.isLoadingData = false);
+        })
+          .then((res) => {
+            if (myRequestID === vm.requestID) {
+              let slices = res.data.detail.graphSlices;
+              slices = slices.map((x) => {
+                // return { name: x.name, y: x.percent };
+                return [x.name, x.percent < 1.0 ? 0 : x.percent];
+              });
+              vm.graphSlices.push({ slices });
+            }
+          })
+          .then((r) => (this.isLoadingData = false));
       });
     },
   },
@@ -102,12 +104,13 @@ export default {
         this.comparisonDetail.values != null &&
         this.comparisonDetail.values[0] != null
       ) {
-        const compareFilter = this.allFilters.find(
+        let compareFilter = this.allFilters.find(
           (x) => x.id === this.comparisonDetail.filterId
         );
-        res = compareFilter.options
-          .filter((x) => this.comparisonDetail.values.some((y) => y === x.id))
-          .map((x) => x.name);
+        this.comparisonDetail.values.forEach((x) => {
+          let item = compareFilter.options.find((y) => y.id === x);
+          res.push(item.name);
+        });
       }
       return res;
     },

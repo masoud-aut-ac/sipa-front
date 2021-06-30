@@ -88,7 +88,6 @@ export default {
       }
     },
     setFilter(val) {
-      debugger;
       this.setFilterValue({ id: this.filterTypeId, value: val });
       this.$nuxt.$emit("update-sipa-charts");
     },

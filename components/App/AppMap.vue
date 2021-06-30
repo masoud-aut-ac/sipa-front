@@ -62,8 +62,7 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import ProvincesGeoJson from "~/mixins/ProvincesGeoJson.js";
 import * as L from "leaflet";
 import { SimpleMapScreenshoter } from "leaflet-simple-map-screenshoter";
@@ -77,11 +76,8 @@ export default {
       tileLayer: {},
       provinces: {},
       provincesData: [],
-      mapGuideFirst: null,
-      mapGuideSecond: null,
-      mapGuideThird: null,
-      mapGuideFourth: null,
-      mapGuideFifth: null,
+      mapGuide: [],
+      mapColors: ["#ffe9c5", "#ffc461", "#ffa000", "#cb7f00", "#8d5800"],
     };
   },
   computed: {
@@ -96,27 +92,10 @@ export default {
       getMapID: "index/getMapID",
       getMapLevel: "index/getMapLevel",
       getDate: "filters/getDate",
+      getFilters: "filters/getFilters",
     }),
-    mapColors() {
-      return ["#ffe9c5", "#ffc461", "#ffa000", "#cb7f00", "#8d5800"];
-    },
-    mapGuide() {
-      return [
-            { caption: this.mapGuideFirst, color: "#ffe9c5" },
-            { caption: this.mapGuideSecond, color: "#ffc461" },
-            { caption: this.mapGuideThird, color: "#ffa000" },
-            { caption: this.mapGuideFourth, color: "#cb7f00" },
-            { caption: this.mapGuideFifth, color: "#8d5800" },
-          ];
-    },
     tileUrl() {
       return this.getMapAddress(this.getMode);
-    },
-    startDate() {
-      return this.getDate[0].replaceAll("/", "-") + " 00:00";
-    },
-    endDate() {
-      return this.getDate[1].replaceAll("/", "-") + " 23:59";
     },
   },
   methods: {
@@ -143,7 +122,7 @@ export default {
           break;
         case "light":
           res =
-          // 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png'
+            // 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png'
             "https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWlub29oYXJpciIsImEiOiJja2xkbGE2ZmgwcnY2MnFtMWtoOWl5dnpkIn0.umSsa-Et5gB6J96rzM4oWw";
           break;
         case "satellite":
@@ -162,14 +141,14 @@ export default {
           data: {
             mapLevel: this.getMapLevel,
             mapID: this.getMapID,
-            startTime: this.startDate,
-            endTime: this.endDate,
+            ...this.getFilters,
           },
         })
         .then((response) => {
           vm.provincesData = response.data.detail;
         })
-        .then((r) => this.drawProvinces());
+        .then((r) => this.drawProvinces())
+        .then((re) => this.createMapGuide());
     },
     drawMap() {
       let vm = this;
@@ -232,31 +211,42 @@ export default {
       })
         .bindTooltip(
           function (layer) {
-            return layer.feature.properties.ostn_name;
+            return (
+              layer.feature.properties.ostn_name +
+              "<br />" +
+              vm.provincesData.polygons.filter(
+                (x) => x.englishName === layer.feature.properties.engName
+              )[0].count
+            );
           },
           { className: "font-serif", sticky: true }
         )
         .addTo(vm.map);
+    },
+    createMapGuide() {
+      let vm = this;
+      let mapColorsGuide = vm.provincesData.mapColorsGuide;
+      let len = vm.provincesData.mapColorsGuide.length;
 
-      vm.mapGuideFirst =
-        "کمتر از " + vm.provincesData.mapColorsGuide[0].toString();
-      vm.mapGuideSecond =
-        " از " +
-        vm.provincesData.mapColorsGuide[0].toString() +
-        " تا " +
-        vm.provincesData.mapColorsGuide[1].toString();
-      vm.mapGuideThird =
-        " از " +
-        vm.provincesData.mapColorsGuide[1].toString() +
-        " تا " +
-        vm.provincesData.mapColorsGuide[2].toString();
-      vm.mapGuideFourth =
-        " از " +
-        vm.provincesData.mapColorsGuide[2].toString() +
-        " تا " +
-        vm.provincesData.mapColorsGuide[3].toString();
-      vm.mapGuideFifth =
-        "بیشتر از " + vm.provincesData.mapColorsGuide[3].toString();
+      vm.mapGuide = [];
+      for (var i = 0; i < len + 1; i++) {
+        if (i === 0)
+          vm.mapGuide.push({
+            caption: "کمتر از " + mapColorsGuide[i],
+            color: vm.mapColors[i],
+          });
+        else if (i !== len)
+          vm.mapGuide.push({
+            caption:
+              " از " + mapColorsGuide[i - 1] + " تا " + mapColorsGuide[i],
+            color: vm.mapColors[i],
+          });
+        else
+          vm.mapGuide.push({
+            caption: "بیشتر از " + mapColorsGuide[i - 1],
+            color: vm.mapColors[i],
+          });
+      }
     },
   },
 
@@ -270,15 +260,17 @@ export default {
   watch: {
     getMode(value) {
       this.tileLayer.setUrl(this.getMapAddress(value));
-      // this.provinces.remove();
-      // this.getMapData();
     },
     getMapID(val) {
-      this.provinces.remove();
+      if (this.provinces != null) this.provinces.remove();
       this.getMapData();
     },
     getDate(val) {
-      this.provinces.remove();
+      if (this.provinces != null) this.provinces.remove();
+      this.getMapData();
+    },
+    getFilters() {
+      if (this.provinces != null) this.provinces.remove();
       this.getMapData();
     },
   },
@@ -306,5 +298,3 @@ export default {
   visibility: hidden !important;
 }
 </style>
-
-

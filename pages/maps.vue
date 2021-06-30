@@ -1,9 +1,13 @@
 <template>
   <div class="font-serif text-sm" style="direction: rtl">
-    <div class="absolute top-4 mr-20 z-50">
-      <AppFilterDate />
-      <AppMapTypeSwitch />
-      <v-btn
+    <div class="absolute top-2 mr-20 z-50 grid grid-cols-12 gap-3">
+      <div class="col-span-9 lg:col-span-3">
+        <AppFilterDate class="my-2" />
+        <AppFilterChips class="my-2" :allowedFilterTypes="allowedFilterTypes" />
+        <AppMapTypeSwitch class="my-2" />
+      </div>
+      <div class="col-span-3 lg:col-span-9"></div>
+      <!-- <v-btn
         v-if="!getSideSheet"
         fab
         dark
@@ -14,19 +18,7 @@
         @click="setSideSheet(true)"
       >
         <v-icon> mdi-tune-vertical-variant </v-icon>
-      </v-btn>
-      <!-- <div class="bg-orange-100 w-72 shadow-md rounded-lg mt-2">
-        <selectvue
-          v-model="mapType"
-          :options="mapTypeOptions"
-          label="Value"
-          :reduce="(option) => option.Key"
-          placeholder="انتخاب کنید"
-          dir="rtl"
-          class="style-chooser text-sm px-1"
-          :clearable="false"
-        ></selectvue>
-      </div> -->
+      </v-btn> -->
     </div>
     <div
       v-if="this.getSideSheet"
@@ -74,6 +66,7 @@ export default {
       getSideSheet: "index/getSideSheet",
       getMapID: "index/getMapID",
       getMapLevel: "index/getMapLevel",
+      allFilters: "filters/getFilterDetails",
     }),
   },
   methods: {
@@ -92,13 +85,7 @@ export default {
     },
   },
   created() {
-    this.mapType = this.getMapID;
     this.getMapList();
-  },
-  watch: {
-    mapType(value) {
-      this.setMapID(value);
-    },
   },
 };
 </script>

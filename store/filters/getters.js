@@ -16,7 +16,7 @@ export default {
         state.details.filter(x => x.englishLabel !== 'province').forEach(x => res[x.englishLabel] = x.value);
         let provinceFilter = state.details.find(x => x.englishLabel === 'province');
         if (provinceFilter.value != null)
-            res['provinceEnlighName'] = provinceFilter
+            res['provinceEnglishName'] = provinceFilter
                 .options
                 .find(x => x.id === provinceFilter.value)
                 .englishName;

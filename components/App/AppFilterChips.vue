@@ -27,6 +27,11 @@
 import { mapGetters, mapMutations } from "vuex";
 
 export default {
+  props: {
+    allowedFilterTypes: {
+      type: Array
+    }
+  },
   data() {
     return {};
   },
@@ -36,14 +41,15 @@ export default {
       allFilters: "filters/getFilterDetails",
     }),
     selectedFilters() {
-      return this.allFilters
-        .filter((x) => x.value != null)
-        .map((x) => {
-          return {
-            chipLabel: x.labelChip,
-            value: x.options.find((y) => y.id === x.value),
-          };
-        });
+      let vm = this;
+      return vm.allFilters.filter((x) => x.value != null).filter((x) =>
+        vm.allowedFilterTypes.some((y) => x.englishLabel === y)
+      ).map((x) => {
+        return {
+          chipLabel: x.labelChip,
+          value: x.options.find((y) => y.id === x.value),
+        };
+      });
     },
   },
   methods: {
