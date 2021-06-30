@@ -7,18 +7,6 @@
         <AppMapTypeSwitch class="my-2" />
       </div>
       <div class="col-span-3 lg:col-span-9"></div>
-      <!-- <v-btn
-        v-if="!getSideSheet"
-        fab
-        dark
-        x-small
-        color="#332A7C"
-        class="mx-2"
-        title="فیلتر اطلاعات"
-        @click="setSideSheet(true)"
-      >
-        <v-icon> mdi-tune-vertical-variant </v-icon>
-      </v-btn> -->
     </div>
     <div
       v-if="this.getSideSheet"
