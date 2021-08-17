@@ -114,16 +114,16 @@ export default {
     },
 
     getMapAddress(mode) {
-      let res = "";
+     let res = "";
       switch (mode) {
         case "dark":
           res =
-            "https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWlub29oYXJpciIsImEiOiJja2xkbGE2ZmgwcnY2MnFtMWtoOWl5dnpkIn0.umSsa-Et5gB6J96rzM4oWw";
+            "https://maptile1.141.ir/tile/v1/2/{z}/{x}/{y}";
           break;
         case "light":
           res =
-            // 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png'
-            "https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWlub29oYXJpciIsImEiOiJja2xkbGE2ZmgwcnY2MnFtMWtoOWl5dnpkIn0.umSsa-Et5gB6J96rzM4oWw";
+          // 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png'
+            "https://maptile1.141.ir/tile/v1/1/{z}/{x}/{y}";
           break;
         case "satellite":
           res =
