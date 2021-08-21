@@ -37,26 +37,26 @@
     <!-- end of map -->
 
     <!-- this div contains mode switch -->
-    <div class="absolute bottom-14 left-8 z-40">
-      <button class="mx-1" title="Satellite" @click="setTheMode('satellite')">
+    <!-- <div class="absolute bottom-14 left-8 z-40"> -->
+      <!-- <button class="mx-1" title="Satellite" @click="setTheMode('satellite')">
         <img
           src="/satellite.png"
           class="border-solid rounded-md border-2 border-gray-200 shadow-md"
         />
-      </button>
+      </button> -->
       <!-- <button class="mx-1" title="Dark" @click="setTheMode('dark')">
         <img
           src="/dark.png"
           class="border-solid rounded-md border-2 border-gray-200 shadow-md"
         />
       </button> -->
-      <button class="mx-1" title="Light" @click="setTheMode('light')">
+      <!-- <button class="mx-1" title="Light" @click="setTheMode('light')">
         <img
           src="/light.png"
           class="border-solid rounded-md border-2 border-gray-200 shadow-md"
         />
-      </button>
-    </div>
+      </button> -->
+    <!-- </div> -->
     <!-- end of mode switch -->
   </div>
 </template>
@@ -114,15 +114,14 @@ export default {
     },
 
     getMapAddress(mode) {
-     let res = "";
+      let res = "";
       switch (mode) {
         case "dark":
-          res =
-            "https://maptile1.141.ir/tile/v1/2/{z}/{x}/{y}";
+          res = "https://maptile1.141.ir/tile/v1/2/{z}/{x}/{y}";
           break;
         case "light":
           res =
-          // 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png'
+            // 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png'
             "https://maptile1.141.ir/tile/v1/1/{z}/{x}/{y}";
           break;
         case "satellite":
@@ -155,6 +154,11 @@ export default {
       const L = require("leaflet");
 
       this.map = L.map("map-wrap", {
+        minZoom: 5,
+        maxBounds: [
+          [41.44272637767212, 89.07714843750001],
+          [23.483400654325642, 19.511718750000004],
+        ],
         drawControl: true,
       });
 
