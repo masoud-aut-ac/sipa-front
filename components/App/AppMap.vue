@@ -38,19 +38,19 @@
 
     <!-- this div contains mode switch -->
     <!-- <div class="absolute bottom-14 left-8 z-40"> -->
-      <!-- <button class="mx-1" title="Satellite" @click="setTheMode('satellite')">
+    <!-- <button class="mx-1" title="Satellite" @click="setTheMode('satellite')">
         <img
           src="/satellite.png"
           class="border-solid rounded-md border-2 border-gray-200 shadow-md"
         />
       </button> -->
-      <!-- <button class="mx-1" title="Dark" @click="setTheMode('dark')">
+    <!-- <button class="mx-1" title="Dark" @click="setTheMode('dark')">
         <img
           src="/dark.png"
           class="border-solid rounded-md border-2 border-gray-200 shadow-md"
         />
       </button> -->
-      <!-- <button class="mx-1" title="Light" @click="setTheMode('light')">
+    <!-- <button class="mx-1" title="Light" @click="setTheMode('light')">
         <img
           src="/light.png"
           class="border-solid rounded-md border-2 border-gray-200 shadow-md"
@@ -63,21 +63,20 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import ProvincesGeoJson from "~/mixins/ProvincesGeoJson.js";
 import * as L from "leaflet";
 import { SimpleMapScreenshoter } from "leaflet-simple-map-screenshoter";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 
 export default {
-  mixins: [ProvincesGeoJson],
   data() {
     return {
       map: {},
       tileLayer: {},
-      provinces: {},
-      provincesData: [],
+      mapFeatures: {},
+      mapFeaturesData: [],
       mapGuide: [],
       mapColors: ["#ffe9c5", "#ffc461", "#ffa000", "#cb7f00", "#8d5800"],
+      previousZoom: null,
     };
   },
   computed: {
@@ -85,14 +84,12 @@ export default {
       getMode: "index/getMode",
       getMapCenter: "index/getMapCenter",
       getMapZoom: "index/getMapZoom",
-      getMapMinLat: "index/getMapMinLat",
-      getMapMinLng: "index/getMapMinLng",
-      getMapMaxLat: "index/getMapMaxLat",
-      getMapMaxLng: "index/getMapMaxLng",
+      getMapBounds: "index/getMapBounds",
       getMapID: "index/getMapID",
       getMapLevel: "index/getMapLevel",
       getDate: "filters/getDate",
       getFilters: "filters/getFilters",
+      getMapLevel: "index/getMapLevel",
     }),
     tileUrl() {
       return this.getMapAddress(this.getMode);
@@ -103,10 +100,8 @@ export default {
       setMode: "index/setMode",
       setMapCenter: "index/setMapCenter",
       setMapZoom: "index/setMapZoom",
-      setMapMinLat: "index/setMapMinLat",
-      setMapMinLng: "index/setMapMinLng",
-      setMapMaxLat: "index/setMapMaxLat",
-      setMapMaxLng: "index/setMapMaxLng",
+      setMapBounds: "index/setMapBounds",
+      setMapLevel: "index/setMapLevel",
     }),
 
     setTheMode(mode) {
@@ -133,6 +128,7 @@ export default {
     },
     getMapData() {
       let vm = this;
+
       return vm
         .$axios({
           method: "post",
@@ -140,21 +136,27 @@ export default {
           data: {
             mapLevel: this.getMapLevel,
             mapID: this.getMapID,
+            ...this.getMapBounds,
             ...this.getFilters,
           },
         })
         .then((response) => {
-          vm.provincesData = response.data.detail;
+          vm.mapFeaturesData = response.data.detail;
         })
-        .then((r) => this.drawProvinces())
+        .then((r) => {
+          vm.previousZoom = vm.map.getZoom();
+          this.drawFeatures();
+        })
         .then((re) => this.createMapGuide());
     },
+
     drawMap() {
       let vm = this;
       const L = require("leaflet");
 
       this.map = L.map("map-wrap", {
         minZoom: 5,
+        maxZoom: 16,
         maxBounds: [
           [41.44272637767212, 89.07714843750001],
           [23.483400654325642, 19.511718750000004],
@@ -181,56 +183,56 @@ export default {
       vm.map.setView(center, zoom);
 
       vm.map.on("zoomend", function () {
+        console.log(vm.map.getZoom());
         vm.setMapZoom(vm.map.getZoom());
         vm.setMapCenter(vm.map.getCenter());
-        vm.setMapMinLat(vm.map.getBounds()._southWest.lat);
-        vm.setMapMinLng(vm.map.getBounds()._southWest.lng);
-        vm.setMapMaxLat(vm.map.getBounds()._northEast.lat);
-        vm.setMapMaxLng(vm.map.getBounds()._northEast.lng);
+        vm.setMapBounds({
+          minLat: vm.map.getBounds()._southWest.lat,
+          minLon: vm.map.getBounds()._southWest.lng,
+          maxLat: vm.map.getBounds()._northEast.lat,
+          maxLon: vm.map.getBounds()._northEast.lng,
+        });
       });
 
       vm.map.on("moveend", function () {
         vm.setMapCenter(vm.map.getCenter());
-        vm.setMapMinLat(vm.map.getBounds()._southWest.lat);
-        vm.setMapMinLng(vm.map.getBounds()._southWest.lng);
-        vm.setMapMaxLat(vm.map.getBounds()._northEast.lat);
-        vm.setMapMaxLng(vm.map.getBounds()._northEast.lng);
+        vm.setMapBounds({
+          minLat: vm.map.getBounds()._southWest.lat,
+          minLon: vm.map.getBounds()._southWest.lng,
+          maxLat: vm.map.getBounds()._northEast.lat,
+          maxLon: vm.map.getBounds()._northEast.lng,
+        });
       });
     },
-    drawProvinces() {
+
+    drawFeatures() {
       let vm = this;
-      vm.provinces = L.geoJSON(this.geoJsonContent, {
+      vm.mapFeatures = L.geoJSON(vm.mapFeaturesData.geoJson, {
         style: function (feature) {
           return {
-            color:
-              vm.mapColors[
-                vm.provincesData.polygons.filter(
-                  (x) => x.englishName === feature.properties.engName
-                )[0].colorLevel
-              ],
+            color: vm.mapColors[feature.properties.colorLevel],
             fillOpacity: 0.7,
-            stroke: false,
+            stroke: vm.getMapLevel === 2 ? true : false,
           };
         },
       })
         .bindTooltip(
           function (layer) {
             return (
-              layer.feature.properties.ostn_name +
+              layer.feature.properties.persianName +
               "<br />" +
-              vm.provincesData.polygons.filter(
-                (x) => x.englishName === layer.feature.properties.engName
-              )[0].count
+              layer.feature.properties.count
             );
           },
           { className: "font-serif", sticky: true }
         )
         .addTo(vm.map);
     },
+
     createMapGuide() {
       let vm = this;
-      let mapColorsGuide = vm.provincesData.mapColorsGuide;
-      let len = vm.provincesData.mapColorsGuide.length;
+      let mapColorsGuide = vm.mapFeaturesData.mapColorsGuide;
+      let len = vm.mapFeaturesData.mapColorsGuide.length;
 
       vm.mapGuide = [];
       for (var i = 0; i < len + 1; i++) {
@@ -252,8 +254,32 @@ export default {
           });
       }
     },
-  },
 
+    changeMapLevel() {
+      let vm = this;
+      if (vm.getMapZoom > vm.previousZoom && vm.getMapZoom === 7) {
+        console.log(vm.previousZoom);
+        vm.setMapLevel(1);
+        vm.mapFeatures.remove();
+        vm.getMapData();
+      } else if (vm.getMapZoom > vm.previousZoom && vm.getMapZoom === 12) {
+        console.log(vm.previousZoom);
+        vm.setMapLevel(2);
+        vm.mapFeatures.remove();
+        vm.getMapData();
+      } else if (vm.previousZoom > vm.getMapZoom && vm.getMapZoom === 11) {
+        console.log(vm.previousZoom);
+        vm.setMapLevel(1);
+        vm.mapFeatures.remove();
+        vm.getMapData();
+      } else if (vm.previousZoom > vm.getMapZoom && vm.getMapZoom === 6) {
+        console.log(vm.previousZoom);
+        vm.setMapLevel(0);
+        vm.mapFeatures.remove();
+        vm.getMapData();
+      }
+    },
+  },
   created() {
     this.getMapData();
   },
@@ -266,16 +292,19 @@ export default {
       this.tileLayer.setUrl(this.getMapAddress(value));
     },
     getMapID(val) {
-      if (this.provinces != null) this.provinces.remove();
+      if (this.mapFeatures != null) this.mapFeatures.remove();
       this.getMapData();
     },
     getDate(val) {
-      if (this.provinces != null) this.provinces.remove();
+      if (this.mapFeatures != null) this.mapFeatures.remove();
       this.getMapData();
     },
     getFilters() {
-      if (this.provinces != null) this.provinces.remove();
+      if (this.mapFeatures != null) this.mapFeatures.remove();
       this.getMapData();
+    },
+    getMapZoom(val) {
+      this.changeMapLevel();
     },
   },
 };

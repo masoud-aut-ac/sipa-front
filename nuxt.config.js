@@ -57,7 +57,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'http://api.sipa.racinsoft.ir/'
+    baseURL: 'http://api.sipa.racinsoft.ir/V1/'
   },
 
   auth: {

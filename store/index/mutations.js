@@ -14,6 +14,9 @@ export default {
     setMapZoom(state, payload) {
         state.mapZoom = payload;
     },
+    setMapBounds(state, payload) {
+        state.mapBounds = payload;
+    },
     setMapMinLat(state, payload) {
         state.mapMinLat = payload;
     },

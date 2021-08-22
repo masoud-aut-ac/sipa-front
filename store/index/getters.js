@@ -14,17 +14,8 @@ export default {
     getMapZoom(state) {
         return state.mapZoom;
     },
-    getMapMinLat(state) {
-        return state.mapMinLat;
-    },
-    getMapMinLng(state) {
-        return state.mapMinLng;
-    },
-    getMapMaxLat(state) {
-        return state.mapMaxLat;
-    },
-    getMapMaxLng(state) {
-        return state.mapMaxLng;
+    getMapBounds(state) {
+        return state.mapBounds;
     },
     getMapID(state) {
         return state.mapID;
