@@ -1,12 +1,10 @@
 <template>
   <div>
-    <!-- this div contains the map -->
     <div
       id="map-wrap"
       class="z-0 rounded-lg shadow-md"
       style="direction: rtl; height: 100vh"
     >
-      <!-- this div contains map guide -->
       <div
         class="
           absolute
@@ -32,32 +30,16 @@
           </div>
         </div>
       </div>
-      <!-- end of map guide -->
     </div>
-    <!-- end of map -->
-
-    <!-- this div contains mode switch -->
-    <!-- <div class="absolute bottom-14 left-8 z-40"> -->
-    <!-- <button class="mx-1" title="Satellite" @click="setTheMode('satellite')">
-        <img
-          src="/satellite.png"
-          class="border-solid rounded-md border-2 border-gray-200 shadow-md"
-        />
-      </button> -->
-    <!-- <button class="mx-1" title="Dark" @click="setTheMode('dark')">
-        <img
-          src="/dark.png"
-          class="border-solid rounded-md border-2 border-gray-200 shadow-md"
-        />
-      </button> -->
-    <!-- <button class="mx-1" title="Light" @click="setTheMode('light')">
-        <img
-          src="/light.png"
-          class="border-solid rounded-md border-2 border-gray-200 shadow-md"
-        />
-      </button> -->
-    <!-- </div> -->
-    <!-- end of mode switch -->
+    <div v-if="isLoadingData" class="text-center">
+      <v-overlay :value="true" z-index="510">
+        <v-progress-circular
+          indeterminate
+          :size="64"
+          color="#FFA000"
+        ></v-progress-circular>
+      </v-overlay>
+    </div>
   </div>
 </template>
 
@@ -70,65 +52,35 @@ import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 export default {
   data() {
     return {
+      isLoadingData: false,
       map: {},
       tileLayer: {},
       mapFeatures: {},
       mapFeaturesData: [],
       mapGuide: [],
       mapColors: ["#ffe9c5", "#ffc461", "#ffa000", "#cb7f00", "#8d5800"],
-      previousZoom: null,
     };
   },
   computed: {
     ...mapGetters({
-      getMode: "index/getMode",
-      getMapCenter: "index/getMapCenter",
       getMapZoom: "index/getMapZoom",
+      getMapCenter: "index/getMapCenter",
       getMapBounds: "index/getMapBounds",
+      getMapLevel: "index/getMapLevel",
       getMapID: "index/getMapID",
-      getMapLevel: "index/getMapLevel",
-      getDate: "filters/getDate",
       getFilters: "filters/getFilters",
-      getMapLevel: "index/getMapLevel",
     }),
-    tileUrl() {
-      return this.getMapAddress(this.getMode);
-    },
   },
   methods: {
     ...mapMutations({
-      setMode: "index/setMode",
-      setMapCenter: "index/setMapCenter",
       setMapZoom: "index/setMapZoom",
+      setMapCenter: "index/setMapCenter",
       setMapBounds: "index/setMapBounds",
       setMapLevel: "index/setMapLevel",
     }),
-
-    setTheMode(mode) {
-      this.setMode(mode);
-    },
-
-    getMapAddress(mode) {
-      let res = "";
-      switch (mode) {
-        case "dark":
-          res = "https://maptile1.141.ir/tile/v1/2/{z}/{x}/{y}";
-          break;
-        case "light":
-          res =
-            // 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png'
-            "https://maptile1.141.ir/tile/v1/1/{z}/{x}/{y}";
-          break;
-        case "satellite":
-          res =
-            "https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v11/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWlub29oYXJpciIsImEiOiJja2xkbGE2ZmgwcnY2MnFtMWtoOWl5dnpkIn0.umSsa-Et5gB6J96rzM4oWw";
-          break;
-      }
-      return res;
-    },
     getMapData() {
       let vm = this;
-
+      vm.isLoadingData = true;
       return vm
         .$axios({
           method: "post",
@@ -144,10 +96,10 @@ export default {
           vm.mapFeaturesData = response.data.detail;
         })
         .then((r) => {
-          vm.previousZoom = vm.map.getZoom();
           this.drawFeatures();
         })
-        .then((re) => this.createMapGuide());
+        .then((re) => this.createMapGuide())
+        .then((res) => (vm.isLoadingData = false));
     },
 
     drawMap() {
@@ -164,7 +116,9 @@ export default {
         drawControl: true,
       });
 
-      this.tileLayer = L.tileLayer(this.getMapAddress(this.getMode));
+      this.tileLayer = L.tileLayer(
+        "https://maptile1.141.ir/tile/v1/1/{z}/{x}/{y}"
+      );
       this.tileLayer.addTo(this.map);
 
       let myRenderer = L.canvas({ padding: 0.5 });
@@ -183,8 +137,12 @@ export default {
       vm.map.setView(center, zoom);
 
       vm.map.on("zoomend", function () {
-        console.log(vm.map.getZoom());
-        vm.setMapZoom(vm.map.getZoom());
+        let z = vm.map.getZoom();
+        vm.setMapZoom(z);
+        if (z < 8) vm.setMapLevel(0);
+        else if (8 <= z && z <= 12) vm.setMapLevel(1);
+        else if (z >= 13) vm.setMapLevel(2);
+
         vm.setMapCenter(vm.map.getCenter());
         vm.setMapBounds({
           minLat: vm.map.getBounds()._southWest.lat,
@@ -202,6 +160,7 @@ export default {
           maxLat: vm.map.getBounds()._northEast.lat,
           maxLon: vm.map.getBounds()._northEast.lng,
         });
+          console.log(vm.getMapBounds);
       });
     },
 
@@ -254,31 +213,6 @@ export default {
           });
       }
     },
-
-    changeMapLevel() {
-      let vm = this;
-      if (vm.getMapZoom > vm.previousZoom && vm.getMapZoom === 7) {
-        console.log(vm.previousZoom);
-        vm.setMapLevel(1);
-        vm.mapFeatures.remove();
-        vm.getMapData();
-      } else if (vm.getMapZoom > vm.previousZoom && vm.getMapZoom === 12) {
-        console.log(vm.previousZoom);
-        vm.setMapLevel(2);
-        vm.mapFeatures.remove();
-        vm.getMapData();
-      } else if (vm.previousZoom > vm.getMapZoom && vm.getMapZoom === 11) {
-        console.log(vm.previousZoom);
-        vm.setMapLevel(1);
-        vm.mapFeatures.remove();
-        vm.getMapData();
-      } else if (vm.previousZoom > vm.getMapZoom && vm.getMapZoom === 6) {
-        console.log(vm.previousZoom);
-        vm.setMapLevel(0);
-        vm.mapFeatures.remove();
-        vm.getMapData();
-      }
-    },
   },
   created() {
     this.getMapData();
@@ -286,25 +220,24 @@ export default {
   mounted() {
     this.drawMap();
   },
-
   watch: {
-    getMode(value) {
-      this.tileLayer.setUrl(this.getMapAddress(value));
+    getFilters() {
+      if (this.mapFeatures != null) {
+        this.mapFeatures.remove();
+        this.getMapData();
+      }
     },
     getMapID(val) {
-      if (this.mapFeatures != null) this.mapFeatures.remove();
-      this.getMapData();
+      if (this.mapFeatures != null) {
+        this.mapFeatures.remove();
+        this.getMapData();
+      }
     },
-    getDate(val) {
-      if (this.mapFeatures != null) this.mapFeatures.remove();
-      this.getMapData();
-    },
-    getFilters() {
-      if (this.mapFeatures != null) this.mapFeatures.remove();
-      this.getMapData();
-    },
-    getMapZoom(val) {
-      this.changeMapLevel();
+    getMapBounds(val) {
+      if (this.mapFeatures != null) {
+        this.mapFeatures.remove();
+        this.getMapData();
+      }
     },
   },
 };
@@ -314,11 +247,9 @@ export default {
 .leaflet-measure-resultpopup {
   font-family: "IRANSans";
 }
-
 .leaflet-control-measure {
   font-family: "IRANSans";
 }
-
 .leaflet-control-geosearch form input {
   height: 30px !important;
   direction: ltr;

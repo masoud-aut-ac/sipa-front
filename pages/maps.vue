@@ -1,12 +1,11 @@
 <template>
   <div class="font-serif text-sm" style="direction: rtl">
-    <div class="absolute top-2 mr-20 z-50 grid grid-cols-12 gap-3">
+    <div class="absolute top-2 mr-20 z-50 gap-3">
       <div class="col-span-9 lg:col-span-3">
         <AppFilterDate class="my-2" />
-        <AppFilterChips class="my-2" :allowedFilterTypes="allowedFilterTypes" />
+        <AppFilterChips class="my-2 max-w-xs" :allowedFilterTypes="allowedFilterTypes" />
         <AppMapTypeSwitch class="my-2" />
       </div>
-      <div class="col-span-3 lg:col-span-9"></div>
     </div>
     <div
       v-if="this.getSideSheet"
@@ -25,7 +24,6 @@
 import { mapGetters, mapMutations } from "vuex";
 import AppMap from "~/components/App/AppMap.vue";
 import AppFilterDate from "~/components/App/AppFilterDate.vue";
-import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 
 export default {
@@ -47,21 +45,13 @@ export default {
   components: {
     AppMap,
     AppFilterDate,
-    selectvue: vSelect,
   },
   computed: {
     ...mapGetters({
       getSideSheet: "index/getSideSheet",
-      getMapID: "index/getMapID",
-      getMapLevel: "index/getMapLevel",
-      allFilters: "filters/getFilterDetails",
     }),
   },
   methods: {
-    ...mapMutations({
-      setSideSheet: "index/setSideSheet",
-      setMapID: "index/setMapID",
-    }),
     getMapList() {
       let vm = this;
       return this.$axios({

@@ -1,7 +1,4 @@
 export default {
-    setMode(state, payload) {
-        state.mode = payload;
-    },
     setSidebar(state, payload) {
         state.sidebar = payload;
     },

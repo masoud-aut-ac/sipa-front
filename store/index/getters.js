@@ -1,7 +1,4 @@
 export default {
-    getMode(state) {
-        return state.mode;
-    },
     getSidebar(state) {
         return state.sidebar;
     },

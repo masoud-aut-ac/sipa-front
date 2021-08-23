@@ -1,14 +1,13 @@
 export default () => ({
-    mode: "light",
     sidebar: true,
     sideSheet: true,
     mapCenter: [32.03602003973757, 54.23950195312501],
     mapZoom: 6,
     mapBounds: {
-        minLat: 35.62130281838082,
-        minLon: 51.112174987792976,
-        maxLat: 35.7643434796672,
-        maxLon: 51.65565490722657,
+        minLat: 24.407137917727667,
+        minLon: 36.78222656250001,
+        maxLat: 39.07890809706475,
+        maxLon: 71.56494140625001,
     },
     mapID: 0,
     mapLevel: 0,
