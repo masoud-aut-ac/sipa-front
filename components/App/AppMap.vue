@@ -196,8 +196,11 @@ export default {
       vm.mapGuide = [];
       for (var i = 0; i < len + 1; i++) {
         if (i === 0)
-          vm.mapGuide.push({
+          vm.mapGuide.push(len !== 1 ? {
             caption: "کمتر از " + mapColorsGuide[i],
+            color: vm.mapColors[i],
+          } : {
+            caption: mapColorsGuide[i],
             color: vm.mapColors[i],
           });
         else if (i !== len)
