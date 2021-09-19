@@ -10,5 +10,5 @@ export default () => ({
         maxLon: 71.56494140625001,
     },
     mapID: 0,
-    mapLevel: 0,
+    mapLevel: 2,
 })

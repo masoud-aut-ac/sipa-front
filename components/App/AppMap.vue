@@ -46,6 +46,8 @@
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import * as L from "leaflet";
+import { MarkerClusterGroup, MarkerCluster } from "leaflet.markercluster";
+// import {} from "leaflet.markercluster.css";
 import { SimpleMapScreenshoter } from "leaflet-simple-map-screenshoter";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 
@@ -53,6 +55,7 @@ export default {
   data() {
     return {
       isLoadingData: false,
+      markersLayerGroup: null,
       map: {},
       tileLayer: {},
       mapFeatures: {},
@@ -81,6 +84,16 @@ export default {
     getMapData() {
       let vm = this;
       vm.isLoadingData = true;
+      let imageOverlayCoordinate =
+        vm.getMapLevel === 2
+          ? [
+              [25.07442, 44.06878],
+              [39.77609, 63.33307],
+            ]
+          : [
+              [25.06242, 44.03878],
+              [39.77609, 63.33307],
+            ];
       return vm
         .$axios({
           method: "post",
@@ -88,20 +101,72 @@ export default {
           data: {
             mapLevel: this.getMapLevel,
             mapID: this.getMapID,
-            ...this.getMapBounds,
             ...this.getFilters,
           },
         })
         .then((response) => {
+          let image = L.imageOverlay(
+            "http://" + response.data.detail.imageURI,
+            imageOverlayCoordinate,
+            { opacity: 0.75 }
+          );
+          image.addTo(vm.map);
+          vm.drawMakers("http://" + response.data.detail.colorLevelsURI).then(
+            (res) => (vm.isLoadingData = false)
+          );
           vm.mapFeaturesData = response.data.detail;
         })
-        .then((r) => {
-          this.drawFeatures();
-        })
-        .then((re) => this.createMapGuide())
-        .then((res) => (vm.isLoadingData = false));
+        .then((re) => this.createMapGuide());
     },
-
+    drawMakers(jsonUrl) {
+      let vm = this;
+      return vm.$axios.get(jsonUrl).then((res) => {
+        console.log(res.data);
+        let markerList = [];
+        let markers = L.markerClusterGroup({
+          disableClusteringAtZoom: vm.getMapLevel === 2 ? 16 : 8,
+          chunkedLoading: true,
+          iconCreateFunction: function (cluster) {
+            let children = cluster.getAllChildMarkers();
+            let sum = 0;
+            for (var i = 0; i < children.length; i++) {
+              sum += children[i].value;
+            }
+            let c = " marker-cluster-";
+            if (sum < 10) {
+              c += "small";
+            } else if (sum < 100) {
+              c += "medium";
+            } else {
+              c += "large";
+            }
+            return new L.divIcon({
+              html: "<div><span>" + sum + "</span></div>",
+              className: "marker-cluster" + c,
+              iconSize: new L.Point(40, 40),
+            });
+          },
+        });
+        if (vm.getMapLevel === 2) {
+          res.data.forEach((element) => {
+            let m = L.marker(element.LatLng, { title: "" + element.Value });
+            m.value = element.Value;
+            markerList.push(m);
+          });
+        } else {
+          res.data.forEach((element) => {
+            let m = L.marker(element.LatLng, {
+              title: element.PersianName + element.Value,
+            });
+            m.value = element.Value;
+            markerList.push(m);
+          });
+        }
+        markers.addLayers(markerList);
+        vm.markersLayerGroup.clearLayers();
+        vm.markersLayerGroup.addLayer(markers);
+      });
+    },
     drawMap() {
       let vm = this;
       const L = require("leaflet");
@@ -136,58 +201,8 @@ export default {
       const zoom = vm.getMapZoom;
       vm.map.setView(center, zoom);
 
-      vm.map.on("zoomend", function () {
-        let z = vm.map.getZoom();
-        vm.setMapZoom(z);
-        if (z < 8) vm.setMapLevel(0);
-        else if (8 <= z && z <= 12) vm.setMapLevel(1);
-        else if (z >= 13) vm.setMapLevel(2);
-
-        vm.setMapCenter(vm.map.getCenter());
-        vm.setMapBounds({
-          minLat: vm.map.getBounds()._southWest.lat,
-          minLon: vm.map.getBounds()._southWest.lng,
-          maxLat: vm.map.getBounds()._northEast.lat,
-          maxLon: vm.map.getBounds()._northEast.lng,
-        });
-      });
-
-      vm.map.on("moveend", function () {
-        vm.setMapCenter(vm.map.getCenter());
-        vm.setMapBounds({
-          minLat: vm.map.getBounds()._southWest.lat,
-          minLon: vm.map.getBounds()._southWest.lng,
-          maxLat: vm.map.getBounds()._northEast.lat,
-          maxLon: vm.map.getBounds()._northEast.lng,
-        });
-          console.log(vm.getMapBounds);
-      });
+      this.markersLayerGroup = L.layerGroup().addTo(vm.map);
     },
-
-    drawFeatures() {
-      let vm = this;
-      vm.mapFeatures = L.geoJSON(vm.mapFeaturesData.geoJson, {
-        style: function (feature) {
-          return {
-            color: vm.mapColors[feature.properties.colorLevel],
-            fillOpacity: 0.7,
-            stroke: vm.getMapLevel === 2 ? true : false,
-          };
-        },
-      })
-        .bindTooltip(
-          function (layer) {
-            return (
-              layer.feature.properties.persianName +
-              "<br />" +
-              layer.feature.properties.count
-            );
-          },
-          { className: "font-serif", sticky: true }
-        )
-        .addTo(vm.map);
-    },
-
     createMapGuide() {
       let vm = this;
       let mapColorsGuide = vm.mapFeaturesData.mapColorsGuide;
@@ -196,13 +211,17 @@ export default {
       vm.mapGuide = [];
       for (var i = 0; i < len + 1; i++) {
         if (i === 0)
-          vm.mapGuide.push(len !== 1 ? {
-            caption: "کمتر از " + mapColorsGuide[i],
-            color: vm.mapColors[i],
-          } : {
-            caption: mapColorsGuide[i],
-            color: vm.mapColors[i],
-          });
+          vm.mapGuide.push(
+            len !== 1
+              ? {
+                  caption: "کمتر از " + mapColorsGuide[i],
+                  color: vm.mapColors[i],
+                }
+              : {
+                  caption: mapColorsGuide[i],
+                  color: vm.mapColors[i],
+                }
+          );
         else if (i !== len)
           vm.mapGuide.push({
             caption:
@@ -224,24 +243,18 @@ export default {
     this.drawMap();
   },
   watch: {
-    getFilters() {
-      if (this.mapFeatures != null) {
-        this.mapFeatures.remove();
-        this.getMapData();
-      }
-    },
-    getMapID(val) {
-      if (this.mapFeatures != null) {
-        this.mapFeatures.remove();
-        this.getMapData();
-      }
-    },
-    getMapBounds(val) {
-      if (this.mapFeatures != null) {
-        this.mapFeatures.remove();
-        this.getMapData();
-      }
-    },
+    // getFilters() {
+    //   if (this.mapFeatures != null) {
+    //     this.mapFeatures.remove();
+    //     this.getMapData();
+    //   }
+    // },
+    // getMapID(val) {
+    //   if (this.mapFeatures != null) {
+    //     this.mapFeatures.remove();
+    //     this.getMapData();
+    //   }
+    // },
   },
 };
 </script>
@@ -263,5 +276,77 @@ export default {
 }
 .leaflet-control-attribution {
   visibility: hidden !important;
+}
+
+.leaflet-cluster-anim .leaflet-marker-icon,
+.leaflet-cluster-anim .leaflet-marker-shadow {
+  -webkit-transition: -webkit-transform 0.3s ease-out, opacity 0.3s ease-in;
+  -moz-transition: -moz-transform 0.3s ease-out, opacity 0.3s ease-in;
+  -o-transition: -o-transform 0.3s ease-out, opacity 0.3s ease-in;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-in;
+}
+
+.leaflet-cluster-spider-leg {
+  /* stroke-dashoffset (duration and function) should match with leaflet-marker-icon transform in order to track it exactly */
+  -webkit-transition: -webkit-stroke-dashoffset 0.3s ease-out,
+    -webkit-stroke-opacity 0.3s ease-in;
+  -moz-transition: -moz-stroke-dashoffset 0.3s ease-out,
+    -moz-stroke-opacity 0.3s ease-in;
+  -o-transition: -o-stroke-dashoffset 0.3s ease-out,
+    -o-stroke-opacity 0.3s ease-in;
+  transition: stroke-dashoffset 0.3s ease-out, stroke-opacity 0.3s ease-in;
+}
+
+.marker-cluster-small {
+  background-color: rgba(110, 204, 57, 0.9);
+}
+
+
+.marker-cluster-medium {
+  background-color: rgba(240, 194, 12, 0.9);
+}
+
+.marker-cluster-large {
+  background-color: rgba(241, 128, 23, 0.9);
+}
+
+/* IE 6-8 fallback colors */
+.leaflet-oldie .marker-cluster-small {
+  background-color: rgb(181, 226, 140);
+}
+.leaflet-oldie .marker-cluster-small div {
+  background-color: rgb(110, 204, 57);
+}
+
+.leaflet-oldie .marker-cluster-medium {
+  background-color: rgb(241, 211, 87);
+}
+.leaflet-oldie .marker-cluster-medium div {
+  background-color: rgb(240, 194, 12);
+}
+
+.leaflet-oldie .marker-cluster-large {
+  background-color: rgb(253, 156, 115);
+}
+.leaflet-oldie .marker-cluster-large div {
+  background-color: rgb(241, 128, 23);
+}
+
+.marker-cluster {
+  background-clip: padding-box;
+  border-radius: 20px;
+}
+.marker-cluster div {
+  /* width: 30px; */
+  height: 30px;
+  /* margin-left: 5px; */
+  margin-top: 5px;
+
+  text-align: center;
+  border-radius: 15px;
+  font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+.marker-cluster span {
+  line-height: 30px;
 }
 </style>
