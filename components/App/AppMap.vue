@@ -38,6 +38,7 @@
           :size="64"
           color="#FFA000"
         ></v-progress-circular>
+        <p class="mt-4">در حال بارگذاری اطلاعات</p>
       </v-overlay>
     </div>
   </div>
@@ -61,7 +62,8 @@ export default {
       mapFeatures: {},
       mapFeaturesData: [],
       mapGuide: [],
-      mapColors: ["#ffe9c5", "#ffc461", "#ffa000", "#cb7f00", "#8d5800"],
+      image: null,
+      mapColors: ["#332A7C", "#FFA000", "#736bb4", "#87DFF0", "#F25767"],
     };
   },
   computed: {
@@ -105,12 +107,13 @@ export default {
           },
         })
         .then((response) => {
-          let image = L.imageOverlay(
+          if (vm.image !== null) vm.image.removeFrom(vm.map);
+          vm.image = L.imageOverlay(
             "http://" + response.data.detail.imageURI,
             imageOverlayCoordinate,
             { opacity: 0.75 }
           );
-          image.addTo(vm.map);
+          vm.image.addTo(vm.map);
           vm.drawMakers("http://" + response.data.detail.colorLevelsURI).then(
             (res) => (vm.isLoadingData = false)
           );
@@ -156,7 +159,7 @@ export default {
         } else {
           res.data.forEach((element) => {
             let m = L.marker(element.LatLng, {
-              title: element.PersianName + element.Value,
+              title: element.PersianName + " " + element.Value,
             });
             m.value = element.Value;
             markerList.push(m);
@@ -242,6 +245,11 @@ export default {
   mounted() {
     this.drawMap();
   },
+  beforeMount() {
+    this.$nuxt.$on("update-sipa-map", () => {
+      this.getMapData();
+    });
+  },
   watch: {
     // getFilters() {
     //   if (this.mapFeatures != null) {
@@ -249,12 +257,12 @@ export default {
     //     this.getMapData();
     //   }
     // },
-    // getMapID(val) {
-    //   if (this.mapFeatures != null) {
-    //     this.mapFeatures.remove();
-    //     this.getMapData();
-    //   }
-    // },
+    getMapID(val) {
+      this.getMapData();
+    },
+    getMapLevel(val) {
+      this.getMapData();
+    },
   },
 };
 </script>
@@ -300,7 +308,6 @@ export default {
 .marker-cluster-small {
   background-color: rgba(110, 204, 57, 0.9);
 }
-
 
 .marker-cluster-medium {
   background-color: rgba(240, 194, 12, 0.9);

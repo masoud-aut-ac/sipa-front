@@ -3,8 +3,9 @@
     <div class="absolute top-2 mr-20 z-50 gap-3">
       <div class="col-span-9 lg:col-span-3">
         <AppFilterDate class="my-2" />
+        <AppMapLevelSwitch class="my-2" />
+        <AppMapIDSwitch class="my-2" />
         <AppFilterChips class="my-2 max-w-xs" :allowedFilterTypes="allowedFilterTypes" />
-        <AppMapTypeSwitch class="my-2" />
       </div>
     </div>
     <div

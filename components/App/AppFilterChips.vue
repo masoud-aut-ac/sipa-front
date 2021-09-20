@@ -29,8 +29,8 @@ import { mapGetters, mapMutations } from "vuex";
 export default {
   props: {
     allowedFilterTypes: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   data() {
     return {};

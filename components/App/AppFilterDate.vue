@@ -10,7 +10,6 @@
       />
       <datePicker
         v-model="date"
-        popover
         range
         color="#FFA000"
         element="my-custom-input"
@@ -54,3 +53,13 @@ export default {
   },
 };
 </script>
+
+<style>
+.vpd-month-label {
+  width: 110px !important;
+}
+.vpd-dir-rtl .vpd-next {
+  padding-right: 40px!important;
+  padding-left: 20px!important;
+}
+</style>

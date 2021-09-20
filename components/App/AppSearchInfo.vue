@@ -3,7 +3,7 @@
     <v-icon color="#332A7C" class="mb-2 cursor-pointer" @click="toggleSideSheet"
       >mdi-close</v-icon
     >
-    <AppFilter :allowedFilterTypes="allowedFilterTypes" />
+    <AppFilter :allowedFilterTypes="allowedFilterTypes" :isMapPage="isMapPage" />
     <AppComparison v-if="!isMapPage" />
   </div>
 </template>
@@ -21,7 +21,7 @@ export default {
     isMapPage: {
       type: Boolean,
       default: false
-    }
+    },
   },
   components: {
     AppFilter,

@@ -39,15 +39,15 @@
     <p class="text-red text-xs" v-if="IsLimited">
       امکان مقایسه حداکثر برای 3 مورد وجود دارد
     </p>
-    <!-- <v-btn
+    <v-btn
       :disabled="!hasComparison"
       :dark="hasComparison"
       block
       color="#332A7C"
       class="mt-4"
       @click="emitter()"
-      >جستجو</v-btn
-    > -->
+      >اعمال فیلتر</v-btn
+    >
   </div>
 </template>
 
@@ -106,7 +106,7 @@ export default {
       } else {
         this.setComparisonDetail({ filterId: this.filterTypeId, values: e });
         this.IsLimited = false;
-        this.$nuxt.$emit("update-sipa-charts");
+        // this.$nuxt.$emit("update-sipa-charts");
       }
     },
     toggleHasComparison(val) {
@@ -118,18 +118,18 @@ export default {
         this.setComparisonDetail(null);
         this.filterTypeId = null;
       }
-      if (!val) this.$nuxt.$emit("update-sipa-charts");
+      // if (!val) this.$nuxt.$emit("update-sipa-charts");
     },
     setFilterTypeId(val) {
       this.setComparisonDetail(null);
       if (this.filterTypeId !== null) {
         this.deleteRemovedFilterIds(this.filterTypeId);
-        this.$nuxt.$emit("update-sipa-charts");
+        // this.$nuxt.$emit("update-sipa-charts");
       }
       if (val === null) {
         this.deleteRemovedFilterIds(this.filterTypeId);
         this.filterTypeId = val;
-        this.$nuxt.$emit("update-sipa-charts");
+        // this.$nuxt.$emit("update-sipa-charts");
       } else {
         this.filterTypeId = val;
         this.addRemovedFilterIds(val);

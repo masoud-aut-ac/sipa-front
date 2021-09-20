@@ -1,23 +1,28 @@
 <template>
-  <div class="bg-gray-200 rounded-lg p-4 mb-4">
+  <div class="bg-gray-200 rounded-lg p-4 mb-4 font-serif">
     <p>فیلتر اطلاعات</p>
-    <AppFilterSingle
-      :allowedFilterTypes="allowedFilterTypes"
-      :filterTypeId="getRemovedFilterIds[i - 1]"
-      v-for="i in countOfFilters"
-      :key="i"
-    />
-    <v-btn
-      class="my-2"
-      fab
-      :dark="counter < 8"
-      x-small
-      color="#332A7C"
-      @click="counter++"
-      :disabled="counter > 8"
-    >
-      <v-icon dark> mdi-plus </v-icon>
-    </v-btn>
+    <div>
+      <AppFilterSingle
+        :allowedFilterTypes="allowedFilterTypes"
+        :filterTypeId="getRemovedFilterIds[i - 1]"
+        v-for="i in countOfFilters"
+        :key="i"
+      />
+      <v-btn
+        class="my-2"
+        fab
+        :dark="counter < 8"
+        x-small
+        color="#fcc66b"
+        @click="counter++"
+        :disabled="counter > 8"
+      >
+        <v-icon> mdi-plus </v-icon>
+      </v-btn>
+    </div>
+    <div class="mt-4" style="direction: ltr">
+      <v-btn dark block color="#332A7C" @click="emitter()">اعمال فیلتر</v-btn>
+    </div>
   </div>
 </template>
 
@@ -31,6 +36,10 @@ export default {
   props: {
     allowedFilterTypes: {
       type: Array,
+    },
+    isMapPage: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {
@@ -72,6 +81,7 @@ export default {
   methods: {
     emitter() {
       this.$nuxt.$emit("update-sipa-charts");
+      this.$nuxt.$emit("update-sipa-map");
     },
   },
   created() {
