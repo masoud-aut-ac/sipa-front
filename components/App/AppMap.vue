@@ -63,7 +63,7 @@ export default {
       mapFeaturesData: [],
       mapGuide: [],
       image: null,
-      mapColors: ["#332A7C", "#F25767", "#FFA000", "#736bb4", "#87DFF0"],
+      mapColors: ["#87DFF0", "#736bb4", "#FFA000", "#F25767", "#8B0000"],
     };
   },
   computed: {
@@ -209,7 +209,7 @@ export default {
       let vm = this;
       let mapColorsGuide = vm.mapFeaturesData.mapColorsGuide;
       let len = vm.mapFeaturesData.mapColorsGuide.length;
-
+      let offset = 4 - len;
       vm.mapGuide = [];
       for (var i = 0; i < len + 1; i++) {
         if (i === 0)
@@ -218,24 +218,25 @@ export default {
             mapColorsGuide[0] !== 0
               ? {
                   caption: "کمتر از " + mapColorsGuide[i],
-                  color: vm.mapColors[i],
+                  color: vm.mapColors[i + offset],
                 }
               : {
                   caption: mapColorsGuide[i],
-                  color: vm.mapColors[i],
+                  color: vm.mapColors[i + offset],
                 }
           );
         else if (i !== len)
           vm.mapGuide.push({
             caption:
               " از " + mapColorsGuide[i - 1] + " تا " + mapColorsGuide[i],
-            color: vm.mapColors[i],
+            color: vm.mapColors[i + offset],
           });
-        else
+        else {
           vm.mapGuide.push({
             caption: "بیشتر از " + mapColorsGuide[i - 1],
-            color: vm.mapColors[i],
+            color: vm.mapColors[i + offset],
           });
+        }
       }
     },
   },

@@ -34,6 +34,7 @@ export default {
       mapType: null,
       mapTypeOptions: [],
       allowedFilterTypes: [
+        "province",
         "infoSource",
         "infoDevice",
         "vehicleType",

@@ -16,7 +16,7 @@ export default {
             startTime: state.startDate.replaceAll("/", "-") + " 00:00",
             endTime: state.endDate.replaceAll("/", "-") + " 23:59",
         }
-        state.details.filter(x => x.englishLabel !== 'province').forEach(x => res[x.englishLabel] = x.value);
+        state.details.forEach(x => res[x.englishLabel] = x.value);
         let provinceFilter = state.details.find(x => x.englishLabel === 'province');
         if (provinceFilter.value != null) {
             res['provinceEnglishName'] = provinceFilter
