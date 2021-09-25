@@ -11,9 +11,9 @@
             : 'col-span-12 mt-4 mb-7 ml-4'
         "
       >
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
-          <AppFilterChips :allowedFilterTypes="allowedFilterTypes" class="col-span-1 lg:col-span-3" />
-          <AppFilterDate class="col-span-1 pt-2" />
+        <div class="grid grid-cols-1 lg:grid-cols-6 gap-4">
+          <AppFilterChips :allowedFilterTypes="allowedFilterTypes" class="col-span-1 lg:col-span-4" />
+          <AppFilterDate class="col-span-1 lg:col-span-2 pt-2" />
         </div>
         <ChartsContainer class="mt-2" />
       </div>

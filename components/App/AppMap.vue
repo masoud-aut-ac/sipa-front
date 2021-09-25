@@ -63,7 +63,7 @@ export default {
       mapFeaturesData: [],
       mapGuide: [],
       image: null,
-      mapColors: ["#332A7C", "#FFA000", "#736bb4", "#87DFF0", "#F25767"],
+      mapColors: ["#332A7C", "#F25767", "#FFA000", "#736bb4", "#87DFF0"],
     };
   },
   computed: {
@@ -124,7 +124,6 @@ export default {
     drawMakers(jsonUrl) {
       let vm = this;
       return vm.$axios.get(jsonUrl).then((res) => {
-        console.log(res.data);
         let markerList = [];
         let markers = L.markerClusterGroup({
           disableClusteringAtZoom: vm.getMapLevel === 2 ? 16 : 8,
@@ -215,7 +214,8 @@ export default {
       for (var i = 0; i < len + 1; i++) {
         if (i === 0)
           vm.mapGuide.push(
-            len !== 1
+            // len !== 1
+            mapColorsGuide[0] !== 0
               ? {
                   caption: "کمتر از " + mapColorsGuide[i],
                   color: vm.mapColors[i],
@@ -251,12 +251,6 @@ export default {
     });
   },
   watch: {
-    // getFilters() {
-    //   if (this.mapFeatures != null) {
-    //     this.mapFeatures.remove();
-    //     this.getMapData();
-    //   }
-    // },
     getMapID(val) {
       this.getMapData();
     },

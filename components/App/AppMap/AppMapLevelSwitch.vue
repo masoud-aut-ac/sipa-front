@@ -1,13 +1,13 @@
 <template>
   <div class="bg-white rounded-lg p-1 shadow-md p-2 font-serif">
-    <div class="flex items-stretch m-1">
+    <div class="flex items-stretch m-1 justify-between">
       <v-icon color="#FFA000" class="ml-2">mdi-map</v-icon>
       <button
         v-for="t in mapLevels"
         :key="t.id"
         class="
-          p-2
-          px-4
+          py-2
+          px-3.5
           bg-gray-100
           text-xs
           transition

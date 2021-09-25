@@ -39,7 +39,7 @@ export default {
     },
     isMapPage: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   data() {
@@ -56,6 +56,7 @@ export default {
       removedFilterIds: "filters/getRemovedFilterIds",
       comparisonDetail: "filters/getComparisonDetail",
       hasComparison: "filters/getHasComparison",
+      getFilters: "filters/getFilters"
     }),
     countOfFilters() {
       if (this.getRemovedFilterIds.length + 1 < this.counter)
@@ -80,8 +81,8 @@ export default {
   },
   methods: {
     emitter() {
-      this.$nuxt.$emit("update-sipa-charts");
-      this.$nuxt.$emit("update-sipa-map");
+      if(this.isMapPage)this.$nuxt.$emit("update-sipa-map");
+      else this.$nuxt.$emit("update-sipa-charts");
     },
   },
   created() {

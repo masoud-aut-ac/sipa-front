@@ -1,37 +1,50 @@
 <template>
-  <div class="bg-white rounded-lg p-1 shadow-md" style="direction: rtl">
+  <div class="bg-white rounded-lg p-1 shadow-md" style="z-index: 510; direction: rtl;">
     <div class="flex items-stretch m-2 mt-3">
       <span><v-icon color="#FFA000">mdi-calendar-month</v-icon></span>
+      <p class="pr-2">از</p>
       <input
-        class="px-2"
+        class="px-2 w-20 cursor-pointer"
         style="direction: rtl"
-        v-model="date"
-        id="my-custom-input"
+        v-model="startDate"
+        id="my-date-input-start"
       />
       <datePicker
-        v-model="date"
-        range
+        v-model="startDate"
         color="#FFA000"
-        element="my-custom-input"
+        element="my-date-input-start"
+      ></datePicker>
+      <p>تا</p>
+      <input
+        class="px-2 w-20 cursor-pointer"
+        style="direction: rtl"
+        v-model="endDate"
+        id="my-date-input-end"
+      />
+      <datePicker
+        v-model="endDate"
+        color="#FFA000"
+        element="my-date-input-end"
       ></datePicker>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { mapMutations } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import VuePersianDatetimePicker from "vue-persian-datetime-picker";
 
 export default {
   data() {
     return {
-      date: ["1398/01/01", "1398/12/29"],
+      startDate : "1398/01/01",
+      endDate : "1398/12/29",
     };
   },
   computed: {
     ...mapGetters({
-      getDate: "filters/getDate",
+      getStartDate: "filters/getStartDate",
+      getEndDate: "filters/getEndDate",
     }),
   },
   components: {
@@ -39,15 +52,21 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setDate: "filters/setDate",
+      setStartDate: "filters/setStartDate",
+      setEndDate: "filters/setEndDate",
     }),
   },
   created() {
-    this.date = this.getDate;
+    this.startDate = this.getStartDate;
+    this.endDate = this.getEndDate;
   },
   watch: {
-    date(val) {
-      this.setDate(val);
+    startDate(val) {
+      this.setStartDate(val);
+      this.$nuxt.$emit("update-sipa-charts");
+    },
+    endDate(val) {
+      this.setEndDate(val);
       this.$nuxt.$emit("update-sipa-charts");
     },
   },

@@ -1,5 +1,6 @@
 export default () => ({
-    date: ["1398/01/01", "1398/03/01"],
+    startDate: "1398/01/01",
+    endDate: "1398/03/01",
     hasLoadedFilters: false,
     removedFilterIds: [],
     hasComparison: false,

@@ -1,5 +1,8 @@
 <template>
-  <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 pt-2" style="direction: rtl">
+  <div
+    class="grid grid-cols-1 lg:grid-cols-4 gap-4 pt-2"
+    style="direction: rtl"
+  >
     <app-chart
       :graphCategory="0"
       :title="'منبع دریافت پیام'"
@@ -88,6 +91,11 @@ import AppChart from "~/components/App/AppChart.vue";
 import { mapGetters } from "vuex";
 
 export default {
+  data() {
+    return {
+      graphFilters : []
+    };
+  },
   components: {
     AppChart,
   },
@@ -96,23 +104,34 @@ export default {
       allFilters: "filters/getFilterDetails",
       comparisonDetail: "filters/getComparisonDetail",
     }),
+    returnGraphFilters() {
+      return this.graphFilters;
+    }
   },
   methods: {
+    updateGraphs() {
+      this.graphFilters = this.allFilters;
+    },
     showGraph(graphEnglishLabel) {
       let res =
-        this.allFilters.find((x) => x.englishLabel === graphEnglishLabel)
+        this.returnGraphFilters.find((x) => x.englishLabel === graphEnglishLabel)
           .value === null;
       if (this.comparisonDetail != null) {
         let t =
-          this.allFilters.find((x) => x.id === this.comparisonDetail.filterId)
+          this.returnGraphFilters.find((x) => x.id === this.comparisonDetail.filterId)
             .englishLabel !== graphEnglishLabel;
         res = res && t;
       }
       return res;
     },
   },
+  created() {
+    this.graphFilters = this.allFilters;
+  },
+  beforeMount() {
+    this.$nuxt.$on("update-sipa-charts", () => {
+      this.updateGraphs();
+    });
+  },
 };
 </script>
-
-<style>
-</style>

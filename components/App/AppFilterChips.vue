@@ -33,24 +33,15 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      selectedFilters: [],
+    };
   },
   computed: {
     ...mapGetters({
       getSideSheet: "index/getSideSheet",
       allFilters: "filters/getFilterDetails",
     }),
-    selectedFilters() {
-      let vm = this;
-      return vm.allFilters.filter((x) => x.value != null).filter((x) =>
-        vm.allowedFilterTypes.some((y) => x.englishLabel === y)
-      ).map((x) => {
-        return {
-          chipLabel: x.labelChip,
-          value: x.options.find((y) => y.id === x.value),
-        };
-      });
-    },
   },
   methods: {
     ...mapMutations({
@@ -60,6 +51,27 @@ export default {
       this.setSideSheet(true);
       this.$nuxt.$emit("update-sipa-charts");
     },
+    updateSelectedFilters() {
+      let vm = this;
+      this.selectedFilters = vm.allFilters
+        .filter((x) => x.value != null)
+        .filter((x) => vm.allowedFilterTypes.some((y) => x.englishLabel === y))
+        .map((x) => {
+          let res = {
+            chipLabel: x.labelChip,
+            value: x.options.find((y) => y.id === x.value),
+          };
+          return res;
+        });
+    },
+  },
+  beforeMount() {
+    this.$nuxt.$on("update-sipa-charts", () => {
+      this.updateSelectedFilters();
+    });
+    this.$nuxt.$on("update-sipa-map", () => {
+      this.updateSelectedFilters();
+    });
   },
 };
 </script>

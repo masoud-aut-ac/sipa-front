@@ -10,7 +10,7 @@
     </div>
     <div
       v-if="this.getSideSheet"
-      class="absolute top-0 left-0 w-80 overflow-auto h-screen z-50"
+      class="absolute top-0 left-0 w-80 overflow-auto h-screen z-40"
     >
       <AppSearchInfo
         :allowedFilterTypes="allowedFilterTypes"
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters } from "vuex";
 import AppMap from "~/components/App/AppMap.vue";
 import AppFilterDate from "~/components/App/AppFilterDate.vue";
 import "vue-select/dist/vue-select.css";

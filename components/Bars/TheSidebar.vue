@@ -23,22 +23,30 @@
 
       <v-divider></v-divider>
       <v-list style="direction: rtl">
-            <v-list-item to="/">
+        <v-tooltip left>
+          <template v-slot:activator="{ on, attrs }">
+            <v-list-item to="/" v-bind="attrs" v-on="on">
               <v-list-item-icon>
                 <img src="/chart.svg" />
               </v-list-item-icon>
+            </v-list-item>
+          </template>
+          <span>نمودارها</span>
+        </v-tooltip>
+
+        <v-tooltip left>
+          <template v-slot:activator="{ on, attrs }">
+            <v-list-item to="/maps" v-bind="attrs" v-on="on">
+              <v-list-item-icon>
+                <img src="/map.svg" />
+              </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-title>تحلیل اطلاعات</v-list-item-title>
+                <v-list-item-title>اطلاعات مکانی</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-        <v-list-item to="/maps">
-          <v-list-item-icon>
-            <img src="/map.svg" />
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>اطلاعات مکانی</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+          </template>
+          <span>نقشه‌ها</span>
+        </v-tooltip>
       </v-list>
       <template v-slot:append>
         <v-list>
@@ -100,5 +108,10 @@ export default {
 }
 .vac-format-message-wrapper {
   text-align: right;
+}
+.v-tooltip__content {
+  font-family: IRANSans!important;
+  font-size: 0.725rem !important;
+  z-index: 500!important;
 }
 </style>

@@ -7,7 +7,7 @@
         :key="t.id"
         class="
           p-2
-          px-4
+          px-5
           bg-gray-100
           text-xs
           transition

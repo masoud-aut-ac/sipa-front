@@ -1,6 +1,9 @@
 export default {
-    setDate(state, payload) {
-        state.date = payload;
+    setStartDate(state, payload) {
+        state.startDate = payload;
+    },
+    setEndDate(state, payload) {
+        state.endDate = payload;
     },
     addRemovedFilterIds(state, payload) {
         state.removedFilterIds.push(payload);

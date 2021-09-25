@@ -40,8 +40,8 @@ export default {
       type: Number,
     },
     allowedFilterTypes: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   computed: {
     ...mapGetters({
@@ -53,7 +53,9 @@ export default {
       let res = this.allFilters.filter(
         (x) => !removedFilters.some((y) => x.id === y)
       );
-      res = res.filter(x=> this.allowedFilterTypes.some(y=> x.englishLabel === y ));
+      res = res.filter((x) =>
+        this.allowedFilterTypes.some((y) => x.englishLabel === y)
+      );
       return res;
     },
     selectedFilter() {
