@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       mapTypes: [
-        { id: 0, text: "تصادف", isSelected: true },
+        { id: 0, text: "تصادف", isSelected: false },
         { id: 1, text: "مجروح", isSelected: false },
         { id: 2, text: "فوتی", isSelected: false },
       ],
@@ -55,7 +55,7 @@ export default {
     }),
   },
   created() {
-    this.setMapID(this.mapTypes.find((y) => y.isSelected === true).id);
+    this.mapTypes.find((x) => x.id === this.getMapID).isSelected = true;
   },
 };
 </script>

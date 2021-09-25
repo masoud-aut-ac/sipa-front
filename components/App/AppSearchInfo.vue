@@ -33,7 +33,6 @@ export default {
     }),
     toggleSideSheet() {
       this.setSideSheet(false);
-      this.$nuxt.$emit("update-sipa-charts");
     },
   },
 };

@@ -5,7 +5,10 @@
         <AppFilterDate class="my-2" />
         <AppMapLevelSwitch class="my-2" />
         <AppMapIDSwitch class="my-2" />
-        <AppFilterChips class="my-2 max-w-xs" :allowedFilterTypes="allowedFilterTypes" />
+        <AppFilterChips
+          class="my-2 max-w-xs"
+          :allowedFilterTypes="allowedFilterTypes"
+        />
       </div>
     </div>
     <div
@@ -25,6 +28,9 @@
 import { mapGetters } from "vuex";
 import AppMap from "~/components/App/AppMap.vue";
 import AppFilterDate from "~/components/App/AppFilterDate.vue";
+import AppFilterChips from "~/components/App/AppFilterChips.vue";
+import AppMapIDSwitch from "~/components/App/AppMap/AppMapIDSwitch.vue";
+import AppMapLevelSwitch from "~/components/App/AppMap/AppMapLevelSwitch.vue";
 import "vue-select/dist/vue-select.css";
 
 export default {
@@ -47,6 +53,9 @@ export default {
   components: {
     AppMap,
     AppFilterDate,
+    AppFilterChips,
+    AppMapIDSwitch,
+    AppMapLevelSwitch,
   },
   computed: {
     ...mapGetters({

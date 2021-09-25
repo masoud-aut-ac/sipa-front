@@ -93,7 +93,7 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      graphFilters : []
+      graphFilters: [],
     };
   },
   components: {
@@ -104,21 +104,20 @@ export default {
       allFilters: "filters/getFilterDetails",
       comparisonDetail: "filters/getComparisonDetail",
     }),
-    returnGraphFilters() {
-      return this.graphFilters;
-    }
   },
   methods: {
     updateGraphs() {
-      this.graphFilters = this.allFilters;
+      this.graphFilters = this.allFilters.map((x) => {
+        return { ...x };
+      });
     },
     showGraph(graphEnglishLabel) {
       let res =
-        this.returnGraphFilters.find((x) => x.englishLabel === graphEnglishLabel)
+        this.graphFilters.find((x) => x.englishLabel === graphEnglishLabel)
           .value === null;
       if (this.comparisonDetail != null) {
         let t =
-          this.returnGraphFilters.find((x) => x.id === this.comparisonDetail.filterId)
+          this.graphFilters.find((x) => x.id === this.comparisonDetail.filterId)
             .englishLabel !== graphEnglishLabel;
         res = res && t;
       }
@@ -126,7 +125,7 @@ export default {
     },
   },
   created() {
-    this.graphFilters = this.allFilters;
+    this.updateGraphs();
   },
   beforeMount() {
     this.$nuxt.$on("update-sipa-charts", () => {

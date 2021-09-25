@@ -49,7 +49,6 @@ export default {
     }),
     toggleSideSheet() {
       this.setSideSheet(true);
-      this.$nuxt.$emit("update-sipa-charts");
     },
     updateSelectedFilters() {
       let vm = this;

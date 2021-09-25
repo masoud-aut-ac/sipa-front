@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       mapLevels: [
-        { id: 0, text: "استان‌ها", isSelected: true },
+        { id: 0, text: "استان‌ها", isSelected: false },
         { id: 1, text: "شهرستان‌ها", isSelected: false },
         { id: 2, text: "محورها", isSelected: false },
       ],
@@ -55,7 +55,7 @@ export default {
     }),
   },
   created() {
-    this.setMapLevel(this.mapLevels.find((y) => y.isSelected === true).id);
+    this.mapLevels.find((x) => x.id === this.getMapLevel).isSelected = true;
   },
 };
 </script>

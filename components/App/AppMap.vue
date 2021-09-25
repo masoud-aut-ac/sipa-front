@@ -48,7 +48,6 @@
 import { mapGetters, mapMutations } from "vuex";
 import * as L from "leaflet";
 import { MarkerClusterGroup, MarkerCluster } from "leaflet.markercluster";
-// import {} from "leaflet.markercluster.css";
 import { SimpleMapScreenshoter } from "leaflet-simple-map-screenshoter";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 
