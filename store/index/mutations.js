@@ -32,4 +32,7 @@ export default {
     setMapLevel(state, payload) {
         state.mapLevel = payload;
     },
+    setYear(state, payload) {
+        state.year = payload;
+    },
 }

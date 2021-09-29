@@ -34,6 +34,7 @@ export default {
   plugins: [
     { src: '~/plugins/highcharts.js', ssr: false },
     { src: '~/plugins/vuex-persist.js', ssr: false },
+    { src: '~/plugins/filters.js', ssr: false },
     // { src: '~/plugins/leaflet.ajax.min.js' },
   ],
 

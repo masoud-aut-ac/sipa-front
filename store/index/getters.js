@@ -20,4 +20,7 @@ export default {
     getMapLevel(state) {
         return state.mapLevel;
     },
+    getYear(state) {
+        return state.year;
+    },
 }

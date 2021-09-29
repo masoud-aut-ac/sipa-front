@@ -1,5 +1,6 @@
 <template>
   <div class="bg-gray-200 rounded-lg p-4 mb-4 font-serif">
+    <AppFilterYear v-if="isAnnualPage" />
     <p>فیلتر اطلاعات</p>
     <div>
       <AppFilterSingle
@@ -41,6 +42,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isAnnualPage: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -56,7 +61,7 @@ export default {
       removedFilterIds: "filters/getRemovedFilterIds",
       comparisonDetail: "filters/getComparisonDetail",
       hasComparison: "filters/getHasComparison",
-      getFilters: "filters/getFilters"
+      getFilters: "filters/getFilters",
     }),
     countOfFilters() {
       if (this.getRemovedFilterIds.length + 1 < this.counter)
@@ -81,7 +86,7 @@ export default {
   },
   methods: {
     emitter() {
-      if(this.isMapPage)this.$nuxt.$emit("update-sipa-map");
+      if (this.isMapPage) this.$nuxt.$emit("update-sipa-map");
       else this.$nuxt.$emit("update-sipa-charts");
     },
   },

@@ -125,8 +125,5 @@ export default {
       return res;
     },
   },
-
-  methods: {},
-  created() {},
 };
 </script>
