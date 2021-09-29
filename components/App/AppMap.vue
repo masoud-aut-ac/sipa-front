@@ -97,6 +97,7 @@ export default {
           },
         })
         .then((response) => {
+          vm.markersLayerGroup.clearLayers();
           if (vm.image !== null) vm.image.removeFrom(vm.map);
           if (vm.roadTileLayer !== null) vm.roadTileLayer.removeFrom(vm.map);
           if (vm.getMapLevel === 2) {
@@ -114,10 +115,10 @@ export default {
               { opacity: 0.75 }
             );
             vm.image.addTo(vm.map);
+            vm.drawMakers("http://" + response.data.detail.colorLevelsURI).then(
+              (res) => (vm.isLoadingData = false)
+            );
           }
-          vm.drawMakers("http://" + response.data.detail.colorLevelsURI).then(
-            (res) => (vm.isLoadingData = false)
-          );
           vm.mapFeaturesData = response.data.detail;
         })
         .then((re) => this.createMapGuide());
@@ -166,7 +167,6 @@ export default {
           });
         }
         markers.addLayers(markerList);
-        vm.markersLayerGroup.clearLayers();
         vm.markersLayerGroup.addLayer(markers);
       });
     },
