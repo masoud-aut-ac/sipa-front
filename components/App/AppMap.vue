@@ -105,6 +105,7 @@ export default {
               "http://" + response.data.detail.imageURI
             );
             vm.roadTileLayer.addTo(vm.map);
+            vm.isLoadingData = false;
           } else {
             vm.image = L.imageOverlay(
               "http://" + response.data.detail.imageURI,
