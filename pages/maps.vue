@@ -1,8 +1,8 @@
 <template>
   <div class="font-serif text-sm" style="direction: rtl">
-    <div class="absolute top-2 mr-20 z-50 gap-3">
+    <div class="absolute top-2 mr-20 z-40 gap-3">
       <div class="col-span-9 lg:col-span-3">
-        <AppFilterDate class="my-2" />
+        <AppFilterDate class="my-2" :isMapPage="true"/>
         <AppMapLevelSwitch class="my-2" />
         <AppMapIDSwitch class="my-2" />
         <AppFilterChips

@@ -4,7 +4,7 @@
       <span><v-icon color="#FFA000">mdi-calendar-month</v-icon></span>
       <p class="pr-2">از</p>
       <input
-        class="px-2 w-20 cursor-pointer"
+        class="px-2 w-24 cursor-pointer"
         style="direction: rtl"
         v-model="startDate"
         id="my-date-input-start"
@@ -16,7 +16,7 @@
       ></datePicker>
       <p>تا</p>
       <input
-        class="px-2 w-20 cursor-pointer"
+        class="px-2 w-24 cursor-pointer"
         style="direction: rtl"
         v-model="endDate"
         id="my-date-input-end"
@@ -35,6 +35,12 @@ import { mapGetters, mapMutations } from "vuex";
 import VuePersianDatetimePicker from "vue-persian-datetime-picker";
 
 export default {
+  props: {
+    isMapPage : {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       startDate : "1398/01/01",
@@ -63,11 +69,13 @@ export default {
   watch: {
     startDate(val) {
       this.setStartDate(val);
-      this.$nuxt.$emit("update-sipa-charts");
+      if(this.isMapPage) this.$nuxt.$emit("update-sipa-map");
+      else this.$nuxt.$emit("update-sipa-charts");
     },
     endDate(val) {
       this.setEndDate(val);
-      this.$nuxt.$emit("update-sipa-charts");
+      if(this.isMapPage) this.$nuxt.$emit("update-sipa-map");
+      else this.$nuxt.$emit("update-sipa-charts");
     },
   },
 };
