@@ -58,6 +58,7 @@ export default {
       markersLayerGroup: null,
       map: {},
       tileLayer: {},
+      roadTileLayer: null,
       mapFeatures: {},
       mapFeaturesData: [],
       mapGuide: [],
@@ -85,16 +86,6 @@ export default {
     getMapData() {
       let vm = this;
       vm.isLoadingData = true;
-      let imageOverlayCoordinate =
-        vm.getMapLevel === 2
-          ? [
-              [25.07442, 44.06878],
-              [39.77609, 63.33307],
-            ]
-          : [
-              [25.06242, 44.03878],
-              [39.77609, 63.33307],
-            ];
       return vm
         .$axios({
           method: "post",
@@ -107,12 +98,23 @@ export default {
         })
         .then((response) => {
           if (vm.image !== null) vm.image.removeFrom(vm.map);
-          vm.image = L.imageOverlay(
-            "http://" + response.data.detail.imageURI,
-            imageOverlayCoordinate,
-            { opacity: 0.75 }
-          );
-          vm.image.addTo(vm.map);
+          if (vm.roadTileLayer !== null) vm.roadTileLayer.removeFrom(vm.map);
+          if (vm.getMapLevel === 2) {
+            vm.roadTileLayer = L.tileLayer(
+              "http://" + response.data.detail.imageURI
+            );
+            vm.roadTileLayer.addTo(vm.map);
+          } else {
+            vm.image = L.imageOverlay(
+              "http://" + response.data.detail.imageURI,
+              [
+                [25.06242, 44.03878],
+                [39.77609, 63.33307],
+              ],
+              { opacity: 0.75 }
+            );
+            vm.image.addTo(vm.map);
+          }
           vm.drawMakers("http://" + response.data.detail.colorLevelsURI).then(
             (res) => (vm.isLoadingData = false)
           );
