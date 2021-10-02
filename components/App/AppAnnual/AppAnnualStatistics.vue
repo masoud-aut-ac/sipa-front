@@ -1,13 +1,13 @@
 <template>
   <div class="grid grid-cols-1 gap-2">
-    <AppStatisticsCard :cardData="crash" />
-    <AppStatisticsCard :cardData="death" />
-    <AppStatisticsCard :cardData="injury" />
+    <AppAnnualStatisticsCard :cardData="crash" />
+    <AppAnnualStatisticsCard :cardData="death" />
+    <AppAnnualStatisticsCard :cardData="injury" />
   </div>
 </template>
 
 <script>
-import AppStatisticsCard from "~/components/App/AppStatistics/AppStatisticsCard.vue";
+import AppAnnualStatisticsCard from "~/components/App/AppAnnual/AppAnnualStatistics/AppAnnualStatisticsCard.vue";
 
 export default {
   data() {
@@ -18,7 +18,7 @@ export default {
     };
   },
   components: {
-    AppStatisticsCard,
+    AppAnnualStatisticsCard,
   },
 };
 </script>

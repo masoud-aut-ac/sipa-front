@@ -13,7 +13,12 @@ export default {
     },
     compareTitles: {
       type: Array,
+      default: [],
     },
+    isAnnualPage: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {};
@@ -38,7 +43,7 @@ export default {
           animation: false,
           type: "column",
           zoomType: "x",
-          height: "280rem",
+          height: this.isAnnualPage ? "175rem" : "280rem",
         },
         title: {
           text: "",
@@ -55,7 +60,7 @@ export default {
           endOnTick: false,
           title: {
             enabled: true,
-            text: "سهم (درصد)",
+            text: this.isAnnualPage? "": "سهم (درصد)",
             style: {
               fontSize: "0.6rem",
               direction: "rtl",

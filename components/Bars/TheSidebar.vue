@@ -25,7 +25,7 @@
       <v-list style="direction: rtl">
         <v-tooltip left>
           <template v-slot:activator="{ on, attrs }">
-            <v-list-item to="/annual" v-bind="attrs" v-on="on">
+            <v-list-item to="/" v-bind="attrs" v-on="on">
               <v-list-item-icon>
                 <img src="/calendar.svg" />
               </v-list-item-icon>
@@ -36,7 +36,7 @@
 
         <v-tooltip left>
           <template v-slot:activator="{ on, attrs }">
-            <v-list-item to="/" v-bind="attrs" v-on="on">
+            <v-list-item to="/charts" v-bind="attrs" v-on="on">
               <v-list-item-icon>
                 <img src="/chart.svg" />
               </v-list-item-icon>
