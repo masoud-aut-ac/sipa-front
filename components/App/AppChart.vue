@@ -53,6 +53,7 @@ export default {
   data() {
     return {
       graphSlices: [],
+      compareTitles: [],
       requestID: null,
       isLoadingData: true,
     };
@@ -88,16 +89,7 @@ export default {
           .then((r) => (this.isLoadingData = false));
       });
     },
-  },
-  computed: {
-    ...mapGetters({
-      getFilters: "filters/getFilters",
-      hasComparison: "filters/getHasComparison",
-      comparisonDetail: "filters/getComparisonDetail",
-      allFilters: "filters/getFilterDetails",
-    }),
-    compareTitles() {
-      let res = [];
+    updateCompareTitles() {
       if (
         this.hasComparison &&
         this.comparisonDetail != null &&
@@ -109,11 +101,19 @@ export default {
         );
         this.comparisonDetail.values.forEach((x) => {
           let item = compareFilter.options.find((y) => y.id === x);
-          res.push(item.name);
+          this.compareTitles.push(item.name);
         });
       }
-      return res;
+      return this.compareTitles;
     },
+  },
+  computed: {
+    ...mapGetters({
+      getFilters: "filters/getFilters",
+      hasComparison: "filters/getHasComparison",
+      comparisonDetail: "filters/getComparisonDetail",
+      allFilters: "filters/getFilterDetails",
+    }),
     apiRequestBodies() {
       let res = [];
       if (
@@ -149,11 +149,14 @@ export default {
   },
   created() {
     this.fetchChartData();
+    this.updateCompareTitles();
   },
   beforeMount() {
     this.$nuxt.$on("update-sipa-charts", () => {
       this.graphSlices = [];
       this.fetchChartData();
+      this.compareTitles = [];
+      this.updateCompareTitles();
     });
   },
 };
