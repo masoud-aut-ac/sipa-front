@@ -94,6 +94,7 @@ export default {
   data() {
     return {
       graphFilters: [],
+      TheComparisonDetail: null
     };
   },
   components: {
@@ -111,13 +112,16 @@ export default {
         return { ...x };
       });
     },
+    updateComparisonDetail() {
+      this.TheComparisonDetail = this.comparisonDetail;
+    },
     showGraph(graphEnglishLabel) {
       let res =
         this.graphFilters.find((x) => x.englishLabel === graphEnglishLabel)
           .value === null;
-      if (this.comparisonDetail != null) {
+      if (this.TheComparisonDetail != null) {
         let t =
-          this.graphFilters.find((x) => x.id === this.comparisonDetail.filterId)
+          this.graphFilters.find((x) => x.id === this.TheComparisonDetail.filterId)
             .englishLabel !== graphEnglishLabel;
         res = res && t;
       }
@@ -125,10 +129,12 @@ export default {
     },
   },
   created() {
+    this.updateComparisonDetail();
     this.updateGraphs();
   },
   beforeMount() {
     this.$nuxt.$on("update-sipa-charts", () => {
+      this.updateComparisonDetail();
       this.updateGraphs();
     });
   },

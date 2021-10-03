@@ -149,7 +149,7 @@ export default {
   },
   created() {
     this.fetchChartData();
-    this.updateCompareTitles();
+    this.updateCompareTitles()
   },
   beforeMount() {
     this.$nuxt.$on("update-sipa-charts", () => {
