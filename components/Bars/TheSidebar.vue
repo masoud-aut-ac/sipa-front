@@ -27,7 +27,7 @@
           <template v-slot:activator="{ on, attrs }">
             <v-list-item to="/" v-bind="attrs" v-on="on">
               <v-list-item-icon>
-                <img src="/calendar.svg" />
+                <img src="/calendar2.svg" />
               </v-list-item-icon>
             </v-list-item>
           </template>
@@ -51,12 +51,20 @@
               <v-list-item-icon>
                 <img src="/map.svg" />
               </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title>اطلاعات مکانی</v-list-item-title>
-              </v-list-item-content>
             </v-list-item>
           </template>
           <span>نقشه‌ها</span>
+        </v-tooltip>
+
+        <v-tooltip left>
+          <template v-slot:activator="{ on, attrs }">
+            <v-list-item to="/files" v-bind="attrs" v-on="on">
+              <v-list-item-icon>
+                <img src="/folder.svg" />
+              </v-list-item-icon>
+            </v-list-item>
+          </template>
+          <span>اطلاعات</span>
         </v-tooltip>
       </v-list>
       <template v-slot:append>

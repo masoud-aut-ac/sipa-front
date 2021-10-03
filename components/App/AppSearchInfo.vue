@@ -1,10 +1,21 @@
 <template>
-  <div class="bg-gray-100 shadow-md h-full min-h-screen p-4" style="direction: rtl">
+  <div
+    class="bg-gray-100 shadow-md h-full min-h-screen p-4"
+    style="direction: rtl"
+  >
     <v-icon color="#332A7C" class="mb-2 cursor-pointer" @click="toggleSideSheet"
       >mdi-close</v-icon
     >
-    <AppFilter :allowedFilterTypes="allowedFilterTypes" :isMapPage="isMapPage" :isAnnualPage="isAnnualPage" />
+    <AppFilterYear v-if="isAnnualPage" />
+    <AppFilter
+      :allowedFilterTypes="allowedFilterTypes"
+      :isMapPage="isMapPage"
+      :isAnnualPage="isAnnualPage"
+    />
     <AppComparison v-if="!isMapPage && !isAnnualPage" />
+    <div class="mt-4" style="direction: ltr">
+      <v-btn dark block color="#332A7C" @click="emitter()">اعمال فیلتر</v-btn>
+    </div>
   </div>
 </template>
 
@@ -20,11 +31,11 @@ export default {
     },
     isMapPage: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isAnnualPage: {
       type: Boolean,
-      default: false
+      default: false,
     },
   },
   components: {
@@ -37,6 +48,10 @@ export default {
     }),
     toggleSideSheet() {
       this.setSideSheet(false);
+    },
+    emitter() {
+      if (this.isMapPage) this.$nuxt.$emit("update-sipa-map");
+      else this.$nuxt.$emit("update-sipa-charts");
     },
   },
 };

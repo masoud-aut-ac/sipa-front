@@ -4,8 +4,8 @@
       <span><v-icon color="#FFA000">mdi-calendar-month</v-icon></span>
       <p class="pr-2">از</p>
       <input
-        class="px-2 w-24 cursor-pointer"
-        style="direction: rtl"
+        class="px-2 cursor-pointer"
+        style="direction: rtl; width: 5.2rem"
         v-model="startDate"
         id="my-date-input-start"
       />
@@ -16,8 +16,8 @@
       ></datePicker>
       <p>تا</p>
       <input
-        class="px-2 w-24 cursor-pointer"
-        style="direction: rtl"
+        class="px-2 cursor-pointer"
+        style="direction: rtl; width: 5.2rem"
         v-model="endDate"
         id="my-date-input-end"
       />

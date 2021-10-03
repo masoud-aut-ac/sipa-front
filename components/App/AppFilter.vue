@@ -1,6 +1,5 @@
 <template>
   <div class="bg-gray-200 rounded-lg p-4 mb-4 font-serif">
-    <AppFilterYear v-if="isAnnualPage" />
     <p>فیلتر اطلاعات</p>
     <div>
       <AppFilterSingle
@@ -21,9 +20,9 @@
         <v-icon> mdi-plus </v-icon>
       </v-btn>
     </div>
-    <div class="mt-4" style="direction: ltr">
+    <!-- <div class="mt-4" style="direction: ltr">
       <v-btn dark block color="#332A7C" @click="emitter()">اعمال فیلتر</v-btn>
-    </div>
+    </div> -->
   </div>
 </template>
 

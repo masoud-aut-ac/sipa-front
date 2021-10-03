@@ -39,7 +39,7 @@
     <p class="text-red text-xs" v-if="IsLimited">
       امکان مقایسه حداکثر برای 3 مورد وجود دارد
     </p>
-    <v-btn
+    <!-- <v-btn
       :disabled="!hasComparison"
       :dark="hasComparison"
       block
@@ -47,7 +47,7 @@
       class="mt-4"
       @click="emitter()"
       >اعمال فیلتر</v-btn
-    >
+    > -->
   </div>
 </template>
 

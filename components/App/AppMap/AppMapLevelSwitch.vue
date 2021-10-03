@@ -7,6 +7,7 @@
         :key="t.id"
         class="
           py-2
+          px-2
           flex-1
           bg-gray-100
           text-xs

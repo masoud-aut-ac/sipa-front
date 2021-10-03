@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-4 font-serif">
+  <div class="bg-gray-200 rounded-lg p-4 mb-4 font-serif">
     <p class="mb-4">انتخاب سال</p>
     <div class="flex m-1">
       <button
