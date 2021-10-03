@@ -16,11 +16,11 @@
       </v-tab-item>
 
       <v-tab-item >
-        <AppChartColumn :graphData="graphDataInjury" />
+        <AppChartColumn :graphData="graphDataInjury" class="mt-24" />
       </v-tab-item>
 
       <v-tab-item >
-        <AppChartColumn :graphData="graphDataDeath" />
+        <AppChartColumn :graphData="graphDataDeath" class="mt-24" />
       </v-tab-item>
 
     </v-tabs>

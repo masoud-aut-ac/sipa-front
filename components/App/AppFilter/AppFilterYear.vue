@@ -1,13 +1,13 @@
 <template>
   <div class="pb-4 font-serif">
     <p class="mb-4">انتخاب سال</p>
-    <div class="flex items-stretch m-1">
+    <div class="flex m-1">
       <button
         v-for="t in years"
         :key="t.id"
         class="
           p-2
-          px-9
+          flex-1
           bg-gray-100
           transition
           duration-100
@@ -15,7 +15,10 @@
           transform
           hover:scale-110
           hover:shadow-sm
+          border-2
+          border-gray-200
         "
+        style="border: 2px solid #e0daee"
         :class="{ selected: t.isSelected }"
         @click="selectYear(t.id)"
       >
@@ -31,6 +34,7 @@ import { mapGetters, mapMutations } from "vuex";
 export default {
   data() {
     return {
+      text: "1398",
       years: [
         { id: 0, text: "1398", isSelected: false },
         { id: 1, text: "1399", isSelected: false },

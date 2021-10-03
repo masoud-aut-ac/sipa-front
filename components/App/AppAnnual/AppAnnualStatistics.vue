@@ -3,6 +3,7 @@
     <AppAnnualStatisticsCard :cardData="crash" />
     <AppAnnualStatisticsCard :cardData="death" />
     <AppAnnualStatisticsCard :cardData="injury" />
+    <AppAnnualMapGuide />
   </div>
 </template>
 

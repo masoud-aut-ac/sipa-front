@@ -10,7 +10,7 @@
       <div
         :class="
           this.getSideSheet
-            ? 'col-span-12 lg:col-span-9 mt-4 mb-7'
+            ? 'col-span-12 lg:col-span-9 mt-4 mb-4'
             : 'col-span-12 mt-4 mb-7 ml-4'
         "
         style="direction: rtl"
@@ -29,13 +29,12 @@
               <AppAnnualTabs class="col-span-12 lg:col-span-8" />
             </div>
             <div class="col-span-12 lg:col-span-10">
-                <AppAnnualChart :graphData="graphHour" :title="titleHour" />
-
+              <AppAnnualChart :graphData="graphHour" :title="titleHour" />
             </div>
           </div>
-          <div class="col-span-12 lg:col-span-2">
-            <AppAnnualStatistics />
-            <AppAnnualMapGuide />
+          <div class="col-span-12 lg:col-span-2 flex">
+            <AppAnnualStatistics class="flex-grow mb-2" />
+            <!-- <AppAnnualMapGuide /> -->
           </div>
         </div>
       </div>
@@ -126,7 +125,7 @@ export default {
     AppAnnualChart,
     AppAnnualStatistics,
     AppAnnualTabs,
-    AppAnnualMapGuide
+    AppAnnualMapGuide,
   },
   methods: {
     ...mapMutations({
