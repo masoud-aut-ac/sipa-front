@@ -12,7 +12,7 @@
     >
 
       <template v-slot:item.condition="{ item }">
-        <v-radio-group v-model="item.condition" column>
+        <v-radio-group v-model="item.condition" column hide-details>
           <v-radio label="انطباق با مقادیر قبلی" color="#FFA000" value="old"></v-radio>
           <v-radio label="مقدار جدید" color="#FFA000" value="new"></v-radio>
         </v-radio-group>
@@ -24,10 +24,6 @@
           light
           large
           persistent
-          @save="save"
-          @cancel="cancel"
-          @open="open"
-          @close="close"
           cancel-text="انصراف"
           save-text="ذخیره"
         >
@@ -114,5 +110,8 @@ button {
 .v-radio .theme--light {
     font-size: 0.875rem;
     color: black;
+}
+.v-input--selection-controls {
+  margin-top: 0 !important
 }
 </style>

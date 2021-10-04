@@ -1,6 +1,12 @@
 <template>
   <v-card class="mr-20 m-4 p-4">
-    <AppTableMain :title="title" :headers="headers" :items="items" />
+    <AppTableMain
+      :title="title"
+      :headers="headers"
+      :items="items"
+      :rowClick="rowClick"
+      class="sipa-table-row"
+    />
   </v-card>
 </template>
 
@@ -164,5 +170,16 @@ export default {
   components: {
     AppTableMain,
   },
+  methods: {
+    rowClick() {
+      this.$router.push("/files/details");
+    },
+  },
 };
 </script>
+
+<style>
+.sipa-table-row tr:hover {
+  cursor: pointer;
+}
+</style>

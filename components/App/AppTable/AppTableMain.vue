@@ -56,6 +56,13 @@ export default {
       type: Boolean,
       default: true,
     },
+    rowClick: {
+      type: Function,
+      default: function () {
+        console.log(":)");
+
+      }
+    }
   },
   data() {
     return {
@@ -65,11 +72,6 @@ export default {
       itemsPerPage: 10,
     };
   },
-  methods: {
-    rowClick() {
-      this.$router.push("/files/details");
-    },
-  },
 };
 </script>
 
@@ -77,9 +79,9 @@ export default {
 th {
   color: white !important;
 }
-tr:hover {
+/* tr:hover {
   cursor: pointer;
-}
+} */
 .v-data-table-header-mobile {
   display: none !important;
 }

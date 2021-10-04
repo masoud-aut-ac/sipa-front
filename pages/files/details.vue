@@ -12,6 +12,7 @@
       :hasSearch="false"
     />
     <AppTableEdit />
+    <v-btn color="#FFA000">اعمال تغییرات</v-btn>
   </v-card>
 </template>
 
