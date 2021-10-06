@@ -71,6 +71,9 @@ export default {
     this.$nuxt.$on("update-sipa-map", () => {
       this.updateSelectedFilters();
     });
+    this.$nuxt.$on("update-sipa-general", () => {
+      this.updateSelectedFilters();
+    });
   },
 };
 </script>

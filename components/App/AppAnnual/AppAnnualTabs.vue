@@ -15,14 +15,13 @@
         <AppAnnualMap />
       </v-tab-item>
 
-      <v-tab-item >
-        <AppChartColumn :graphData="graphDataInjury" class="mt-24" />
+      <v-tab-item>
+        <AppAnnualChart :graphData="deadYearData" :isInTabs="true" class="mt-24" />
       </v-tab-item>
 
-      <v-tab-item >
-        <AppChartColumn :graphData="graphDataDeath" class="mt-24" />
+      <v-tab-item>
+        <AppAnnualChart :graphData="injuredYearData" :isInTabs="true" class="mt-24" />
       </v-tab-item>
-
     </v-tabs>
   </v-card>
 </template>
@@ -30,28 +29,18 @@
 
 <script>
 export default {
+  props: {
+    deadYearData: {
+      type: Array,
+    },
+    injuredYearData: {
+      type: Array,
+    },
+  },
   data() {
     return {
       tab: null,
       items: [{ tab: "نقشه" }, { tab: "نمودار فوتی" }, { tab: "نمودار جرحی" }],
-      graphDataInjury: [
-        {
-          slices: [
-            ["1398", 160],
-            ["1399", 87],
-            ["1400", 43],
-          ],
-        },
-      ],
-      graphDataDeath: [
-        {
-          slices: [
-            ["1398", 100],
-            ["1399", 50],
-            ["1400", 40],
-          ],
-        },
-      ],
     };
   },
 };
@@ -59,6 +48,6 @@ export default {
 
 <style>
 .theme--dark.v-tabs-items {
-    background-color: white;
+  background-color: white;
 }
 </style>

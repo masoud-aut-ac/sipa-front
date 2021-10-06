@@ -106,7 +106,6 @@ export default {
       } else {
         this.setComparisonDetail({ filterId: this.filterTypeId, values: e });
         this.IsLimited = false;
-        // this.$nuxt.$emit("update-sipa-charts");
       }
     },
     toggleHasComparison(val) {
@@ -118,18 +117,15 @@ export default {
         this.setComparisonDetail(null);
         this.filterTypeId = null;
       }
-      // if (!val) this.$nuxt.$emit("update-sipa-charts");
     },
     setFilterTypeId(val) {
       this.setComparisonDetail(null);
       if (this.filterTypeId !== null) {
         this.deleteRemovedFilterIds(this.filterTypeId);
-        // this.$nuxt.$emit("update-sipa-charts");
       }
       if (val === null) {
         this.deleteRemovedFilterIds(this.filterTypeId);
         this.filterTypeId = val;
-        // this.$nuxt.$emit("update-sipa-charts");
       } else {
         this.filterTypeId = val;
         this.addRemovedFilterIds(val);

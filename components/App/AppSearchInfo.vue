@@ -6,13 +6,12 @@
     <v-icon color="#332A7C" class="mb-2 cursor-pointer" @click="toggleSideSheet"
       >mdi-close</v-icon
     >
-    <AppFilterYear v-if="isAnnualPage" />
     <AppFilter
       :allowedFilterTypes="allowedFilterTypes"
       :isMapPage="isMapPage"
-      :isAnnualPage="isAnnualPage"
+      :isGeneralPage="isGeneralPage"
     />
-    <AppComparison v-if="!isMapPage && !isAnnualPage" />
+    <AppComparison v-if="!isMapPage && !isGeneralPage" />
     <div class="mt-4" style="direction: ltr">
       <v-btn dark block color="#332A7C" @click="emitter()">اعمال فیلتر</v-btn>
     </div>
@@ -33,7 +32,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    isAnnualPage: {
+    isGeneralPage: {
       type: Boolean,
       default: false,
     },
@@ -51,6 +50,7 @@ export default {
     },
     emitter() {
       if (this.isMapPage) this.$nuxt.$emit("update-sipa-map");
+      else if(this.isGeneralPage) this.$nuxt.$emit("update-sipa-general");
       else this.$nuxt.$emit("update-sipa-charts");
     },
   },

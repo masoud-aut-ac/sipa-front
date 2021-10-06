@@ -2,7 +2,7 @@
   <v-card class="p-4 text-sm font-serif" style="direction: rtl">
     <p class="font-bold">راهنمای نقشه</p>
     <div v-for="item in items" :key="item.text" class="flex my-2">
-      <v-icon x-small :color="item.color" class="ml-2 mt-1">mdi-circle</v-icon>
+      <div class="h-2.5 w-2.5 border rounded-full mt-1.5 ml-2" :style="{'background-color': item.color}"></div>
       <p>{{ item.text }}</p>
     </div>
   </v-card>
@@ -13,8 +13,8 @@ export default {
   data() {
     return {
       items: [
-        { text: "جرحی", color: "#FFA000" },
-        { text: "فوتی", color: "#F25767" },
+        { text: "جرحی", color: "#F7FF00" },
+        { text: "فوتی", color: "#FF0000" },
       ],
     };
   },

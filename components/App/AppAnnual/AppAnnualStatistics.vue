@@ -1,8 +1,8 @@
 <template>
   <div class="grid grid-cols-1 gap-2">
-    <AppAnnualStatisticsCard :cardData="crash" />
-    <AppAnnualStatisticsCard :cardData="death" />
-    <AppAnnualStatisticsCard :cardData="injury" />
+    <AppAnnualStatisticsCard :cardData="generalData.incidentCount" :cardaTitle="incidentTitle" />
+    <AppAnnualStatisticsCard :cardData="generalData.deadCount" :cardaTitle="deadTitle" />
+    <AppAnnualStatisticsCard :cardData="generalData.injuredCount" :cardaTitle="injuredTitle" />
     <AppAnnualMapGuide />
   </div>
 </template>
@@ -11,11 +11,16 @@
 import AppAnnualStatisticsCard from "~/components/App/AppAnnual/AppAnnualStatistics/AppAnnualStatisticsCard.vue";
 
 export default {
+  props: {
+    generalData: {
+      type: Object
+    }
+  },
   data() {
     return {
-      crash: { title: "تعداد تصادف‌", amount: "2300" },
-      death: { title: "تعداد فوتی‌", amount: "700" },
-      injury: { title: "تعداد مجروح‌", amount: "3400" },
+      incidentTitle: "تعداد تصادف",
+      deadTitle: "تعداد فوتی",
+      injuredTitle: "تعداد مجروح",
     };
   },
   components: {

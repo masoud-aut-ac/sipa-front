@@ -15,12 +15,11 @@
           transform
           hover:scale-110
           hover:shadow-sm
-          border-2
-          border-gray-200
+          border-2 border-gray-200
         "
         style="border: 2px solid #e0daee"
         :class="{ selected: t.isSelected }"
-        @click="selectYear(t.id)"
+        @click="t.isSelected = !t.isSelected"
       >
         {{ t.text }}
       </button>
@@ -44,21 +43,35 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getYear: "index/getYear",
+      getFilters: "filters/getFilters",
+      getStartDate: "filters/getStartDate",
+      getEndDate: "filters/getEndDate",
     }),
   },
   methods: {
     ...mapMutations({
       setYear: "index/setYear",
+      setStartDate: "filters/setStartDate",
+      setEndDate: "filters/setEndDate",
     }),
-    selectYear(id) {
-      this.years.forEach((y) => (y.isSelected = false));
-      this.years.find((y) => y.id === id).isSelected = true;
-      this.setYear(id);
+    updateYears() {
+      let selectedYears = this.years.filter((x) => x.isSelected === true);
+      if (selectedYears.length !== 0) {
+        this.setStartDate(selectedYears[0].text + "-01-01");
+        this.setEndDate(
+          selectedYears[selectedYears.length - 1].text + "-12-29"
+        );
+      } else {
+        this.setStartDate("1398-01-01");
+        this.setEndDate("1400-12-29");
+      }
+      console.log(this.getFilters);
     },
   },
-  created() {
-    this.years.find((x) => x.id === this.getYear).isSelected = true;
+  beforeMount() {
+    this.$nuxt.$on("update-sipa-general", () => {
+      this.updateYears();
+    });
   },
 };
 </script>

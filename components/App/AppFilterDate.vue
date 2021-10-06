@@ -39,6 +39,10 @@ export default {
     isMapPage : {
       type: Boolean,
       default: false
+    },
+    isGeneralPage : {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -70,11 +74,13 @@ export default {
     startDate(val) {
       this.setStartDate(val);
       if(this.isMapPage) this.$nuxt.$emit("update-sipa-map");
+      else if(this.isGeneralPage) this.$nuxt.$emit("update-sipa-general");
       else this.$nuxt.$emit("update-sipa-charts");
     },
     endDate(val) {
       this.setEndDate(val);
       if(this.isMapPage) this.$nuxt.$emit("update-sipa-map");
+      else if(this.isGeneralPage) this.$nuxt.$emit("update-sipa-general");
       else this.$nuxt.$emit("update-sipa-charts");
     },
   },

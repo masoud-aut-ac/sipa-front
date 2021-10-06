@@ -16,10 +16,9 @@ export default {
       isLoadingData: true,
       map: {},
       tileLayer: {},
-      mapFeatures: {},
       mapFeaturesData: [],
-      image: null,
-      mapColors: ["#87DFF0", "#736bb4", "#FFA000", "#F25767", "#8B0000"],
+      layerPoints: null,
+      points: [],
     };
   },
   computed: {
@@ -36,28 +35,11 @@ export default {
       setMapCenter: "index/setMapCenter",
       setMapBounds: "index/setMapBounds",
     }),
-    getMapData() {
-      let vm = this;
-      vm.isLoadingData = true;
-      return vm
-        .$axios({
-          method: "post",
-          url: "MapData",
-          data: {
-            mapLevel: this.getMapLevel,
-            mapID: this.getMapID,
-            ...this.getFilters,
-          },
-        })
-        .then((response) => {
-          vm.mapFeaturesData = response.data.detail;
-        });
-    },
     drawMap() {
       let vm = this;
       const L = require("leaflet");
 
-      this.map = L.map("map-wrap", {
+      vm.map = L.map("map-wrap", {
         minZoom: 5,
         maxZoom: 16,
         maxBounds: [
@@ -67,34 +49,79 @@ export default {
         drawControl: true,
       });
 
-      this.tileLayer = L.tileLayer(
+      vm.tileLayer = L.tileLayer(
         "https://maptile1.141.ir/tile/v1/1/{z}/{x}/{y}"
       );
-      this.tileLayer.addTo(this.map);
+      vm.tileLayer.addTo(vm.map);
 
       let myRenderer = L.canvas({ padding: 0.5 });
 
-      const searchControl = new GeoSearchControl({
-        style: "button",
-        provider: new OpenStreetMapProvider(),
-      });
-      vm.map.addControl(searchControl);
+      // const searchControl = new GeoSearchControl({
+      //   style: "button",
+      //   provider: new OpenStreetMapProvider(),
+      // });
+      // vm.map.addControl(searchControl);
 
       let screenShoter = new SimpleMapScreenshoter();
       screenShoter.addTo(vm.map);
 
       let center = vm.getMapCenter;
-      const zoom = vm.getMapZoom;
+      let zoom = vm.getMapZoom;
       vm.map.setView(center, zoom);
+    },
+    drawPoints() {
+      let vm = this;
 
-      this.markersLayerGroup = L.layerGroup().addTo(vm.map);
+      return vm
+        .$axios({
+          method: "post",
+          url: "GeneralSummuryMap",
+          data: this.getFilters,
+        })
+        .then((response) => {
+          vm.mapFeaturesData = response.data.detail.points;
+        })
+        .then((r) => {
+          let myRenderer = L.canvas({ padding: 0.5 });
+          vm.mapFeaturesData.forEach((p) => {
+            let point = L.circleMarker([p.latitude, p.longitude], {
+              radius: 4,
+              renderer: myRenderer,
+              fillColor: p.countDead === 0 ? "#F7FF00" : "#FF0000",
+              color: "black",
+              weight: 0.5,
+              fillOpacity: 1,
+            }).bindTooltip(
+              "تعداد جرحی: " +
+                p.countInjury +
+                "<br/> تعداد فوتی: " +
+                p.countDead,
+              {
+                direction: "right",
+                sticky: true,
+                className: "font-serif",
+              }
+            );
+            vm.points.push(point);
+          });
+
+          let newLayerPoints = L.layerGroup(vm.points);
+          newLayerPoints.addTo(vm.map);
+          if (vm.layerPoints != null) vm.layerPoints.clearLayers();
+          vm.layerPoints = newLayerPoints;
+          
+          vm.map.fitBounds(L.featureGroup(vm.points).getBounds());
+        });
     },
   },
-  created() {
-    // this.getMapData();
+  beforeMount() {
+    this.$nuxt.$on("update-sipa-general", () => {
+      this.drawPoints();
+    });
   },
   mounted() {
     this.drawMap();
+    this.drawPoints();
   },
 };
 </script>

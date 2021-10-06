@@ -20,9 +20,6 @@
         <v-icon> mdi-plus </v-icon>
       </v-btn>
     </div>
-    <!-- <div class="mt-4" style="direction: ltr">
-      <v-btn dark block color="#332A7C" @click="emitter()">اعمال فیلتر</v-btn>
-    </div> -->
   </div>
 </template>
 
@@ -41,7 +38,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    isAnnualPage: {
+    isGeneralPage: {
       type: Boolean,
       default: false,
     },
@@ -81,12 +78,6 @@ export default {
         );
       }
       return res;
-    },
-  },
-  methods: {
-    emitter() {
-      if (this.isMapPage) this.$nuxt.$emit("update-sipa-map");
-      else this.$nuxt.$emit("update-sipa-charts");
     },
   },
   created() {

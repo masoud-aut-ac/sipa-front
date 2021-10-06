@@ -76,13 +76,11 @@ export default {
       if (this.filterTypeId != null) {
         this.deleteRemovedFilterIds(this.filterTypeId);
         this.setFilterValue({ id: this.filterTypeId, value: null });
-        // this.$nuxt.$emit("update-sipa-charts");
       }
       if (val === null) {
         this.deleteRemovedFilterIds(this.filterTypeId);
         this.setFilterValue({ id: this.filterTypeId, value: null });
         this.filterTypeId = val;
-        // this.$nuxt.$emit("update-sipa-charts");
       } else {
         this.filterTypeId = val;
         this.addRemovedFilterIds(val);
@@ -90,7 +88,6 @@ export default {
     },
     setFilter(val) {
       this.setFilterValue({ id: this.filterTypeId, value: val });
-      // this.$nuxt.$emit("update-sipa-charts");
     },
   },
 };

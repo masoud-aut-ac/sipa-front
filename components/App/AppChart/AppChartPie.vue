@@ -33,7 +33,7 @@ export default {
             plotOptions: {
               series: {
                 dataLabels: {
-                  enabled: false,
+                  enabled: true,
                 },
               },
             },

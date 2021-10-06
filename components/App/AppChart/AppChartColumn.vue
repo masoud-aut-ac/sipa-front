@@ -15,7 +15,7 @@ export default {
       type: Array,
       default: [],
     },
-    isAnnualPage: {
+    isGeneralPage: {
       type: Boolean,
       default: false
     }
@@ -32,7 +32,7 @@ export default {
             plotOptions: {
               series: {
                 dataLabels: {
-                  enabled: false,
+                  enabled: true,
                 },
               },
             },
@@ -43,7 +43,7 @@ export default {
           animation: false,
           type: "column",
           zoomType: "x",
-          height: this.isAnnualPage ? "175rem" : "280rem",
+          height: "280rem",
         },
         title: {
           text: "",
@@ -60,7 +60,7 @@ export default {
           endOnTick: false,
           title: {
             enabled: true,
-            text: this.isAnnualPage? "": "سهم (درصد)",
+            text: this.isGeneralPage? "": "سهم (درصد)",
             style: {
               fontSize: "0.6rem",
               direction: "rtl",
