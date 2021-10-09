@@ -65,7 +65,6 @@ export default {
         this.setStartDate("1398-01-01");
         this.setEndDate("1400-12-29");
       }
-      console.log(this.getFilters);
     },
   },
   beforeMount() {

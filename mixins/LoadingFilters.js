@@ -1,9 +1,18 @@
-import { mapMutations } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
+import state from "~/store/filters/state";
 
 export default {
+  computed: {
+    ...mapGetters({
+      getFilters: "filters/getFilters",
+      getProvince: "filters/getProvince"
+    })
+  },
   methods: {
     ...mapMutations({
       loadFilterOptions: "filters/loadFilterOptions",
+      setProvince: "filters/setProvince",
+      setCity: "filters/setCity",
     }),
     getProvinces() {
       let vm = this;
@@ -14,7 +23,11 @@ export default {
         vm.loadFilterOptions({
           englishLabel: "province", options: response.data.detail.provinces.map(x => { return { ...x, name: x.persianName } })
         });
-      });
+        vm.setProvince(vm.getFilters.provinceEnglishName);
+        vm.loadFilterOptions({
+          englishLabel: "city", options: response.data.detail.provinces.find(x => vm.getFilters.provinceEnglishName === x.englishName).cities.map(x => { return { ...x, name: x.persianName } })
+        });
+      })
     },
     getInfoSources() {
       let vm = this;
@@ -128,4 +141,10 @@ export default {
       // this.getVehicleCount();
     }
   },
+  watch: {
+    getProvince() {
+      this.setCity(null);
+      this.getProvinces();
+    }
+  }
 }

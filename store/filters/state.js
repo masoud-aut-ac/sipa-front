@@ -1,7 +1,6 @@
 export default () => ({
     startDate: "1398/01/01",
     endDate: "1398/03/01",
-    
     hasLoadedFilters: false,
     removedFilterIds: [],
     hasComparison: false,
@@ -12,6 +11,14 @@ export default () => ({
         englishLabel: "province",
         labelChip: "",
         apiRequestLabel: "provinceEnglishName",
+        value: null,
+        options: [],
+    },
+    {
+        id: 5,
+        label: "شهر",
+        englishLabel: "city",
+        labelChip: "",
         value: null,
         options: [],
     },
@@ -51,14 +58,7 @@ export default () => ({
         value: null,
         options: [],
     },
-    // {
-    //     id: 5,
-    //     label: "تعداد وسایل در هر تصادف",
-    //     englishLabel: "vehicleCount",
-    //     apiRequestLabel: "vehicleCount",
-    //     value: null,
-    //     options: [],
-    // },
+
     {
         id: 6,
         label: "انواع وسایل در هر تصادف",
@@ -94,5 +94,6 @@ export default () => ({
         apiRequestLabel: "incidentReason",
         value: null,
         options: [],
-    }]
+    }],
+    province: null,
 })

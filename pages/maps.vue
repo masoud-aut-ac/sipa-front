@@ -39,15 +39,6 @@ export default {
     return {
       mapType: null,
       mapTypeOptions: [],
-      allowedFilterTypes: [
-        "province",
-        "infoSource",
-        "infoDevice",
-        "vehicleType",
-        "incidentType",
-        "incidentPart",
-        "incidentReason",
-      ],
     };
   },
   components: {
@@ -60,7 +51,21 @@ export default {
   computed: {
     ...mapGetters({
       getSideSheet: "index/getSideSheet",
+      getFilters: "filters/getFilters"
     }),
+        allowedFilterTypes() {
+      let res = [
+        "province",
+        "infoSource",
+        "infoDevice",
+        "vehicleType",
+        "incidentType",
+        "incidentPart",
+        "incidentReason",
+      ];
+      this.getFilters.province !== null ? res.push("city") : res.push("");
+      return res;
+    },
   },
   methods: {
     getMapList() {

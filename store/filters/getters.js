@@ -31,5 +31,8 @@ export default {
     },
     getComparisonDetail(state) {
         return state.comparisonDetail;
-    }
+    },
+    getProvince(state) {
+        return state.details.find(x => x.englishLabel === "province").value;
+    },
 }

@@ -68,7 +68,8 @@ export default {
     return {
       generalData: {},
       dayTitle: "روز تصادف‌ها",
-      dayData: [
+      dayData: [],
+      days: [
         { persianName: "شنبه", englishName: "Saturday", y: null },
         { persianName: "یکشنبه", englishName: "Sunday", y: null },
         { persianName: "دوشنبه", englishName: "Monday", y: null },
@@ -95,17 +96,34 @@ export default {
       ],
       hourTitle: "ساعت تصادف‌ها",
       hourData: [],
+      hours: [
+        { persianName: "0", key: 0, y: null },
+        { persianName: "1", key: 1, y: null },
+        { persianName: "2", key: 2, y: null },
+        { persianName: "3", key: 3, y: null },
+        { persianName: "4", key: 4, y: null },
+        { persianName: "5", key: 5, y: null },
+        { persianName: "6", key: 6, y: null },
+        { persianName: "7", key: 7, y: null },
+        { persianName: "8", key: 8, y: null },
+        { persianName: "9", key: 9, y: null },
+        { persianName: "10", key: 10, y: null },
+        { persianName: "11", key: 11, y: null },
+        { persianName: "12", key: 12, y: null },
+        { persianName: "13", key: 13, y: null },
+        { persianName: "14", key: 14, y: null },
+        { persianName: "15", key: 15, y: null },
+        { persianName: "16", key: 16, y: null },
+        { persianName: "17", key: 17, y: null },
+        { persianName: "18", key: 18, y: null },
+        { persianName: "19", key: 19, y: null },
+        { persianName: "20", key: 20, y: null },
+        { persianName: "21", key: 21, y: null },
+        { persianName: "22", key: 22, y: null },
+        { persianName: "23", key: 23, y: null },
+      ],
       injuredData: [],
       deadData: [],
-      allowedFilterTypes: [
-        "province",
-        "infoSource",
-        "infoDevice",
-        "vehicleType",
-        "incidentType",
-        "incidentPart",
-        "incidentReason",
-      ],
     };
   },
   computed: {
@@ -113,6 +131,19 @@ export default {
       getSideSheet: "index/getSideSheet",
       getFilters: "filters/getFilters",
     }),
+    allowedFilterTypes() {
+      let res = [
+        "province",
+        "infoSource",
+        "infoDevice",
+        "vehicleType",
+        "incidentType",
+        "incidentPart",
+        "incidentReason",
+      ];
+      this.getFilters.province !== null ? res.push("city") : res.push("");
+      return res;
+    },
   },
   components: {
     AppFilterChips,
@@ -148,8 +179,11 @@ export default {
       let res = vm.generalData.daysDist.map((x) => {
         return { englishName: x.Key, y: x.Value };
       });
+      vm.dayData = vm.days;
       vm.dayData.forEach((x) => {
-        return (x.y = res.find((a) => a.englishName === x.englishName).y);
+        return (x.y = res.find((a) => a.englishName === x.englishName)
+          ? (x.y = res.find((a) => a.englishName === x.englishName).y)
+          : 0);
       });
     },
     drawGraphMonth() {
@@ -167,10 +201,15 @@ export default {
     },
     drawGraphHour() {
       let vm = this;
-      vm.hourData = vm.generalData.hoursDist.map((x) => {
-        return { persianName: x.Key, y: x.Value };
+      let res = vm.generalData.hoursDist.map((x) => {
+        return { key: x.Key, y: x.Value };
       });
-      console.log(vm.hourData);
+      vm.hourData = vm.hours;
+      vm.hourData.forEach((x) => {
+        return (x.y = res.find((a) => a.key === x.key)
+          ? (x.y = res.find((a) => a.key === x.key).y)
+          : 0);
+      });
     },
     drawGraphDead() {
       let vm = this;
@@ -187,6 +226,7 @@ export default {
   },
   created() {
     this.fetchGeneralData();
+    console.log(this.getFilters);
   },
   beforeMount() {
     this.$nuxt.$on("update-sipa-general", () => {

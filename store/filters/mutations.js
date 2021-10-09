@@ -27,5 +27,12 @@ export default {
     },
     setComparisonDetail(state, payload) {
         state.comparisonDetail = payload;
+    },
+    setProvince(state, payload) {
+        state.province = payload;
+    },
+    setCity(state, payload) {
+        let cityFilter = state.details.find(x => x.englishLabel === "city")
+        cityFilter.value = payload;
     }
 }

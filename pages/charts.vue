@@ -12,7 +12,10 @@
         "
       >
         <div class="grid grid-cols-1 lg:grid-cols-6 gap-4">
-          <AppFilterChips :allowedFilterTypes="allowedFilterTypes" class="col-span-1 lg:col-span-4" />
+          <AppFilterChips
+            :allowedFilterTypes="allowedFilterTypes"
+            class="col-span-1 lg:col-span-4"
+          />
           <AppFilterDate class="col-span-1 lg:col-span-2 pt-2" />
         </div>
         <ChartsContainer class="mt-2" />
@@ -30,25 +33,24 @@ import ChartsContainer from "~/components/Index/ChartsContainer.vue";
 
 export default {
   middleware: "auth",
-  data() {
-    return {
-      allowedFilterTypes: [
+  computed: {
+    ...mapGetters({
+      getSideSheet: "index/getSideSheet",
+      getFilters: "filters/getFilters"
+    }),
+    allowedFilterTypes() {
+      let res = [
         "province",
         "infoSource",
         "infoDevice",
-        "injuredCount",
-        "deadCount",
         "vehicleType",
         "incidentType",
         "incidentPart",
         "incidentReason",
-      ],
-    };
-  },
-  computed: {
-    ...mapGetters({
-      getSideSheet: "index/getSideSheet",
-    }),
+      ];
+      this.getFilters.province !== null ? res.push("city") : res.push("");
+      return res;
+    },
   },
   components: {
     AppFilterChips,
