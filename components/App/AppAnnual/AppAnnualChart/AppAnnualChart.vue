@@ -88,7 +88,7 @@ export default {
     },
     getCategories() {
       let res = [];
-      this.graphData.forEach((x) => res.push(x[0]));
+      this.graphData.forEach((x) => res.push(x.persianName));
       return res;
     },
   },

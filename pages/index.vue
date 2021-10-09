@@ -68,9 +68,30 @@ export default {
     return {
       generalData: {},
       dayTitle: "روز تصادف‌ها",
-      dayData: [],
+      dayData: [
+        { persianName: "شنبه", englishName: "Saturday", y: null },
+        { persianName: "یکشنبه", englishName: "Sunday", y: null },
+        { persianName: "دوشنبه", englishName: "Monday", y: null },
+        { persianName: "سه‌شنبه", englishName: "Tuesday", y: null },
+        { persianName: "چهارشنبه", englishName: "Wednesday", y: null },
+        { persianName: "پنجشنبه", englishName: "Thursday", y: null },
+        { persianName: "جمعه", englishName: "Friday", y: null },
+      ],
       monthTitle: "ماه تصادف‌ها",
-      monthData: [],
+      monthData: [
+        { persianName: "فروردین", key: 1, y: null },
+        { persianName: "اردیبهشت", key: 2, y: null },
+        { persianName: "خرداد", key: 3, y: null },
+        { persianName: "تیر", key: 4, y: null },
+        { persianName: "مرداد", key: 5, y: null },
+        { persianName: "شهریور", key: 6, y: null },
+        { persianName: "مهر", key: 7, y: null },
+        { persianName: "آبان", key: 8, y: null },
+        { persianName: "آذر", key: 9, y: null },
+        { persianName: "دی", key: 10, y: null },
+        { persianName: "بهمن", key: 11, y: null },
+        { persianName: "اسفند", key: 12, y: null },
+      ],
       hourTitle: "ساعت تصادف‌ها",
       hourData: [],
       injuredData: [],
@@ -123,14 +144,20 @@ export default {
     },
     drawGraphDay() {
       let vm = this;
-      vm.dayData = vm.generalData.daysDist.map((x) => {
-        return [x.Key, x.Value];
+      let res = vm.generalData.daysDist.map((x) => {
+        return { englishName: x.Key, y: x.Value };
+      });
+      vm.dayData.forEach((x) => {
+        return (x.y = res.find((a) => a.englishName === x.englishName).y);
       });
     },
     drawGraphMonth() {
       let vm = this;
-      vm.monthData = vm.generalData.monthDist.map((x) => {
-        return [x.Key, x.Value];
+      let res = vm.generalData.monthDist.map((x) => {
+        return { key: x.Key, y: x.Value };
+      });
+      vm.monthData.forEach((x) => {
+        return (x.y = res.find((a) => a.key === x.key).y);
       });
     },
     drawGraphHour() {
