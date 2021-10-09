@@ -47,10 +47,22 @@ export default {
         },
         xAxis: {
           categories: this.getCategories,
+          labels: {
+            enabled: true,
+            style: {
+              fontFamily: "IRANSans",
+            },
+          },
         },
         yAxis: {
           title: {
             text: "",
+          },
+          labels: {
+            enabled: true,
+            style: {
+              fontFamily: "IRANSans",
+            },
           },
         },
         tooltip: {
