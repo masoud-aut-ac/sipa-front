@@ -13,8 +13,8 @@ export default {
   data() {
     return {
       items: [
-        { text: "جرحی", color: "#F7FF00" },
-        { text: "فوتی", color: "#FF0000" },
+        { text: "تعداد تصادف جرحی", color: "#F7FF00" },
+        { text: "تعداد تصادف فوتی", color: "#FF0000" },
       ],
     };
   },

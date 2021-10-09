@@ -78,7 +78,8 @@ export default {
         { persianName: "جمعه", englishName: "Friday", y: null },
       ],
       monthTitle: "ماه تصادف‌ها",
-      monthData: [
+      monthData: [],
+      months: [
         { persianName: "فروردین", key: 1, y: null },
         { persianName: "اردیبهشت", key: 2, y: null },
         { persianName: "خرداد", key: 3, y: null },
@@ -156,15 +157,20 @@ export default {
       let res = vm.generalData.monthDist.map((x) => {
         return { key: x.Key, y: x.Value };
       });
+      vm.monthData = vm.months;
       vm.monthData.forEach((x) => {
-        return (x.y = res.find((a) => a.key === x.key).y);
+        return (x.y = res.find((a) => a.key === x.key)
+          ? res.find((a) => a.key === x.key).y
+          : null);
       });
+      vm.monthData = vm.monthData.filter((x) => x.y != null);
     },
     drawGraphHour() {
       let vm = this;
       vm.hourData = vm.generalData.hoursDist.map((x) => {
-        return [x.Key, x.Value];
+        return { persianName: x.Key, y: x.Value };
       });
+      console.log(vm.hourData);
     },
     drawGraphDead() {
       let vm = this;
