@@ -27,11 +27,11 @@
           <template v-slot:activator="{ on, attrs }">
             <v-list-item to="/" v-bind="attrs" v-on="on">
               <v-list-item-icon>
-                <img src="/calendar2.svg" />
+                <img src="/report.png" />
               </v-list-item-icon>
             </v-list-item>
           </template>
-          <span>تحلیل سالانه</span>
+          <span>گزارش کلی</span>
         </v-tooltip>
 
         <v-tooltip left>
