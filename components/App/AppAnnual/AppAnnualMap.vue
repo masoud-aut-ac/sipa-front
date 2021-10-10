@@ -92,9 +92,9 @@ export default {
               weight: 0.5,
               fillOpacity: 1,
             }).bindTooltip(
-              "تعداد جرحی: " +
+              "تعداد تصادف جرحی: " +
                 p.countInjury +
-                "<br/> تعداد فوتی: " +
+                "<br/> تعداد تصادف فوتی: " +
                 p.countDead,
               {
                 direction: "right",
