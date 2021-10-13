@@ -18,8 +18,8 @@ export default {
     chartOptions() {
       return {
         exporting: {
+          // specific options for the exported image
           chartOptions: {
-            // specific options for the exported image
             plotOptions: {
               series: {
                 dataLabels: {
@@ -28,11 +28,16 @@ export default {
               },
             },
           },
-          fallbackToExportServer: false,
+          navigator: {
+            enabled: false,
+          },
+          scrollbar: {
+            enabled: false,
+          },
         },
         chart: {
           type: "column",
-          zoomType: "x",
+          // zoomType: "x",
           height: this.isInTabs ? "300rem" : "175rem",
         },
         title: {

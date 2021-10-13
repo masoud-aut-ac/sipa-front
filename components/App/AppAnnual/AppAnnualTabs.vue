@@ -1,6 +1,6 @@
 <template>
   <v-card class="font-serif px-4 pb-4 mb-2" light style="direction: rtl">
-    <v-tabs>
+    <v-tabs light>
       <v-tabs-slider color="#FFA000"></v-tabs-slider>
 
       <v-tab

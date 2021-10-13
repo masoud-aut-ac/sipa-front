@@ -40,8 +40,8 @@
                 class="col-span-12 lg:col-span-8"
               />
               <div class="col-span-12 lg:col-span-4">
-                <AppAnnualChart :graphData="dayData" :title="dayTitle" />
-                <AppAnnualChart :graphData="monthData" :title="monthTitle" />
+                <AppAnnualChart :graphData="dayData" :title="dayTitle" style="z-index: 500" />
+                <AppAnnualChart :graphData="monthData" :title="monthTitle" style="z-index: 499" />
               </div>
             </div>
             <div class="col-span-12 lg:col-span-10">
