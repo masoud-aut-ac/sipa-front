@@ -79,6 +79,7 @@ export default {
           data: this.getFilters,
         })
         .then((response) => {
+          console.log(this.getFilters)
           vm.mapFeaturesData = response.data.detail.points;
         })
         .then((r) => {

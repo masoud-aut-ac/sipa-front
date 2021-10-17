@@ -19,6 +19,7 @@ export default () => ({
         label: "شهر",
         englishLabel: "city",
         labelChip: "",
+        apiRequestLabel: "provinceEnglishName",
         value: null,
         options: [],
     },

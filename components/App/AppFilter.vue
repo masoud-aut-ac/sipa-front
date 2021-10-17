@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import AppFilterSingle from "~/components/App/AppFilterSingle.vue";
 import LoadingFilters from "~/mixins/LoadingFilters.js";
 
@@ -46,6 +46,7 @@ export default {
   data() {
     return {
       counter: 1,
+      comboboxes: [],
     };
   },
   components: {
@@ -58,6 +59,8 @@ export default {
       comparisonDetail: "filters/getComparisonDetail",
       hasComparison: "filters/getHasComparison",
       getFilters: "filters/getFilters",
+      getFilters: "filters/getFilters",
+      getProvince: "filters/getProvince",
     }),
     countOfFilters() {
       if (this.getRemovedFilterIds.length + 1 < this.counter)
@@ -66,23 +69,43 @@ export default {
       return this.counter;
     },
     getRemovedFilterIds() {
-      let res = this.allFilters
-        .filter((x) =>
-          this.allowedFilterTypes.some((y) => x.englishLabel === y)
-        )
-        .filter((x) => this.removedFilterIds.some((y) => x.id === y))
-        .map((x) => x.id);
+      let r = [];
+      this.removedFilterIds.forEach((x) => {
+        let g = this.allFilters.find((y) => x === y.id);
+        r.push(g);
+      });
+      this.comboboxes = this.comboboxes.filter((x) =>
+        this.allowedFilterTypes.some((y) => x.englishLabel === y)
+      );
+      this.comboboxes = r.map((x) => x.id);
+
+      // let res = this.allFilters
+      //   .filter((x) =>
+      //     this.allowedFilterTypes.some((y) => x.englishLabel === y)
+      //   )
+      //   .filter((x) => this.removedFilterIds.some((y) => x.id === y))
+      //   .map((x) => x.id);
       if (this.comparisonDetail != null) {
-        res = this.removedFilterIds.filter(
+        this.comboboxes = this.removedFilterIds.filter(
           (x) => x !== this.comparisonDetail.filterId
         );
       }
-      return res;
+      return this.comboboxes;
     },
+  },
+  methods: {
+    ...mapMutations({
+      deleteRemovedFilterIds: "filters/deleteRemovedFilterIds",
+    }),
   },
   created() {
     this.counter = this.removedFilterIds.length;
     this.loadAllFilters();
+  },
+  watch: {
+    getProvince(val) {
+      if (val === null) this.deleteRemovedFilterIds(5);
+    },
   },
 };
 </script>

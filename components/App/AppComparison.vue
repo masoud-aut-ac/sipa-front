@@ -57,6 +57,11 @@ import "vue-select/dist/vue-select.css";
 import { mapGetters, mapMutations } from "vuex";
 
 export default {
+  props: {
+    allowedFilterTypes: {
+      type: Array,
+    },
+  },
   data() {
     return {
       IsLimited: false,
@@ -69,12 +74,17 @@ export default {
       comparisonDetail: "filters/getComparisonDetail",
       removedFilterIds: "filters/getRemovedFilterIds",
       allFilters: "filters/getFilterDetails",
+      getProvince: "filters/getProvince",
     }),
     filterTypeOptions() {
       let removedFilters = this.removedFilterIds;
-      return this.allFilters.filter(
+      let res = this.allFilters.filter(
         (x) => !removedFilters.some((y) => x.id === y)
       );
+      res = res.filter((x) =>
+        this.allowedFilterTypes.some((y) => x.englishLabel === y)
+      );
+      return res;
     },
     selectedFilter() {
       let vm = this;
@@ -133,6 +143,9 @@ export default {
       }
     },
   },
+  created() {
+    console.log(this.selectedFilter)
+  }
 };
 </script>
 

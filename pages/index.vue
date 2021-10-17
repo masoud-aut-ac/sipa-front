@@ -226,7 +226,6 @@ export default {
   },
   created() {
     this.fetchGeneralData();
-    console.log(this.getFilters);
   },
   beforeMount() {
     this.$nuxt.$on("update-sipa-general", () => {

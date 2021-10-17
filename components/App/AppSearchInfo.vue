@@ -11,7 +11,7 @@
       :isMapPage="isMapPage"
       :isGeneralPage="isGeneralPage"
     />
-    <AppComparison v-if="!isMapPage && !isGeneralPage" />
+    <AppComparison v-if="!isMapPage && !isGeneralPage" :allowedFilterTypes="allowedFilterTypes" />
     <div class="mt-4" style="direction: ltr">
       <v-btn dark block color="#332A7C" @click="emitter()">اعمال فیلتر</v-btn>
     </div>
