@@ -104,6 +104,7 @@ export default {
       setComparisonDetail: "filters/setComparisonDetail",
       addRemovedFilterIds: "filters/addRemovedFilterIds",
       deleteRemovedFilterIds: "filters/deleteRemovedFilterIds",
+      setCity: "filters/setCity",
     }),
     emitter() {
       this.$nuxt.$emit("update-sipa-charts");
@@ -143,9 +144,20 @@ export default {
       }
     },
   },
-  created() {
-    console.log(this.selectedFilter)
-  }
+  watch: {
+    getProvince(val) {
+      if (
+        val == null &&
+        this.comparisonDetail !== null &&
+        this.comparisonDetail.filterId === 5
+      ) {
+        this.setHasComparison(false);
+        this.deleteRemovedFilterIds(this.filterTypeId);
+        this.setComparisonDetail(null);
+        this.filterTypeId = null;
+      }
+    },
+  },
 };
 </script>
 

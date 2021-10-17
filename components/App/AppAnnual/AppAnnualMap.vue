@@ -111,7 +111,7 @@ export default {
           if (vm.layerPoints != null) vm.layerPoints.clearLayers();
           vm.layerPoints = newLayerPoints;
           
-          vm.map.fitBounds(L.featureGroup(vm.points).getBounds());
+          vm.map.fitBounds(new L.featureGroup(vm.points).getBounds());
         });
     },
   },
