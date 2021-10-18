@@ -38,7 +38,7 @@ export default {
         chart: {
           type: "column",
           // zoomType: "x",
-          height: this.isInTabs ? "300rem" : "175rem",
+          height: this.isInTabs ? "360rem" : "175rem",
         },
         title: {
           text: "",

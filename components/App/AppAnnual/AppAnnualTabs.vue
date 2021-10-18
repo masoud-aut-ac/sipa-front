@@ -17,11 +17,11 @@
       </v-tab-item>
 
       <v-tab-item>
-        <AppAnnualChart :graphData="deadYearData" :isInTabs="true" class="mt-24" />
+        <AppAnnualChart :graphData="deadYearData" :isInTabs="true" class="mt-8"/>
       </v-tab-item>
 
       <v-tab-item>
-        <AppAnnualChart :graphData="injuredYearData" :isInTabs="true" class="mt-24" />
+        <AppAnnualChart :graphData="injuredYearData" :isInTabs="true" class="mt-8" />
       </v-tab-item>
     </v-tabs>
   </v-card>
