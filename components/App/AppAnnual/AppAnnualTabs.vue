@@ -7,6 +7,7 @@
         style="font-weight: bold; font-size: 0.725rem"
         v-for="item in items"
         :key="item.tab"
+        light
       >
         {{ item.tab }}
       </v-tab>
@@ -48,9 +49,9 @@ export default {
 
 <style>
 .theme--dark.v-tabs-items {
-  background-color: white;
+  background-color: white!important;
 }
 .v-window-item .v-window-item--active {
-  background-color: white;
+  background-color: white!important;
 }
 </style>
