@@ -50,4 +50,7 @@ export default {
 .theme--dark.v-tabs-items {
   background-color: white;
 }
+.v-window-item .v-window-item--active {
+  background-color: white;
+}
 </style>
