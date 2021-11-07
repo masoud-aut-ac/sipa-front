@@ -50,7 +50,7 @@ export default {
       });
 
       vm.tileLayer = L.tileLayer(
-        "https://maptile1.141.ir/tile/v1/1/{z}/{x}/{y}"
+        "https://maptile1.141.ir/tile/v1/4/{z}/{x}/{y}"
       );
       vm.tileLayer.addTo(vm.map);
 

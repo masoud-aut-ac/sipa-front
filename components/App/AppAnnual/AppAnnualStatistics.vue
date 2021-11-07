@@ -2,7 +2,7 @@
   <div class="grid grid-cols-1 gap-2">
     <AppAnnualStatisticsCard :cardData="generalData.incidentCount" :cardaTitle="incidentTitle" />
     <AppAnnualStatisticsCard :cardData="generalData.deadCount" :cardaTitle="deadTitle" />
-    <AppAnnualStatisticsCard :cardData="generalData.injuredCount" :cardaTitle="injuredTitle" />
+    <!-- <AppAnnualStatisticsCard :cardData="generalData.injuredCount" :cardaTitle="injuredTitle" /> -->
     <AppAnnualMapGuide />
   </div>
 </template>
@@ -18,9 +18,11 @@ export default {
   },
   data() {
     return {
-      incidentTitle: "تعداد تصادف",
-      deadTitle: "تعداد فوتی",
-      injuredTitle: "تعداد مجروح",
+      // incidentTitle: "تعداد تصادف",
+      // deadTitle: "تعداد فوتی",
+      incidentTitle: "تعداد تصادف فوتی",
+      deadTitle: "تعداد فوتی سر صحنه",
+      // injuredTitle: "تعداد مجروح",
     };
   },
   components: {
