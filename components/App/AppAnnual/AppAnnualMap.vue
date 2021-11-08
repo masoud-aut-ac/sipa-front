@@ -50,7 +50,7 @@ export default {
       });
 
       vm.tileLayer = L.tileLayer(
-        "https://maptile1.141.ir/tile/v1/4/{z}/{x}/{y}"
+        "https://maptile1.141.ir/tile/v1/3/{z}/{x}/{y}"
       );
       vm.tileLayer.addTo(vm.map);
 
@@ -79,12 +79,12 @@ export default {
           data: this.getFilters,
         })
         .then((response) => {
-          console.log(this.getFilters)
+          console.log(this.getFilters);
           vm.mapFeaturesData = response.data.detail.points;
         })
         .then((r) => {
           let myRenderer = L.canvas({ padding: 0.5 });
-          vm.mapFeaturesData.forEach((p) => {
+          vm.mapFeaturesData.filter(x=> x.countDead !== 0).forEach((p) => {
             let point = L.circleMarker([p.latitude, p.longitude], {
               radius: 4,
               renderer: myRenderer,
@@ -93,10 +93,10 @@ export default {
               weight: 0.5,
               fillOpacity: 1,
             }).bindTooltip(
-              "تعداد تصادف جرحی: " +
-                p.countInjury +
-                "<br/> تعداد تصادف فوتی: " +
-                p.countDead,
+              // "تعداد تصادف جرحی: " +
+              //   p.countInjury +
+              // "<br/> تعداد تصادف فوتی: " +
+              "تعداد تصادف فوتی: " + p.countDead,
               {
                 direction: "right",
                 sticky: true,
@@ -110,7 +110,7 @@ export default {
           newLayerPoints.addTo(vm.map);
           if (vm.layerPoints != null) vm.layerPoints.clearLayers();
           vm.layerPoints = newLayerPoints;
-          
+
           vm.map.fitBounds(new L.featureGroup(vm.points).getBounds());
         });
     },
