@@ -20,9 +20,9 @@
         <AppAnnualChart :graphData="deadYearData" :isInTabs="true" class="mt-8"/>
       </v-tab-item>
 
-      <v-tab-item>
+      <!-- <v-tab-item>
         <AppAnnualChart :graphData="injuredYearData" :isInTabs="true" class="mt-8" />
-      </v-tab-item>
+      </v-tab-item> -->
     </v-tabs>
   </v-card>
 </template>
@@ -41,7 +41,7 @@ export default {
   data() {
     return {
       tab: null,
-      items: [{ tab: "نقشه" }, { tab: "نمودار فوتی" }, { tab: "نمودار جرحی" }],
+      items: [{ tab: "نقشه" }, { tab: "نمودار مقایسه سالیانه فوتی" }],
     };
   },
 };
