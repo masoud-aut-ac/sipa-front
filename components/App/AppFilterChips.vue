@@ -62,7 +62,6 @@ export default {
           };
           return res;
         });
-      console.log(vm.selectedFilters);
     },
   },
   beforeMount() {
