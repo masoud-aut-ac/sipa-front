@@ -52,7 +52,7 @@ export default {
     },
     updateSelectedFilters() {
       let vm = this;
-      this.selectedFilters = vm.allFilters
+      vm.selectedFilters = vm.allFilters
         .filter((x) => x.value != null)
         .filter((x) => vm.allowedFilterTypes.some((y) => x.englishLabel === y))
         .map((x) => {
@@ -62,6 +62,7 @@ export default {
           };
           return res;
         });
+      console.log(vm.selectedFilters);
     },
   },
   beforeMount() {
@@ -74,6 +75,9 @@ export default {
     this.$nuxt.$on("update-sipa-general", () => {
       this.updateSelectedFilters();
     });
+  },
+  created() {
+    this.updateSelectedFilters();
   },
 };
 </script>
