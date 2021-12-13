@@ -32,6 +32,9 @@ export default {
     setMapLevel(state, payload) {
         state.mapLevel = payload;
     },
+    setIndexType(state, payload) {
+        state.indexType = payload;
+    },
     setYear(state, payload) {
         state.year = payload;
     },

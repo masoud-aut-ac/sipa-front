@@ -40,8 +40,16 @@
                 class="col-span-12 lg:col-span-8"
               />
               <div class="col-span-12 lg:col-span-4">
-                <AppAnnualChart :graphData="dayData" :title="dayTitle" style="z-index: 500" />
-                <AppAnnualChart :graphData="monthData" :title="monthTitle" style="z-index: 499" />
+                <AppAnnualChart
+                  :graphData="dayData"
+                  :title="dayTitle"
+                  style="z-index: 500"
+                />
+                <AppAnnualChart
+                  :graphData="monthData"
+                  :title="monthTitle"
+                  style="z-index: 499"
+                />
               </div>
             </div>
             <div class="col-span-12 lg:col-span-10">
@@ -67,7 +75,7 @@ export default {
   data() {
     return {
       generalData: {},
-      dayTitle: "روز تصادف‌ها",
+      dayTitle: "روز تصادف‌های فوتی",
       dayData: [],
       days: [
         { persianName: "شنبه", englishName: "Saturday", y: null },
@@ -78,7 +86,7 @@ export default {
         { persianName: "پنجشنبه", englishName: "Thursday", y: null },
         { persianName: "جمعه", englishName: "Friday", y: null },
       ],
-      monthTitle: "ماه تصادف‌ها",
+      monthTitle: "ماه تصادف‌های فوتی",
       monthData: [],
       months: [
         { persianName: "فروردین", key: 1, y: null },
@@ -94,7 +102,7 @@ export default {
         { persianName: "بهمن", key: 11, y: null },
         { persianName: "اسفند", key: 12, y: null },
       ],
-      hourTitle: "ساعت تصادف‌ها",
+      hourTitle: "ساعت تصادف‌های فوتی",
       hourData: [],
       hours: [
         { persianName: "0", key: 0, y: null },
@@ -155,6 +163,8 @@ export default {
   methods: {
     ...mapMutations({
       setSideSheet: "index/setSideSheet",
+      deleteRemovedFilterIds: "filters/deleteRemovedFilterIds",
+      setFilterValue: "filters/setFilterValue",
     }),
     fetchGeneralData() {
       let vm = this;
@@ -226,6 +236,9 @@ export default {
   },
   created() {
     this.fetchGeneralData();
+    this.deleteRemovedFilterIds(10);
+    this.setFilterValue({ id: 10, value: null });
+    console.log(this.getFilters);
   },
   beforeMount() {
     this.$nuxt.$on("update-sipa-general", () => {

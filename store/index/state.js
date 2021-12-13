@@ -11,5 +11,6 @@ export default () => ({
     },
     mapID: 0,
     mapLevel:0,
+    indexType: 0,
     year: 0
 })

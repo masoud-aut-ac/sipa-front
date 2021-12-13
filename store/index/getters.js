@@ -20,6 +20,9 @@ export default {
     getMapLevel(state) {
         return state.mapLevel;
     },
+    getIndexType(state) {
+        return state.indexType;
+    },
     getYear(state) {
         return state.year;
     },

@@ -95,6 +95,16 @@ export default () => ({
         apiRequestLabel: "incidentReason",
         value: null,
         options: [],
-    }],
+    },
+    {
+        id: 10,
+        label: "نوع تصادف",
+        englishLabel: "incidentInjuriesType",
+        labelChip: "",
+        apiRequestLabel: "incidentInjuriesType",
+        value: null,
+        options: [],
+    },
+],
     province: null,
 })

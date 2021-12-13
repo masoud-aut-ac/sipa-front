@@ -63,7 +63,15 @@ export default {
       mapFeaturesData: [],
       mapGuide: [],
       image: null,
-      mapColors: ["#87DFF0", "#736bb4", "#FFA000", "#F25767", "#8B0000"],
+      mapColors: ["#4fff00", "#fff000", "#ff7000", "#ff0000", "#a20000"],
+      mapGuideDensity: [
+        "کم‌خطر",
+        "نسبتا کم‌خطر",
+        "خطر متوسط",
+        "نسبتا پرخطر",
+        "پرخطر",
+      ],
+      statusCode: null,
     };
   },
   computed: {
@@ -73,6 +81,7 @@ export default {
       getMapBounds: "index/getMapBounds",
       getMapLevel: "index/getMapLevel",
       getMapID: "index/getMapID",
+      getIndexType: "index/getIndexType",
       getFilters: "filters/getFilters",
     }),
   },
@@ -93,36 +102,46 @@ export default {
           data: {
             mapLevel: this.getMapLevel,
             mapID: this.getMapID,
+            indexType: this.getIndexType,
             ...this.getFilters,
           },
         })
         .then((response) => {
+          console.log(this.getFilters)
           vm.markersLayerGroup.clearLayers();
           if (vm.image !== null) vm.image.removeFrom(vm.map);
           if (vm.roadTileLayer !== null) vm.roadTileLayer.removeFrom(vm.map);
-          if (vm.getMapLevel === 2) {
-            vm.roadTileLayer = L.tileLayer(
-              "http://" + response.data.detail.imageURI
-            );
-            vm.roadTileLayer.addTo(vm.map);
-            vm.isLoadingData = false;
+          vm.statusCode = response.data.StatusCode;
+          if (vm.statusCode !== 412) {
+            if (vm.getMapLevel === 2) {
+              vm.roadTileLayer = L.tileLayer(
+                "http://" + response.data.detail.imageURI
+              );
+              vm.roadTileLayer.addTo(vm.map);
+              vm.isLoadingData = false;
+            } else {
+              vm.image = L.imageOverlay(
+                "http://" + response.data.detail.imageURI,
+                [
+                  [25.06242, 44.03878],
+                  [39.77609, 63.33307],
+                ],
+                { opacity: 0.75 }
+              );
+              vm.image.addTo(vm.map);
+              vm.drawMakers(
+                "http://" + response.data.detail.colorLevelsURI
+              ).then((res) => (vm.isLoadingData = false));
+            }
+            vm.mapFeaturesData = response.data.detail;
           } else {
-            vm.image = L.imageOverlay(
-              "http://" + response.data.detail.imageURI,
-              [
-                [25.06242, 44.03878],
-                [39.77609, 63.33307],
-              ],
-              { opacity: 0.75 }
-            );
-            vm.image.addTo(vm.map);
-            vm.drawMakers("http://" + response.data.detail.colorLevelsURI).then(
-              (res) => (vm.isLoadingData = false)
-            );
+            vm.isLoadingData = false;
           }
-          vm.mapFeaturesData = response.data.detail;
         })
-        .then((re) => this.createMapGuide());
+        .then((re) => {
+          if (vm.statusCode !== 412) this.createMapGuide();
+          else vm.mapGuide = [];
+        });
     },
     drawMakers(jsonUrl) {
       let vm = this;
@@ -211,32 +230,42 @@ export default {
       let vm = this;
       let mapColorsGuide = vm.mapFeaturesData.mapColorsGuide;
       let len = vm.mapFeaturesData.mapColorsGuide.length;
-      let offset = 4 - len;
       vm.mapGuide = [];
-      for (var i = 0; i < len + 1; i++) {
-        if (i === 0)
-          vm.mapGuide.push(
-            // len !== 1
-            mapColorsGuide[0] !== 0
-              ? {
-                  caption: "کمتر از " + mapColorsGuide[i],
-                  color: vm.mapColors[i + offset],
-                }
-              : {
-                  caption: mapColorsGuide[i],
-                  color: vm.mapColors[i + offset],
-                }
-          );
-        else if (i !== len)
+      if (vm.getIndexType === 0) {
+        for (var i = 0; i < len + 1; i++) {
+          if (i === 0)
+            vm.mapGuide.push(
+              // len !== 1
+              mapColorsGuide[0] !== 0
+                ? {
+                    caption: "کمتر از " + mapColorsGuide[i],
+                    color: vm.mapColors[i],
+                  }
+                : {
+                    caption: mapColorsGuide[i],
+                    color: vm.mapColors[i],
+                  }
+            );
+          else if (i !== len)
+            vm.mapGuide.push({
+              caption:
+                " از " + mapColorsGuide[i - 1] + " تا " + mapColorsGuide[i],
+              color: vm.mapColors[i],
+            });
+          else {
+            vm.mapGuide.push({
+              caption: "بیشتر از " + mapColorsGuide[i - 1],
+              color: vm.mapColors[i],
+            });
+          }
+        }
+      }
+      if (vm.getIndexType === 1) {
+        console.log(mapColorsGuide);
+        for (var i = 0; i < len + 1; i++) {
           vm.mapGuide.push({
-            caption:
-              " از " + mapColorsGuide[i - 1] + " تا " + mapColorsGuide[i],
-            color: vm.mapColors[i + offset],
-          });
-        else {
-          vm.mapGuide.push({
-            caption: "بیشتر از " + mapColorsGuide[i - 1],
-            color: vm.mapColors[i + offset],
+            caption: vm.mapGuideDensity[i],
+            color: vm.mapColors[i],
           });
         }
       }
@@ -258,6 +287,9 @@ export default {
       this.getMapData();
     },
     getMapLevel(val) {
+      this.getMapData();
+    },
+    getIndexType(val) {
       this.getMapData();
     },
   },

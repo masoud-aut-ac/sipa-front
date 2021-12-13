@@ -1,13 +1,12 @@
 <template>
   <div class="bg-white rounded-lg shadow-md p-2 font-serif">
     <div class="flex">
-      <!-- <v-icon color="#FFA000" class="ml-2">mdi-map</v-icon> -->
+      <!-- <v-icon color="#FFA000" class="ml-2">mdi-poll</v-icon> -->
       <button
-        v-for="t in mapLevels"
+        v-for="t in mapTypes"
         :key="t.id"
         class="
-          py-2
-          px-2
+          p-2
           flex-1
           bg-gray-100
           text-xs
@@ -33,30 +32,29 @@ import { mapGetters, mapMutations } from "vuex";
 export default {
   data() {
     return {
-      mapLevels: [
-        { id: 0, text: "استان‌ها", isSelected: false },
-        { id: 1, text: "شهرستان‌ها", isSelected: false },
-        { id: 2, text: "محورها", isSelected: false },
+      mapTypes: [
+        { id: 0, text: "تعداد", isSelected: false },
+        { id: 1, text: "تراکم", isSelected: false },
       ],
     };
   },
   computed: {
     ...mapGetters({
-      getMapLevel: "index/getMapLevel",
+      getIndexType: "index/getIndexType",
     }),
   },
   methods: {
     selectType(id) {
-      this.mapLevels.forEach((y) => (y.isSelected = false));
-      this.mapLevels.find((y) => y.id === id).isSelected = true;
-      this.setMapLevel(id);
+      this.mapTypes.forEach((y) => (y.isSelected = false));
+      this.mapTypes.find((y) => y.id === id).isSelected = true;
+      this.setIndexType(id);
     },
     ...mapMutations({
-      setMapLevel: "index/setMapLevel",
+      setIndexType: "index/setIndexType",
     }),
   },
   created() {
-    this.mapLevels.find((x) => x.id === this.getMapLevel).isSelected = true;
+    this.mapTypes.find((x) => x.id === this.getIndexType).isSelected = true;
   },
 };
 </script>

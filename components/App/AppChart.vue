@@ -85,7 +85,6 @@ export default {
               });
               vm.graphSlices.push({ slices });
             }
-            console.log(b)
           })
           .then((r) => (this.isLoadingData = false));
       });

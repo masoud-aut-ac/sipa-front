@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-white rounded-lg p-1 shadow-md p-2 font-serif">
-    <div class="flex m-1">
-      <v-icon color="#FFA000" class="ml-2">mdi-poll</v-icon>
+  <div class="bg-white rounded-lg p-2 shadow-md font-serif">
+    <div class="flex">
+      <!-- <v-icon color="#FFA000" class="ml-2">mdi-poll</v-icon> -->
       <button
         v-for="t in mapTypes"
         :key="t.id"
@@ -35,7 +35,7 @@ export default {
       mapTypes: [
         { id: 0, text: "تصادف", isSelected: false },
         { id: 1, text: "مجروح", isSelected: false },
-        { id: 2, text: "فوتی", isSelected: false },
+        { id: 2, text: "متوفی", isSelected: false },
       ],
     };
   },

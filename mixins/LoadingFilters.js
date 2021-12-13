@@ -117,6 +117,17 @@ export default {
         ]
       })
     },
+    getIncidentInjuriesTypes() {
+      let vm = this;
+      return this.$axios({
+        method: "get",
+        url: "IncidentInjuriesType",
+      }).then((response) => {
+        vm.loadFilterOptions({
+          englishLabel: "incidentInjuriesType", options: response.data.detail.incidentInjuriesTypes
+        });
+      });
+    },
     // getVehicleCount() {
     //   let vm = this;
     //   vm.loadFilterOptions({
@@ -138,6 +149,7 @@ export default {
       this.getIncidentReasons();
       this.getInjuriesCount();
       this.getDeadCount();
+      this.getIncidentInjuriesTypes();
       // this.getVehicleCount();
     }
   },

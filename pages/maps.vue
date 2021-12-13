@@ -2,8 +2,9 @@
   <div class="font-serif text-sm" style="direction: rtl">
     <div class="absolute top-2 mr-20 z-40 gap-3">
       <div class="col-span-9 lg:col-span-3">
-        <AppFilterDate class="my-2" :isMapPage="true"/>
+        <AppFilterDate class="my-2" :isMapPage="true" />
         <AppMapLevelSwitch class="my-2" />
+        <AppMapIndexTypeSwitch class="my-2" />
         <AppMapIDSwitch class="my-2" />
         <AppFilterChips
           class="my-2 max-w-xs"
@@ -31,6 +32,7 @@ import AppFilterDate from "~/components/App/AppFilterDate.vue";
 import AppFilterChips from "~/components/App/AppFilterChips.vue";
 import AppMapIDSwitch from "~/components/App/AppMap/AppMapIDSwitch.vue";
 import AppMapLevelSwitch from "~/components/App/AppMap/AppMapLevelSwitch.vue";
+import AppMapIndexTypeSwitch from "~/components/App/AppMap/AppMapIndexTypeSwitch.vue";
 import "vue-select/dist/vue-select.css";
 
 export default {
@@ -47,13 +49,14 @@ export default {
     AppFilterChips,
     AppMapIDSwitch,
     AppMapLevelSwitch,
+    AppMapIndexTypeSwitch
   },
   computed: {
     ...mapGetters({
       getSideSheet: "index/getSideSheet",
-      getFilters: "filters/getFilters"
+      getFilters: "filters/getFilters",
     }),
-        allowedFilterTypes() {
+    allowedFilterTypes() {
       let res = [
         "province",
         "infoSource",
@@ -62,6 +65,7 @@ export default {
         "incidentType",
         "incidentPart",
         "incidentReason",
+        "incidentInjuriesType",
       ];
       this.getFilters.province !== null ? res.push("city") : res.push("");
       return res;

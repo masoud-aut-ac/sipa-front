@@ -47,6 +47,7 @@ export default {
         "incidentType",
         "incidentPart",
         "incidentReason",
+        "incidentInjuriesType"
       ];
       this.getFilters.province !== null ? res.push("city") : res.push("");
       return res;

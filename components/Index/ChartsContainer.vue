@@ -4,43 +4,34 @@
     style="direction: rtl"
   >
     <app-chart
-      :graphCategory="0"
-      :title="'منبع دریافت پیام'"
-      v-show="showGraph('infoSource')"
+      :graphCategory="9"
+      :title="'فصل'"
       :chartMode="'Pie'"
       class="col-span-1 lg:col-span-2"
     />
     <app-chart
-      :graphCategory="1"
-      :title="'وسیله دریافت پیام'"
-      v-show="showGraph('infoDevice')"
-      :chartMode="'Pie'"
-      class="col-span-1 lg:col-span-2"
+      :graphCategory="10"
+      :title="'ماه'"
+      :chartMode="'Column'"
+      class="col-span-1 lg:col-span-4 2xl:col-span-2"
     />
     <app-chart
-      :graphCategory="2"
-      :title="'تعداد مجروحان هر تصادف'"
-      v-show="showGraph('injuredCount')"
-      :chartMode="'Pie'"
-      class="col-span-1 lg:col-span-2"
+      :graphCategory="11"
+      :title="'ساعت'"
+      :chartMode="'Column'"
+      class="col-span-1 lg:col-span-4 2xl:col-span-2"
     />
     <app-chart
-      :graphCategory="3"
-      :title="'تعداد فوتی ها هر تصادف'"
-      v-show="showGraph('deadCount')"
-      :chartMode="'Pie'"
-      class="col-span-1 lg:col-span-2"
+      :graphCategory="8"
+      :title="'علت تامه تصادف ها'"
+      v-show="showGraph('incidentReason')"
+      :chartMode="'Column'"
+      class="col-span-1 lg:col-span-4 2xl:col-span-2"
     />
     <app-chart
-      :graphCategory="4"
-      :title="'تعداد وسایل در هر تصادف'"
-      :chartMode="'Pie'"
-      class="col-span-1 lg:col-span-2"
-    />
-    <app-chart
-      :graphCategory="5"
-      :title="'انواع وسایل در هر تصادف'"
-      v-show="showGraph('vehicleType')"
+      :graphCategory="7"
+      :title="'شکل برخورد'"
+      v-show="showGraph('incidentPart')"
       :chartMode="'Column'"
       class="col-span-1 lg:col-span-4 xl:col-span-2"
     />
@@ -52,34 +43,43 @@
       class="col-span-1 lg:col-span-4 xl:col-span-2"
     />
     <app-chart
-      :graphCategory="7"
-      :title="'شکل برخورد'"
-      v-show="showGraph('incidentPart')"
+      :graphCategory="5"
+      :title="'انواع وسایل در هر تصادف'"
+      v-show="showGraph('vehicleType')"
       :chartMode="'Column'"
       class="col-span-1 lg:col-span-4 xl:col-span-2"
     />
     <app-chart
-      :graphCategory="8"
-      :title="'علت تامه تصادف ها'"
-      v-show="showGraph('incidentReason')"
-      :chartMode="'Column'"
-      class="col-span-1 lg:col-span-4 2xl:col-span-2"
+      :graphCategory="4"
+      :title="'تعداد وسایل در هر تصادف'"
+      :chartMode="'Pie'"
+      class="col-span-1 lg:col-span-2"
     />
     <app-chart
-      :graphCategory="11"
-      :title="'ساعت'"
-      :chartMode="'Column'"
-      class="col-span-1 lg:col-span-4 2xl:col-span-2"
+      :graphCategory="3"
+      :title="'تعداد فوتی ها هر تصادف'"
+      v-show="showGraph('deadCount')"
+      :chartMode="'Pie'"
+      class="col-span-1 lg:col-span-2"
     />
     <app-chart
-      :graphCategory="10"
-      :title="'ماه'"
-      :chartMode="'Column'"
-      class="col-span-1 lg:col-span-4 2xl:col-span-2"
+      :graphCategory="2"
+      :title="'تعداد مجروحان هر تصادف'"
+      v-show="showGraph('injuredCount')"
+      :chartMode="'Pie'"
+      class="col-span-1 lg:col-span-2"
     />
     <app-chart
-      :graphCategory="9"
-      :title="'فصل'"
+      :graphCategory="1"
+      :title="'وسیله دریافت پیام'"
+      v-show="showGraph('infoDevice')"
+      :chartMode="'Pie'"
+      class="col-span-1 lg:col-span-2"
+    />
+    <app-chart
+      :graphCategory="0"
+      :title="'منبع دریافت پیام'"
+      v-show="showGraph('infoSource')"
       :chartMode="'Pie'"
       class="col-span-1 lg:col-span-2"
     />
@@ -94,7 +94,7 @@ export default {
   data() {
     return {
       graphFilters: [],
-      TheComparisonDetail: null
+      TheComparisonDetail: null,
     };
   },
   components: {
@@ -121,8 +121,9 @@ export default {
           .value === null;
       if (this.TheComparisonDetail != null) {
         let t =
-          this.graphFilters.find((x) => x.id === this.TheComparisonDetail.filterId)
-            .englishLabel !== graphEnglishLabel;
+          this.graphFilters.find(
+            (x) => x.id === this.TheComparisonDetail.filterId
+          ).englishLabel !== graphEnglishLabel;
         res = res && t;
       }
       return res;
