@@ -15,8 +15,7 @@
           duration-100
           ease-in-out
           transform
-          hover:scale-110
-          hover:shadow-sm
+          hover:scale-110 hover:shadow-sm
         "
         :class="{ selected: t.isSelected }"
         @click="selectType(t.id)"
@@ -42,17 +41,21 @@ export default {
   },
   computed: {
     ...mapGetters({
+      getIndexType: "index/getIndexType",
       getMapLevel: "index/getMapLevel",
     }),
   },
   methods: {
     selectType(id) {
+      if (this.getMapLevel === 2 && this.getIndexType === 2 && id !== 2)
+        this.setIndexType(1);
       this.mapLevels.forEach((y) => (y.isSelected = false));
       this.mapLevels.find((y) => y.id === id).isSelected = true;
       this.setMapLevel(id);
     },
     ...mapMutations({
       setMapLevel: "index/setMapLevel",
+      setIndexType: "index/setIndexType",
     }),
   },
   created() {

@@ -107,7 +107,7 @@ export default {
           },
         })
         .then((response) => {
-          console.log(this.getFilters)
+          console.log(this.getFilters);
           vm.markersLayerGroup.clearLayers();
           if (vm.image !== null) vm.image.removeFrom(vm.map);
           if (vm.roadTileLayer !== null) vm.roadTileLayer.removeFrom(vm.map);
@@ -129,9 +129,11 @@ export default {
                 { opacity: 0.75 }
               );
               vm.image.addTo(vm.map);
-              vm.drawMakers(
-                "http://" + response.data.detail.colorLevelsURI
-              ).then((res) => (vm.isLoadingData = false));
+              if (vm.getIndexType === 0)
+                vm.drawMakers(
+                  "http://" + response.data.detail.colorLevelsURI
+                ).then((res) => (vm.isLoadingData = false));
+              else vm.isLoadingData = false;
             }
             vm.mapFeaturesData = response.data.detail;
           } else {
@@ -260,7 +262,7 @@ export default {
           }
         }
       }
-      if (vm.getIndexType === 1) {
+      if (vm.getIndexType > 0) {
         console.log(mapColorsGuide);
         for (var i = 0; i < len + 1; i++) {
           vm.mapGuide.push({

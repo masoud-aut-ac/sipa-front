@@ -3,7 +3,7 @@
     <div class="flex">
       <!-- <v-icon color="#FFA000" class="ml-2">mdi-poll</v-icon> -->
       <button
-        v-for="t in mapTypes"
+        v-for="t in mapTypesComputed"
         :key="t.id"
         class="
           p-2
@@ -14,8 +14,7 @@
           duration-100
           ease-in-out
           transform
-          hover:scale-110
-          hover:shadow-sm
+          hover:scale-110 hover:shadow-sm
         "
         :class="{ selected: t.isSelected }"
         @click="selectType(t.id)"
@@ -35,13 +34,19 @@ export default {
       mapTypes: [
         { id: 0, text: "تعداد", isSelected: false },
         { id: 1, text: "تراکم", isSelected: false },
+        { id: 2, text: "همسایگی", isSelected: false },
       ],
     };
   },
   computed: {
     ...mapGetters({
       getIndexType: "index/getIndexType",
+      getMapLevel: "index/getMapLevel",
     }),
+    mapTypesComputed() {
+      if (this.getMapLevel === 2) return this.mapTypes;
+      else return this.mapTypes.filter((x) => x.id != 2);
+    },
   },
   methods: {
     selectType(id) {
@@ -52,6 +57,11 @@ export default {
     ...mapMutations({
       setIndexType: "index/setIndexType",
     }),
+  },
+  watch: {
+    getIndexType(val) {
+      this.selectType(val);
+    },
   },
   created() {
     this.mapTypes.find((x) => x.id === this.getIndexType).isSelected = true;
