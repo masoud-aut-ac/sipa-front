@@ -1,5 +1,5 @@
 <template>
-  <div data-app>
+  <div data-app class="font-serif">
     <TheSidebar />
     <Nuxt />
   </div>
@@ -14,3 +14,9 @@ export default {
   }
 }
 </script>
+
+<style>
+body {
+  background-color: #f8f7fc;
+}
+</style>
