@@ -24,12 +24,9 @@
         <div
           class="col-span-12 sm:col-span-6 lg:col-span-3 2xl:col-span-2 flex"
         >
-          <v-btn
-            block
-            :color="item.color"
-            @click="$router.push('/similarity/details')"
-            >{{ "تصادفات غیرخسارتی: " + item.nonDamaging }}</v-btn
-          >
+          <v-btn block :color="item.color" @click="showSimilars(item.id)">{{
+            "تصادفات غیرخسارتی: " + item.nonDamaging
+          }}</v-btn>
         </div>
         <div
           class="col-span-12 sm:col-span-6 lg:col-span-3 2xl:col-span-2 flex"
@@ -47,6 +44,7 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 import AppFilterDate from "~/components/App/AppFilterDate.vue";
 
 export default {
@@ -108,6 +106,15 @@ export default {
   },
   components: {
     AppFilterDate,
+  },
+  methods: {
+    ...mapMutations({
+      setSimilarityID: "index/setSimilarityID"
+    }),
+    showSimilars(id) {
+      this.setSimilarityID(id);
+      this.$router.push("/similarity/details");
+    },
   },
 };
 </script>

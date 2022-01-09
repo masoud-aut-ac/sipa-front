@@ -28,11 +28,11 @@
             >
           </div>
           <v-data-table
-            :headers="headersSimilars"
+            :headers="selectTableHeaders"
             :items="similars"
             class="shadow m-4"
             hide-default-footer
-            @click:row="rowClick"
+            dir="rtl"
           >
           </v-data-table>
         </div>
@@ -42,57 +42,16 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import SimilarityTableHeaders from "~/mixins/SimilarityTableHeaders";
 import AppFilterDate from "~/components/App/AppFilterDate.vue";
 
 export default {
   middleware: "auth",
+  mixins: [SimilarityTableHeaders],
   data() {
     return {
       dialog: false,
-      headers: [
-        {
-          text: "روز تصادف",
-          align: "center",
-          sortable: false,
-          value: "date",
-          class: "bg-green-900",
-        },
-        {
-          text: "ساعت تصادف",
-          sortable: false,
-          align: "center",
-          value: "time",
-          class: "bg-green-900",
-        },
-        {
-          text: "محل تصادف",
-          sortable: false,
-          align: "center",
-          value: "location",
-          class: "bg-green-900",
-        },
-        {
-          text: "تعداد فوتی",
-          sortable: false,
-          align: "center",
-          value: "deadCount",
-          class: "bg-green-900",
-        },
-        {
-          text: "تعداد مجروح",
-          sortable: false,
-          align: "center",
-          value: "injuredCount",
-          class: "bg-green-900",
-        },
-        {
-          text: "نوع برخورد",
-          sortable: false,
-          align: "center",
-          value: "incidentType",
-          class: "bg-green-900",
-        },
-      ],
       items: [
         {
           id: 0,
@@ -122,36 +81,6 @@ export default {
           incidentType: "برخورد وسیله با موتور",
         },
       ],
-      headersSimilars: [
-        {
-          text: "مرکز پلیس",
-          align: "center",
-          sortable: false,
-          value: "police",
-          class: "bg-green-900",
-        },
-        {
-          text: "محل تصادف",
-          align: "center",
-          sortable: false,
-          value: "location",
-          class: "bg-green-900",
-        },
-        {
-          text: "نوع برخورد",
-          align: "center",
-          sortable: false,
-          value: "incidentType",
-          class: "bg-green-900",
-        },
-        {
-          text: "فاصله (کیلومتر)",
-          align: "center",
-          sortable: false,
-          value: "distance",
-          class: "bg-green-900",
-        },
-      ],
       similars: [
         {
           id: 0,
@@ -162,6 +91,31 @@ export default {
         },
       ],
     };
+  },
+  computed: {
+    ...mapGetters({
+      getSimilarityID: "index/getSimilarityID",
+    }),
+    selectTableHeaders() {
+      let res;
+      switch (this.getSimilarityID) {
+        case 0:
+          res = this.headersSimilars0;
+          break;
+        case 1:
+          res = this.headersSimilars1;
+          break;
+        case 2:
+          res = this.headersSimilars2;
+          break;
+        case 3:
+          res = this.headersSimilars3;
+          break;
+        default:
+          res = this.headersSimilars4;
+      }
+      return res;
+    },
   },
   components: {
     AppFilterDate,
