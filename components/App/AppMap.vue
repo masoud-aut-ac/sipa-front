@@ -63,14 +63,7 @@ export default {
       mapFeaturesData: [],
       mapGuide: [],
       image: null,
-      mapColors: ["#4fff00", "#fff000", "#ff7000", "#ff0000", "#a20000"],
-      mapGuideDensity: [
-        "کم‌خطر",
-        "نسبتا کم‌خطر",
-        "خطر متوسط",
-        "نسبتا پرخطر",
-        "پرخطر",
-      ],
+      // mapColors: ["#4fff00", "#fff000", "#ff7000", "#ff0000", "#a20000"],
       statusCode: null,
     };
   },
@@ -84,6 +77,40 @@ export default {
       getIndexType: "index/getIndexType",
       getFilters: "filters/getFilters",
     }),
+    mapGuideDensity() {
+      let res;
+      switch (this.mapFeaturesData.mapColorsGuide.length) {
+        case 4:
+          res = ["کم‌خطر", "نسبتا کم‌خطر", "خطر متوسط", "نسبتا پرخطر", "پرخطر"];
+          break;
+        case 3:
+          res = ["کم‌خطر", "نسبتا کم‌خطر", "نسبتا پرخطر", "پرخطر"];
+          break;
+        case 2:
+          res = ["کم‌خطر", "خطر متوسط", "پرخطر"];
+          break;
+        default:
+          res = ["کم‌خطر", "پرخطر"];
+      }
+      return res;
+    },
+    mapColors() {
+      let res;
+      switch (this.mapFeaturesData.mapColorsGuide.length) {
+        case 4:
+          res = ["#4fff00", "#fff000", "#ff7000", "#ff0000", "#a20000"];
+          break;
+        case 3:
+          res = ["#4fff00", "#fff000", "#ff0000", "#a20000"];
+          break;
+        case 2:
+          res = ["#4fff00", "#ff7000", "#a20000"];
+          break;
+        default:
+          res = ["#4fff00", "#a20000"];
+      }
+      return res;
+    },
   },
   methods: {
     ...mapMutations({
@@ -107,7 +134,6 @@ export default {
           },
         })
         .then((response) => {
-          console.log(this.getFilters);
           vm.markersLayerGroup.clearLayers();
           if (vm.image !== null) vm.image.removeFrom(vm.map);
           if (vm.roadTileLayer !== null) vm.roadTileLayer.removeFrom(vm.map);
@@ -232,6 +258,7 @@ export default {
       let vm = this;
       let mapColorsGuide = vm.mapFeaturesData.mapColorsGuide;
       let len = vm.mapFeaturesData.mapColorsGuide.length;
+      console.log(len)
       vm.mapGuide = [];
       if (vm.getIndexType === 0) {
         for (var i = 0; i < len + 1; i++) {
@@ -263,7 +290,9 @@ export default {
         }
       }
       if (vm.getIndexType > 0) {
-        console.log(mapColorsGuide);
+
+        console.log(vm.mapGuideDensity)
+        console.log(vm.mapColors)
         for (var i = 0; i < len + 1; i++) {
           vm.mapGuide.push({
             caption: vm.mapGuideDensity[i],

@@ -122,7 +122,6 @@ export default {
   },
   methods: {
     rowClick(item) {
-      console.log(item);
       this.dialog = true;
     },
   },

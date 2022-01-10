@@ -238,7 +238,6 @@ export default {
     this.fetchGeneralData();
     this.deleteRemovedFilterIds(10);
     this.setFilterValue({ id: 10, value: null });
-    console.log(this.getFilters);
   },
   beforeMount() {
     this.$nuxt.$on("update-sipa-general", () => {
