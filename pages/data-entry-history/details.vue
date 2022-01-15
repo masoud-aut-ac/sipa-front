@@ -1,18 +1,44 @@
 <template>
   <v-card class="mr-20 m-4 p-4 font-serif">
-    <div class="flex cursor-pointer text-sm" @click="$router.push('/files')">
-      <p>بازگشت به جدول اصلی</p>
+    <div
+      class="flex cursor-pointer text-sm"
+      @click="$router.push('/data-entry-history')"
+    >
       <v-icon>mdi-chevron-left</v-icon>
+      <p>بازگشت به جدول اصلی</p>
     </div>
-    <AppTableMain
-      :title="emptyRecordsTitle"
-      :headers="emptyRecordsHeaders"
-      :items="emptyRecordsItems"
-      :hasPagination="false"
-      :hasSearch="false"
-    />
-    <AppTableEdit />
-    <v-btn color="#FFA000">اعمال تغییرات</v-btn>
+    <v-text-field
+      v-if="hasSearch"
+      v-model="search"
+      append-icon="mdi-magnify"
+      label="جستجو"
+      single-line
+      hide-details
+      reverse
+    ></v-text-field>
+    <v-data-table
+      :headers="headers"
+      :items="items"
+      :page.sync="page"
+      :items-per-page="itemsPerPage"
+      :search="search"
+      hide-default-footer
+      class="shadow mt-4"
+      @page-count="pageCount = $event"
+      @click:row="rowClick"
+    ></v-data-table>
+    <div v-if="hasPagination" class="text-center pt-2">
+      <v-pagination
+        v-model="page"
+        :length="pageCount"
+        :total-visible="5"
+        color="#e0daee"
+        prev-icon="mdi-chevron-right"
+        next-icon="mdi-chevron-left"
+      ></v-pagination>
+    </div>
+    <!-- <AppTableEdit />
+    <v-btn color="#FFA000">اعمال تغییرات</v-btn> -->
   </v-card>
 </template>
 
@@ -101,12 +127,11 @@ export default {
         },
       ],
       inconsistentRecordsTitle: "رکوردهای غیرمنطبق",
-      
     };
   },
   components: {
     AppTableMain,
-    AppTableEdit
+    AppTableEdit,
   },
 };
 </script>

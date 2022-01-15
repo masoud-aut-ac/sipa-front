@@ -58,13 +58,13 @@
 
         <v-tooltip left>
           <template v-slot:activator="{ on, attrs }">
-            <v-list-item to="/files" v-bind="attrs" v-on="on">
+            <v-list-item to="/data-entry-history" v-bind="attrs" v-on="on">
               <v-list-item-icon>
                 <img src="/folder.svg" />
               </v-list-item-icon>
             </v-list-item>
           </template>
-          <span>اطلاعات</span>
+          <span>تاریخچه ورود اطلاعات</span>
         </v-tooltip>
 
         <v-tooltip left>
