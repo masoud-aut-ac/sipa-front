@@ -2,10 +2,7 @@
   <div class="mr-20 text-sm max-h-screen" style="direction: rtl">
     <div class="mt-4 mb-7 ml-4">
       <div class="grid grid-cols-1 lg:grid-cols-6 gap-2">
-        <AppFilterDate
-          :isGeneralPage="true"
-          class="col-span-1 lg:col-span-2 pt-2"
-        />
+        <AppFilterDate class="col-span-1 lg:col-span-2 pt-2" />
         <div
           class="
             col-span-1
@@ -68,8 +65,8 @@
               gap-2
             "
             :style="{
-              'border-right-width': action.color ? '12px' : '0px',
-              'border-color': action.color,
+              'border-right-width': '12px',
+              'border-color': action.color ? action.color : '#e0daee',
             }"
           >
             <p
@@ -86,9 +83,14 @@
                 flex
               "
             >
-              <v-btn block :color="action.color" @click="showSimilars()">{{
-                "تصادفات غیرخسارتی: " + action.countInjuredAccidents
-              }}</v-btn>
+              <v-btn
+                block
+                :color="action.color ? action.color : '#e0daee'"
+                @click="showSimilars()"
+                >{{
+                  "تصادفات غیرخسارتی: " + action.countInjuredAccidents
+                }}</v-btn
+              >
             </div>
             <div
               class="
@@ -99,9 +101,12 @@
                 flex
               "
             >
-              <v-btn block :color="action.color" @click="showSimilars()">{{
-                "تصادفات فوتی: " + action.countDeadAccidents
-              }}</v-btn>
+              <v-btn
+                block
+                :color="action.color ? action.color : '#e0daee'"
+                @click="showSimilars()"
+                >{{ "تصادفات فوتی: " + action.countDeadAccidents }}</v-btn
+              >
             </div>
           </div>
         </div>

@@ -16,7 +16,7 @@
             :allowedFilterTypes="allowedFilterTypes"
             class="col-span-1 lg:col-span-4"
           />
-          <AppFilterDate class="col-span-1 lg:col-span-2 pt-2" />
+          <AppFilterDate :isChartsPage="true" class="col-span-1 lg:col-span-2 pt-2" />
         </div>
         <ChartsContainer class="mt-2" />
       </div>

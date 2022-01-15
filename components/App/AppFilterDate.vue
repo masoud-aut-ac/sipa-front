@@ -1,5 +1,8 @@
 <template>
-  <div class="bg-white rounded-lg p-1 shadow-md" style="z-index: 510; direction: rtl;">
+  <div
+    class="bg-white rounded-lg p-1 shadow-md"
+    style="z-index: 510; direction: rtl"
+  >
     <div class="flex items-stretch m-2 mt-3">
       <span><v-icon color="#FFA000">mdi-calendar-month</v-icon></span>
       <p class="pr-2">از</p>
@@ -36,23 +39,27 @@ import VuePersianDatetimePicker from "vue-persian-datetime-picker";
 
 export default {
   props: {
-    isMapPage : {
+    isMapPage: {
       type: Boolean,
-      default: false
+      default: false,
     },
-    isGeneralPage : {
+    isChartsPage: {
       type: Boolean,
-      default: false
+      default: false,
     },
-    isDataEntryHistoryPage : {
+    isGeneralPage: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
+    isDataEntryHistoryPage: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
-      startDate : "1398/01/01",
-      endDate : "1398/12/29",
+      startDate: "1398/01/01",
+      endDate: "1398/12/29",
     };
   },
   computed: {
@@ -77,17 +84,19 @@ export default {
   watch: {
     startDate(val) {
       this.setStartDate(val);
-      if(this.isMapPage) this.$nuxt.$emit("update-sipa-map");
-      else if(this.isGeneralPage) this.$nuxt.$emit("update-sipa-general");
-      else if(this.isDataEntryHistoryPage) this.$nuxt.$emit("update-sipa-data-entry-history");
-      else this.$nuxt.$emit("update-sipa-charts");
+      if (this.isMapPage) this.$nuxt.$emit("update-sipa-map");
+      else if (this.isGeneralPage) this.$nuxt.$emit("update-sipa-general");
+      else if (this.isDataEntryHistoryPage)
+        this.$nuxt.$emit("update-sipa-data-entry-history");
+      else if (this.isChartsPage) this.$nuxt.$emit("update-sipa-charts");
     },
     endDate(val) {
       this.setEndDate(val);
-      if(this.isMapPage) this.$nuxt.$emit("update-sipa-map");
-      else if(this.isGeneralPage) this.$nuxt.$emit("update-sipa-general");
-      else if(this.isDataEntryHistoryPage) this.$nuxt.$emit("update-sipa-data-entry-history");
-      else this.$nuxt.$emit("update-sipa-charts");
+      if (this.isMapPage) this.$nuxt.$emit("update-sipa-map");
+      else if (this.isGeneralPage) this.$nuxt.$emit("update-sipa-general");
+      else if (this.isDataEntryHistoryPage)
+        this.$nuxt.$emit("update-sipa-data-entry-history");
+      else if (this.isChartsPage) this.$nuxt.$emit("update-sipa-charts");
     },
   },
 };
@@ -98,7 +107,7 @@ export default {
   width: 110px !important;
 }
 .vpd-dir-rtl .vpd-next {
-  padding-right: 40px!important;
-  padding-left: 20px!important;
+  padding-right: 40px !important;
+  padding-left: 20px !important;
 }
 </style>

@@ -15,6 +15,7 @@
           style="margin: 15% 45%"
           color="#FFA000"
         ></v-progress-circular>
+        <!-- Start of table -->
         <div v-else>
           <v-text-field
             v-model="search"
@@ -46,6 +47,8 @@
             ></v-pagination>
           </div>
         </div>
+        <!-- End of table -->
+        <!-- start of nulls dialog -->
         <v-dialog light v-model="showDetails" width="400px">
           <div class="bg-white rounded text-right" style="direction: rtl">
             <v-btn icon @click="showDetails = false" class="mx-2"
@@ -108,6 +111,7 @@
             </div>
           </div>
         </v-dialog>
+        <!-- End of null dialog -->
       </div>
     </div>
   </div>
@@ -128,7 +132,7 @@ export default {
       showDetails: false,
       records: [],
       selectedItem: {
-        latitudeNullsCount: "null",
+        latitudeNullsCount: "",
         latitudeNullsCount: "",
         hisDateNullsCount: "",
         hisTimeNullsCount: "",
@@ -193,7 +197,6 @@ export default {
   methods: {
     rowClick(item) {
       this.selectedItem = item;
-      console.log(this.selectedItem)
       this.showDetails = true;
     },
     getInsertionHistory() {
@@ -210,9 +213,6 @@ export default {
         .then((response) => (vm.records = response.data.detail.records))
         .then((res) => (vm.isLoadingData = false));
     },
-  },
-  created() {
-    this.getInsertionHistory();
   },
   beforeMount() {
     this.$nuxt.$on("update-sipa-data-entry-history", () => {
