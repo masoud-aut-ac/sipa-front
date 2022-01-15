@@ -59,7 +59,6 @@ export default {
       comparisonDetail: "filters/getComparisonDetail",
       hasComparison: "filters/getHasComparison",
       getFilters: "filters/getFilters",
-      getFilters: "filters/getFilters",
       getProvince: "filters/getProvince",
     }),
     countOfFilters() {

@@ -99,16 +99,16 @@ export default {
     selectTableHeaders() {
       let res;
       switch (this.getSimilarityID) {
-        case 0:
+        case 1:
           res = this.headersSimilars0;
           break;
-        case 1:
+        case 2:
           res = this.headersSimilars1;
           break;
-        case 2:
+        case 3:
           res = this.headersSimilars2;
           break;
-        case 3:
+        case 4:
           res = this.headersSimilars3;
           break;
         default:

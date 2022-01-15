@@ -69,13 +69,13 @@
 
         <v-tooltip left>
           <template v-slot:activator="{ on, attrs }">
-            <v-list-item to="/similarity" v-bind="attrs" v-on="on">
+            <v-list-item to="/data-cleaning" v-bind="attrs" v-on="on">
               <v-list-item-icon>
-                <img src="/similarity2.png" />
+                <img src="/dataCleaning.png" />
               </v-list-item-icon>
             </v-list-item>
           </template>
-          <span>مشابهت‌یابی</span>
+          <span>پاکسازی داده</span>
         </v-tooltip>
       </v-list>
       <template v-slot:append>

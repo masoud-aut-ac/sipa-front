@@ -232,22 +232,22 @@ export default {
         tableHeadersColor() {
             let res;
             switch (this.getSimilarityID) {
-                case 0:
+                case 1:
                     res = 'bg-green-900';
                     break;
-                case 1:
+                case 2:
                     res = 'bg-green-400';
                     break;
-                case 2:
+                case 3:
                     res = 'bg-yellow';
                     break;
-                case 3:
+                case 4:
                     res = 'bg-orange';
                     break;
-                case 4:
+                case 5:
                     res = 'bg-red';
                     break;
-                case 5:
+                case 6:
                     res = 'bg-red-900';
                     break;
 
