@@ -76,9 +76,6 @@ export default {
 </script>
 
 <style>
-th {
-  color: white !important;
-}
 /* tr:hover {
   cursor: pointer;
 } */

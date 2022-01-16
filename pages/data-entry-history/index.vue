@@ -26,8 +26,9 @@
             reverse
           ></v-text-field>
           <v-data-table
+            light
             :headers="headers"
-            :items="records"
+            :items="recordsComputed"
             :page.sync="page"
             :items-per-page="itemsPerPage"
             :search="search"
@@ -60,53 +61,60 @@
                 <p>تعداد رکوردهای خالی</p>
               </div>
               <v-divider class="mt-2 mb-4"></v-divider>
-              <div class="grid grid-cols-2 my-2">
-                <div class="border-l-2 border-orange text-left pl-2">
-                  طول جغرافیایی
-                </div>
-                <p class="mx-2">{{ selectedItem.latitudeNullsCount }}</p>
+
+              <div class="flex my-1">
+                <p class="text-lg font-bold mx-2">
+                  {{ selectedItem.latitudeNullsCount }}
+                </p>
+                <p>طول جغرافیایی</p>
               </div>
-              <div class="grid grid-cols-2 my-2">
-                <div class="border-l-2 border-orange text-left pl-2">
-                  عرض جغرافیایی
-                </div>
-                <p class="mx-2">{{ selectedItem.longitudeNullsCount }}</p>
+              <div class="flex my-1">
+                <p class="text-lg font-bold mx-2">
+                  {{ selectedItem.longitudeNullsCount }}
+                </p>
+                <p>عرض جغرافیایی</p>
               </div>
-              <div class="grid grid-cols-2 my-2">
-                <div class="border-l-2 border-orange text-left pl-2">تاریخ</div>
-                <p class="mx-2">{{ selectedItem.hisDateNullsCount }}</p>
+              <div class="flex my-1">
+                <p class="text-lg font-bold mx-2">
+                  {{ selectedItem.hisDateNullsCount }}
+                </p>
+                <p>تاریخ</p>
               </div>
-              <div class="grid grid-cols-2 my-2">
-                <div class="border-l-2 border-orange text-left pl-2">ساعت</div>
-                <p class="mx-2">{{ selectedItem.hisTimeNullsCount }}</p>
+              <div class="flex my-1">
+                <p class="text-lg font-bold mx-2">
+                  {{ selectedItem.hisTimeNullsCount }}
+                </p>
+                <p>ساعت</p>
               </div>
-              <div class="grid grid-cols-2 my-2">
-                <div class="border-l-2 border-orange text-left pl-2">
-                  تعداد مجروح
-                </div>
-                <p class="mx-2">{{ selectedItem.injuredNullsCount }}</p>
+              <div class="flex my-1">
+                <p class="text-lg font-bold mx-2">
+                  {{ selectedItem.injuredNullsCount }}
+                </p>
+                <p>تعداد مجروح</p>
               </div>
-              <div class="grid grid-cols-2 my-2">
-                <div class="border-l-2 border-orange text-left pl-2">
-                  تعداد فوتی
-                </div>
-                <p class="mx-2">{{ selectedItem.deadNullsCount }}</p>
+              <div class="flex my-1">
+                <p class="text-lg font-bold mx-2">
+                  {{ selectedItem.deadNullsCount }}
+                </p>
+                <p>تعداد فوتی</p>
               </div>
-              <div class="grid grid-cols-2 my-2">
-                <div class="border-l-2 border-orange text-left pl-2">استان</div>
-                <p class="mx-2">{{ selectedItem.provinceNullsCount }}</p>
+              <div class="flex my-1">
+                <p class="text-lg font-bold mx-2">
+                  {{ selectedItem.provinceNullsCount }}
+                </p>
+                <p>استان</p>
               </div>
-              <div class="grid grid-cols-2 my-2">
-                <div class="border-l-2 border-orange text-left pl-2">
-                  نوع برخورد
-                </div>
-                <p class="mx-2">{{ selectedItem.incidentTypeNullsCount }}</p>
+              <div class="flex my-1">
+                <p class="text-lg font-bold mx-2">
+                  {{ selectedItem.incidentTypeNullsCount }}
+                </p>
+                <p>نوع برخورد</p>
               </div>
-              <div class="grid grid-cols-2 my-2">
-                <div class="border-l-2 border-orange text-left pl-2">
-                  شکل برخورد
-                </div>
-                <p class="mx-2">{{ selectedItem.incidentPartNullsCount }}</p>
+              <div class="flex my-1">
+                <p class="text-lg font-bold mx-2">
+                  {{ selectedItem.incidentPartNullsCount }}
+                </p>
+                <p>شکل برخورد</p>
               </div>
             </div>
           </div>
@@ -190,6 +198,18 @@ export default {
     ...mapGetters({
       getFilters: "filters/getFilters",
     }),
+    recordsComputed() {
+      this.records.forEach(
+        (x) => (x.dateTime = x.dateTime.replaceAll("-", "/").slice(0, 16))
+      );
+      this.records.forEach(
+        (x) => (x.firstHisDate = x.firstHisDate.replaceAll("-", "/"))
+      );
+      this.records.forEach(
+        (x) => (x.lastHisDate = x.lastHisDate.replaceAll("-", "/"))
+      );
+      return this.records;
+    },
   },
   components: {
     AppTableMain,
@@ -223,11 +243,11 @@ export default {
 </script>
 
 <style>
+.sipa-table-row th {
+  color: white!important;
+}
 .sipa-table-row tr:hover {
   cursor: pointer;
-}
-th {
-  color: white !important;
 }
 .v-data-table-header-mobile {
   display: none !important;

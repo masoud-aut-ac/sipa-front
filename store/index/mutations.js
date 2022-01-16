@@ -38,7 +38,7 @@ export default {
     setYear(state, payload) {
         state.year = payload;
     },
-    setSimilarityID(state, payload) {
-        state.similarityID = payload;
+    setDataCleaningDetail(state, payload) {
+        state.dataCleaningDetail = payload;
     },
 }

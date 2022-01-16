@@ -10,8 +10,8 @@ export default () => ({
         maxLon: 71.56494140625001,
     },
     mapID: 0,
-    mapLevel:0,
+    mapLevel: 0,
     indexType: 0,
     year: 0,
-    similarityID: null
+    dataCleaningDetail: { actionName: "", incidentInjuryType: "" }
 })

@@ -26,7 +26,7 @@ export default {
     getYear(state) {
         return state.year;
     },
-    getSimilarityID(state) {
-        return state.similarityID;
+    getDataCleaningDetail(state) {
+        return state.dataCleaningDetail;
     },
 }

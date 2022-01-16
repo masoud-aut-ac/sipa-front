@@ -71,7 +71,7 @@
           <template v-slot:activator="{ on, attrs }">
             <v-list-item to="/data-cleaning" v-bind="attrs" v-on="on">
               <v-list-item-icon>
-                <img src="/dataCleaning.png" />
+                <img src="/dataCleaning2.png" />
               </v-list-item-icon>
             </v-list-item>
           </template>

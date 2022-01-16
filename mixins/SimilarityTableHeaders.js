@@ -227,54 +227,29 @@ export default {
     },
     computed: {
         ...mapGetters({
-            getSimilarityID: "index/getSimilarityID"
+            getDataCleaningDetail: "index/getDataCleaningDetail"
         }),
-        tableHeadersColor() {
-            let res;
-            switch (this.getSimilarityID) {
-                case 1:
-                    res = 'bg-green-900';
-                    break;
-                case 2:
-                    res = 'bg-green-400';
-                    break;
-                case 3:
-                    res = 'bg-yellow';
-                    break;
-                case 4:
-                    res = 'bg-orange';
-                    break;
-                case 5:
-                    res = 'bg-red';
-                    break;
-                case 6:
-                    res = 'bg-red-900';
-                    break;
-
-            }
-            return res;
-        },
         headers() {
             return [
                 {
                     text: "روز تصادف",
                     align: "center",
                     sortable: false,
-                    value: "date",
+                    value: "hisDate",
                     class: this.tableHeadersColor,
                 },
                 {
                     text: "ساعت تصادف",
                     sortable: false,
                     align: "center",
-                    value: "time",
+                    value: "hisTime",
                     class: this.tableHeadersColor,
                 },
                 {
                     text: "محل تصادف",
                     sortable: false,
                     align: "center",
-                    value: "location",
+                    value: "address",
                     class: this.tableHeadersColor,
                 },
                 {
@@ -299,6 +274,31 @@ export default {
                     class: this.tableHeadersColor,
                 },
             ]
-        }
+        },
+        tableHeadersColor() {
+            let res;
+            switch (this.getDataCleaningDetail.actionName) {
+                case "SimilarsOne":
+                    res = 'bg-green-900 text-black';
+                    break;
+                case "SimilarsTwo":
+                    res = 'bg-green-400 text-black';
+                    break;
+                case "SimilarsThree":
+                    res = 'bg-yellow text-black';
+                    break;
+                case "SimilarsFour":
+                    res = 'bg-orange text-black';
+                    break;
+                case "SimilarsFive":
+                    res = 'bg-red text-black';
+                    break;
+                case "SimilarsSix":
+                    res = 'bg-red-900 text-black';
+                    break;
+
+            }
+            return res;
+        },
     }
 }

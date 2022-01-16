@@ -1,6 +1,8 @@
 <template>
   <div class="mr-20 text-sm max-h-screen" style="direction: rtl">
     <div class="mt-4 mb-7 ml-4">
+
+      <!-- Start of filters -->
       <div class="grid grid-cols-1 lg:grid-cols-6 gap-2">
         <AppFilterDate class="col-span-1 lg:col-span-2 pt-2" />
         <div
@@ -37,6 +39,8 @@
           >بررسی</v-btn
         >
       </div>
+      <!-- End of filters -->
+
       <v-progress-circular
         v-if="isLoadingData"
         :size="60"
@@ -45,6 +49,8 @@
         style="margin: 15% 45%"
         color="#FFA000"
       ></v-progress-circular>
+
+      <!-- Start of data cleaning groups -->
       <div v-else class="pb-8">
         <div v-for="group in groups" :key="group.persianTitle">
           <div class="flex items-stretch m-2 mt-8 mb-4">
@@ -86,9 +92,9 @@
               <v-btn
                 block
                 :color="action.color ? action.color : '#e0daee'"
-                @click="showSimilars()"
+                @click="showSimilars(action, 0)"
                 >{{
-                  "تصادفات غیرخسارتی: " + action.countInjuredAccidents
+                  "تصادفات جرحی: " + action.countInjuredAccidents
                 }}</v-btn
               >
             </div>
@@ -104,13 +110,15 @@
               <v-btn
                 block
                 :color="action.color ? action.color : '#e0daee'"
-                @click="showSimilars()"
+                @click="showSimilars(action, 1)"
                 >{{ "تصادفات فوتی: " + action.countDeadAccidents }}</v-btn
               >
             </div>
           </div>
         </div>
       </div>
+      <!-- End of data cleaning groups -->
+
     </div>
   </div>
 </template>
@@ -134,6 +142,7 @@ export default {
   computed: {
     ...mapGetters({
       getFilters: "filters/getFilters",
+      getDataCleaningDetail: "index/getDataCleaningDetail",
     }),
   },
   components: {
@@ -142,10 +151,11 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setSimilarityID: "index/setSimilarityID",
+      setDataCleaningDetail: "index/setDataCleaningDetail",
     }),
-    showSimilars() {
-      // this.$router.push("/similarity/details");
+    showSimilars(action, incidentType) {
+      this.setDataCleaningDetail({actionName: action.actionName, incidentInjuryType: incidentType})
+      this.$router.push("/data-cleaning/details");
     },
     getProvinces() {
       let vm = this;
