@@ -130,6 +130,7 @@ import { mapGetters } from "vuex";
 import AppTableMain from "~/components/App/AppTable/AppTableMain.vue";
 
 export default {
+  middleware: "auth",
   data() {
     return {
       isLoadingData: false,

@@ -47,6 +47,7 @@ import AppTableMain from "~/components/App/AppTable/AppTableMain.vue";
 import AppTableEdit from "~/components/App/AppTable/AppTableEdit.vue";
 
 export default {
+  middleware: "auth",
   data() {
     return {
       emptyRecordsTitle: "تعداد رکوردهای خالی",
