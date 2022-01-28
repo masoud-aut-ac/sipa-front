@@ -92,7 +92,7 @@
               <v-btn
                 block
                 :color="action.color ? action.color : '#e0daee'"
-                @click="showSimilars(action, 0)"
+                @click="showSimilars(action, 1)"
                 >{{
                   "تصادفات جرحی: " + action.countInjuredAccidents
                 }}</v-btn
@@ -110,7 +110,7 @@
               <v-btn
                 block
                 :color="action.color ? action.color : '#e0daee'"
-                @click="showSimilars(action, 1)"
+                @click="showSimilars(action, 0)"
                 >{{ "تصادفات فوتی: " + action.countDeadAccidents }}</v-btn
               >
             </div>
