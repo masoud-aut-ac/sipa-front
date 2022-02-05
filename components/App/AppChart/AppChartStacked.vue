@@ -98,7 +98,12 @@ export default {
         tooltip: {
           formatter: function () {
             return (
-              this.point.series.name + ": %" + +parseFloat(this.point.y).toFixed(0)
+              this.point.series.name +
+              ": " +
+              +this.point.custom.value +
+              " (" +
+              parseFloat(this.point.y).toFixed(0) +
+              "%)"
             );
           },
           style: {
@@ -112,6 +117,12 @@ export default {
               enabled: true,
             },
           },
+          series: {
+            keys: ["y", "custom.value"],
+            dataLabels: {
+              rotation: 270,
+            },
+          },
         },
         series: this.graphData.series.map((x, i) => {
           let res = {
@@ -120,9 +131,11 @@ export default {
             dataLabels: {
               enabled: true,
               useHTML: "<p></p>",
-            //   format: "{point.y:,.0f}",
-              formatter: function(){
-                  return (this.point.y > 5)? this.point.y.toFixed(0):"";
+              //   format: "{point.y:,.0f}",
+              formatter: function () {
+                return this.point.y > 15
+                  ? this.point.custom.value.toString()
+                  : "";
               },
               style: {
                 fontFamily: "IRANSans",

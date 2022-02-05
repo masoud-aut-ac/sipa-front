@@ -53,25 +53,29 @@
         <div class="bg-white rounded-lg p-6 shadow-md mt-4">
           <div class="flex items-stretch m-2">
             <span> <v-icon x-small color="#FFA000">mdi-circle</v-icon></span>
-            <p class="mr-2">توزیع داده های ثبت سوانح</p>
+            <p class="mr-2">
+              توزیع داده های ثبت سوانح
+              {{ "(تعداد کل رکوردها : " + sabteSavanehTotalRecords + ")" }}
+            </p>
           </div>
           <app-chart-stacked :graphData="samanehGraphData"></app-chart-stacked>
         </div>
         <div class="bg-white rounded-lg p-6 shadow-md mt-4">
           <div class="flex items-stretch m-2">
             <span> <v-icon x-small color="#FFA000">mdi-circle</v-icon></span>
-            <p class="mr-2">توزیع داده های پلیس</p>
+            <p class="mr-2">توزیع داده های پلیس
+              {{ "(تعداد کل رکوردها : " + policeTotalRecords + ")" }}
+            </p>
           </div>
           <app-chart-stacked :graphData="policeGraphData"></app-chart-stacked>
         </div>
         <div v-for="group in groups" :key="group.persianTitle">
-          
           <div class="flex items-stretch m-2 mt-8 mb-4">
             <v-icon x-small color="#FFA000">mdi-circle</v-icon>
             <p class="text-lg mr-2">{{ group.persianTitle }}</p>
           </div>
           <div
-            v-for="action in group.actions"
+            v-for="action in group.actions.filter((x) => x.show)"
             :key="action.actionName"
             class="
               mt-4
@@ -106,7 +110,22 @@
                 block
                 :color="action.color ? action.color : '#e0daee'"
                 @click="showSimilars(action, 1)"
-                >{{ "تصادفات جرحی: " + action.countInjuredAccidents }}</v-btn
+                >{{
+                  "تصادفات جرحی: " +
+                  action.countInjuredAccidents +
+                  "  (" +
+                  (
+                    (action.countInjuredAccidents * 100.0) /
+                    (action.sourceID == 1
+                      ? sabteSavanehTotalRecords == 0
+                        ? 1
+                        : sabteSavanehTotalRecords
+                      : policeTotalRecords == 0
+                      ? 1
+                      : policeTotalRecords)
+                  ).toFixed(1) +
+                  "%)"
+                }}</v-btn
               >
             </div>
             <div
@@ -122,7 +141,22 @@
                 block
                 :color="action.color ? action.color : '#e0daee'"
                 @click="showSimilars(action, 0)"
-                >{{ "تصادفات فوتی: " + action.countDeadAccidents }}</v-btn
+                >{{
+                  "تصادفات فوتی: " +
+                  action.countDeadAccidents +
+                  "  (" +
+                  (
+                    (action.countDeadAccidents * 100.0) /
+                    (action.sourceID == 1
+                      ? sabteSavanehTotalRecords == 0
+                        ? 1
+                        : sabteSavanehTotalRecords
+                      : policeTotalRecords == 0
+                      ? 1
+                      : policeTotalRecords)
+                  ).toFixed(1) +
+                  "%)"
+                }}</v-btn
               >
             </div>
           </div>
@@ -164,10 +198,7 @@ export default {
         res.series = this.provinceActions[0].actions
           .filter(
             (y) =>
-              (y.sourceID == 2 ||
-                y.actionName == "SimilarsOne" ||
-                y.actionName == "SimilarsTwo") &&
-              y.actionName !== "PoliceLocationCorrection"
+              y.sourceID == 2 && y.actionName !== "PoliceLocationCorrection"
           )
           .map((x) => {
             return { name: x.actionPersianName, data: [] };
@@ -176,16 +207,14 @@ export default {
           x.actions
             .filter(
               (y) =>
-                (y.sourceID == 2 ||
-                  y.actionName == "SimilarsOne" ||
-                  y.actionName == "SimilarsTwo") &&
-                y.actionName !== "PoliceLocationCorrection"
+                y.sourceID == 2 && y.actionName !== "PoliceLocationCorrection"
             )
             .forEach((y, i) => {
-              res.series[i].data.push(
+              res.series[i].data.push([
                 ((y.countDeadAccidents + y.countInjuredAccidents) * 100.0) /
-                  x.policeTotalRecords
-              );
+                  x.policeTotalRecords,
+                y.countDeadAccidents + y.countInjuredAccidents,
+              ]);
             });
         });
       }
@@ -204,10 +233,11 @@ export default {
           x.actions
             .filter((y) => y.sourceID == 1)
             .forEach((y, i) => {
-              res.series[i].data.push(
+              res.series[i].data.push([
                 ((y.countDeadAccidents + y.countInjuredAccidents) * 100.0) /
-                  x.policeTotalRecords
-              );
+                  x.sabteSavanehTotalRecords,
+                y.countDeadAccidents + y.countInjuredAccidents,
+              ]);
             });
         });
       }
@@ -251,6 +281,9 @@ export default {
         .then((response) => {
           vm.groups = response.data.detail.groups;
           vm.provinceActions = response.data.detail.provinceGroups;
+          vm.policeTotalRecords = response.data.detail.policeTotalRecords;
+          vm.sabteSavanehTotalRecords =
+            response.data.detail.sabteSavanehTotalRecords;
         })
         .then((res) => (vm.isLoadingData = false));
     },
