@@ -1,7 +1,6 @@
 <template>
   <div class="mr-20 text-sm max-h-screen" style="direction: rtl">
     <div class="mt-4 mb-7 ml-4">
-
       <!-- Start of filters -->
       <div class="grid grid-cols-1 lg:grid-cols-6 gap-2">
         <AppFilterDate class="col-span-1 lg:col-span-2 pt-2" />
@@ -49,10 +48,24 @@
         style="margin: 15% 45%"
         color="#FFA000"
       ></v-progress-circular>
-
       <!-- Start of data cleaning groups -->
       <div v-else class="pb-8">
+        <div class="bg-white rounded-lg p-6 shadow-md mt-4">
+          <div class="flex items-stretch m-2">
+            <span> <v-icon x-small color="#FFA000">mdi-circle</v-icon></span>
+            <p class="mr-2">توزیع داده های ثبت سوانح</p>
+          </div>
+          <app-chart-stacked :graphData="samanehGraphData"></app-chart-stacked>
+        </div>
+        <div class="bg-white rounded-lg p-6 shadow-md mt-4">
+          <div class="flex items-stretch m-2">
+            <span> <v-icon x-small color="#FFA000">mdi-circle</v-icon></span>
+            <p class="mr-2">توزیع داده های پلیس</p>
+          </div>
+          <app-chart-stacked :graphData="policeGraphData"></app-chart-stacked>
+        </div>
         <div v-for="group in groups" :key="group.persianTitle">
+          
           <div class="flex items-stretch m-2 mt-8 mb-4">
             <v-icon x-small color="#FFA000">mdi-circle</v-icon>
             <p class="text-lg mr-2">{{ group.persianTitle }}</p>
@@ -93,9 +106,7 @@
                 block
                 :color="action.color ? action.color : '#e0daee'"
                 @click="showSimilars(action, 1)"
-                >{{
-                  "تصادفات جرحی: " + action.countInjuredAccidents
-                }}</v-btn
+                >{{ "تصادفات جرحی: " + action.countInjuredAccidents }}</v-btn
               >
             </div>
             <div
@@ -118,7 +129,6 @@
         </div>
       </div>
       <!-- End of data cleaning groups -->
-
     </div>
   </div>
 </template>
@@ -137,6 +147,9 @@ export default {
       provinces: [],
       isLoadingData: false,
       groups: [],
+      provinceActions: [],
+      policeTotalRecords: null,
+      sabteSavanehTotalRecords: null,
     };
   },
   computed: {
@@ -144,6 +157,62 @@ export default {
       getFilters: "filters/getFilters",
       getDataCleaningDetail: "index/getDataCleaningDetail",
     }),
+    policeGraphData() {
+      let res = { categories: [], series: [] };
+      if (this.provinceActions.length > 0) {
+        res.categories = this.provinceActions.map((x) => x.persianName);
+        res.series = this.provinceActions[0].actions
+          .filter(
+            (y) =>
+              (y.sourceID == 2 ||
+                y.actionName == "SimilarsOne" ||
+                y.actionName == "SimilarsTwo") &&
+              y.actionName !== "PoliceLocationCorrection"
+          )
+          .map((x) => {
+            return { name: x.actionPersianName, data: [] };
+          });
+        this.provinceActions.forEach((x) => {
+          x.actions
+            .filter(
+              (y) =>
+                (y.sourceID == 2 ||
+                  y.actionName == "SimilarsOne" ||
+                  y.actionName == "SimilarsTwo") &&
+                y.actionName !== "PoliceLocationCorrection"
+            )
+            .forEach((y, i) => {
+              res.series[i].data.push(
+                ((y.countDeadAccidents + y.countInjuredAccidents) * 100.0) /
+                  x.policeTotalRecords
+              );
+            });
+        });
+      }
+      return res;
+    },
+    samanehGraphData() {
+      let res = { categories: [], series: [] };
+      if (this.provinceActions.length > 0) {
+        res.categories = this.provinceActions.map((x) => x.persianName);
+        res.series = this.provinceActions[0].actions
+          .filter((y) => y.sourceID == 1)
+          .map((x) => {
+            return { name: x.actionPersianName, data: [] };
+          });
+        this.provinceActions.forEach((x) => {
+          x.actions
+            .filter((y) => y.sourceID == 1)
+            .forEach((y, i) => {
+              res.series[i].data.push(
+                ((y.countDeadAccidents + y.countInjuredAccidents) * 100.0) /
+                  x.policeTotalRecords
+              );
+            });
+        });
+      }
+      return res;
+    },
   },
   components: {
     AppFilterDate,
@@ -154,7 +223,10 @@ export default {
       setDataCleaningDetail: "index/setDataCleaningDetail",
     }),
     showSimilars(action, incidentType) {
-      this.setDataCleaningDetail({actionName: action.actionName, incidentInjuryType: incidentType})
+      this.setDataCleaningDetail({
+        actionName: action.actionName,
+        incidentInjuryType: incidentType,
+      });
       this.$router.push("/data-cleaning/details");
     },
     getProvinces() {
@@ -176,7 +248,10 @@ export default {
           endTime: vm.getFilters.endTime,
         },
       })
-        .then((response) => (vm.groups = response.data.detail.groups))
+        .then((response) => {
+          vm.groups = response.data.detail.groups;
+          vm.provinceActions = response.data.detail.provinceGroups;
+        })
         .then((res) => (vm.isLoadingData = false));
     },
   },
