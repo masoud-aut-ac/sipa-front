@@ -53,14 +53,29 @@
         <div class="grid grid-cols-8 pt-8 py-6">
           <div class="col-span-4 text-center font-bold">
             {{
-              "تعداد رکوردهای سامانه ثبت سوانح : " + sabteSavanehTotalRecords+
-              ((groups[0] != null)? "  (جرحی : " + groups[0].samanehTotalInjuredCount+"  , فوتی: "+ groups[0].samanehTotalDeadCount +") ":"")
+              "تعداد رکوردهای سامانه ثبت سوانح : " +
+              sabteSavanehTotalRecords +
+              (groups[0] != null
+                ? "  (جرحی : " +
+                  groups[0].samanehTotalInjuredCount +
+                  "  , فوتی: " +
+                  groups[0].samanehTotalDeadCount +
+                  ") "
+                : "")
             }}
           </div>
           <div class="col-span-4 text-center font-bold">
-            {{ "تعداد رکوردهای پلیس : " + policeTotalRecords +
-              ((groups[0] != null)? "  (جرحی : " + groups[0].policeTotalInjuredCount+"  , فوتی: "+ groups[0].policeTotalDeadCount +") ":"")
-             }}
+            {{
+              "تعداد رکوردهای پلیس : " +
+              policeTotalRecords +
+              (groups[0] != null
+                ? "  (جرحی : " +
+                  groups[0].policeTotalInjuredCount +
+                  "  , فوتی: " +
+                  groups[0].policeTotalDeadCount +
+                  ") "
+                : "")
+            }}
           </div>
         </div>
         <div v-for="group in groups" :key="group.persianTitle">
@@ -105,6 +120,7 @@
             >
               <v-btn
                 block
+                :dark="action.actionName === 'SimilarsSix'"
                 :color="action.color ? action.color : '#e0daee'"
                 @click="showSimilars(action, 1)"
                 >{{
@@ -136,6 +152,7 @@
             >
               <v-btn
                 block
+                :dark="action.actionName === 'SimilarsSix'"
                 :color="action.color ? action.color : '#e0daee'"
                 @click="showSimilars(action, 0)"
                 >{{

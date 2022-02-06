@@ -303,7 +303,7 @@ export default {
       switch (this.getDataCleaningDetail.action.actionName) {
         case "PoliceDuplicate":
           res = {
-            one: "bg-red-900 text-black",
+            one: "bg-red-900 text-white-important",
             two: "bg-green-900 text-black",
           };
           break;
@@ -417,11 +417,8 @@ tr:hover {
   outline: none !important;
 }
 
-.temp .v-data-footer__select {
-  display: none !important;
+.text-white-important {
+  color: white !important;
 }
 
-.temp .v-data-footer__pagination {
-  display: none !important;
-}
 </style>
