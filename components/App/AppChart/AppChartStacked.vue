@@ -37,7 +37,7 @@ export default {
         title: {
           text: "",
         },
-        // colors: ["#332A7C", "#FFA000", "#736bb4", "#87DFF0", "#F25767"],
+        colors: this.graphData.colors,
         credits: {
           enabled: false,
         },

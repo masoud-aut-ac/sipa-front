@@ -218,6 +218,13 @@ export default {
           .map((x) => {
             return { name: x.actionPersianName, data: [] };
           });
+        res.colors = this.provinceActions[0].actions
+          .filter(
+            (y) =>
+              y.sourceID == 2 && y.actionName !== "PoliceLocationCorrection"
+          )
+          .map((x) => x.color);
+        res.colors[1] = "#434348";
         this.provinceActions.forEach((x) => {
           x.actions
             .filter(
@@ -244,6 +251,11 @@ export default {
           .map((x) => {
             return { name: x.actionPersianName, data: [] };
           });
+        res.colors = this.provinceActions[0].actions
+          .filter((y) => y.sourceID == 1)
+          .map((x) => x.color);
+        res.colors[1] = "#434348";
+
         this.provinceActions.forEach((x) => {
           x.actions
             .filter((y) => y.sourceID == 1)
