@@ -50,27 +50,21 @@
       ></v-progress-circular>
       <!-- Start of data cleaning groups -->
       <div v-else class="pb-8">
-        <div class="bg-white rounded-lg p-6 shadow-md mt-4">
-          <div class="flex items-stretch m-2">
-            <span> <v-icon x-small color="#FFA000">mdi-circle</v-icon></span>
-            <p class="mr-2">
-              توزیع داده های ثبت سوانح
-              {{ "(تعداد کل رکوردها : " + sabteSavanehTotalRecords + ")" }}
-            </p>
+        <div class="grid grid-cols-8 pt-8 py-6">
+          <div class="col-span-4 text-center font-bold">
+            {{
+              "تعداد رکوردهای سامانه ثبت سوانح : " + sabteSavanehTotalRecords
+            }}
           </div>
-          <app-chart-stacked :graphData="samanehGraphData"></app-chart-stacked>
-        </div>
-        <div class="bg-white rounded-lg p-6 shadow-md mt-4">
-          <div class="flex items-stretch m-2">
-            <span> <v-icon x-small color="#FFA000">mdi-circle</v-icon></span>
-            <p class="mr-2">توزیع داده های پلیس
-              {{ "(تعداد کل رکوردها : " + policeTotalRecords + ")" }}
-            </p>
+          <div class="col-span-4 text-center font-bold">
+            {{ "تعداد رکوردهای پلیس : " + policeTotalRecords }}
           </div>
-          <app-chart-stacked :graphData="policeGraphData"></app-chart-stacked>
         </div>
         <div v-for="group in groups" :key="group.persianTitle">
-          <div class="flex items-stretch m-2 mt-8 mb-4">
+          <div
+            v-if="group.persianTitle != null"
+            class="flex items-stretch m-2 mt-8 mb-4"
+          >
             <v-icon x-small color="#FFA000">mdi-circle</v-icon>
             <p class="text-lg mr-2">{{ group.persianTitle }}</p>
           </div>
@@ -117,12 +111,12 @@
                   (
                     (action.countInjuredAccidents * 100.0) /
                     (action.sourceID == 1
-                      ? sabteSavanehTotalRecords == 0
+                      ? group.samanehTotalInjuredCount == 0
                         ? 1
-                        : sabteSavanehTotalRecords
-                      : policeTotalRecords == 0
+                        : group.samanehTotalInjuredCount
+                      : group.policeTotalInjuredCount == 0
                       ? 1
-                      : policeTotalRecords)
+                      : group.policeTotalInjuredCount)
                   ).toFixed(1) +
                   "%)"
                 }}</v-btn
@@ -148,18 +142,38 @@
                   (
                     (action.countDeadAccidents * 100.0) /
                     (action.sourceID == 1
-                      ? sabteSavanehTotalRecords == 0
+                      ? group.samanehTotalDeadCount == 0
                         ? 1
-                        : sabteSavanehTotalRecords
-                      : policeTotalRecords == 0
+                        : group.samanehTotalDeadCount
+                      : group.policeTotalDeadCount == 0
                       ? 1
-                      : policeTotalRecords)
+                      : group.policeTotalDeadCount)
                   ).toFixed(1) +
                   "%)"
                 }}</v-btn
               >
             </div>
           </div>
+        </div>
+        <div v-if="showGraphs" class="bg-white rounded-lg p-6 shadow-md mt-4">
+          <div class="flex items-stretch m-2">
+            <span> <v-icon x-small color="#FFA000">mdi-circle</v-icon></span>
+            <p class="mr-2">
+              توزیع داده های ثبت سوانح
+              {{ "(تعداد کل رکوردها : " + sabteSavanehTotalRecords + ")" }}
+            </p>
+          </div>
+          <app-chart-stacked :graphData="samanehGraphData"></app-chart-stacked>
+        </div>
+        <div v-if="showGraphs" class="bg-white rounded-lg p-6 shadow-md mt-4">
+          <div class="flex items-stretch m-2">
+            <span> <v-icon x-small color="#FFA000">mdi-circle</v-icon></span>
+            <p class="mr-2">
+              توزیع داده های پلیس
+              {{ "(تعداد کل رکوردها : " + policeTotalRecords + ")" }}
+            </p>
+          </div>
+          <app-chart-stacked :graphData="policeGraphData"></app-chart-stacked>
         </div>
       </div>
       <!-- End of data cleaning groups -->
@@ -177,6 +191,7 @@ export default {
   middleware: "auth",
   data() {
     return {
+      showGraphs: true,
       province: null,
       provinces: [],
       isLoadingData: false,
@@ -253,11 +268,13 @@ export default {
       setDataCleaningDetail: "index/setDataCleaningDetail",
     }),
     showSimilars(action, incidentType) {
-      this.setDataCleaningDetail({
-        actionName: action.actionName,
-        incidentInjuryType: incidentType,
-      });
-      this.$router.push("/data-cleaning/details");
+      if (action.hasDetails) {
+        this.setDataCleaningDetail({
+          action: action,
+          incidentInjuryType: incidentType,
+        });
+        this.$router.push("/data-cleaning/details");
+      }
     },
     getProvinces() {
       let vm = this;
@@ -268,6 +285,7 @@ export default {
     },
     getDataCleaningReports() {
       let vm = this;
+      vm.showGraphs = vm.province == null;
       vm.isLoadingData = true;
       return this.$axios({
         method: "post",

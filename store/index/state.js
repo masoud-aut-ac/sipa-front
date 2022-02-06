@@ -13,5 +13,5 @@ export default () => ({
     mapLevel: 0,
     indexType: 0,
     year: 0,
-    dataCleaningDetail: { actionName: "", incidentInjuryType: "" }
+    dataCleaningDetail: { action: null, incidentInjuryType: "" }
 })
