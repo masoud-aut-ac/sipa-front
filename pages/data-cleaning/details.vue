@@ -82,53 +82,81 @@
                 ><v-icon>mdi-close</v-icon></v-btn
               >
             </div>
-            <v-data-table
-              :headers="firstTableHeaders"
-              :items="[selectedItem]"
-              class="shadow m-2"
-              light
-              hide-default-header
-              hide-default-footer
-              dir="rtl"
-            >
-              <template v-slot:header="{ props: { headers } }">
-                <thead>
-                  <tr>
-                    <th
-                      v-for="h in headers"
-                      :key="h.value + '3'"
-                      :class="tableHeadersColor.one"
-                    >
-                      <span>{{ h.text }}</span>
-                    </th>
-                  </tr>
-                </thead>
-              </template>
-            </v-data-table>
-            <v-data-table
-              :headers="secondTableHeaders"
-              :items="similarsComputed"
-              class="shadow m-2 mt-4"
-              light
-              :item-class="itemRowBackground"
-              hide-default-header
-              hide-default-footer
-              dir="rtl"
-            >
-              <template v-slot:header="{ props: { headers } }">
-                <thead>
-                  <tr>
-                    <th
-                      v-for="h in headers"
-                      :key="h.value + '2'"
-                      :class="tableHeadersColor.two"
-                    >
-                      <span>{{ h.text }}</span>
-                    </th>
-                  </tr>
-                </thead>
-              </template>
-            </v-data-table>
+            <div v-if="sameHeaders">
+              <v-data-table
+                :headers="firstTableHeaders"
+                :items="oneTableRecords"
+                class="shadow m-2"
+                light
+                hide-default-header
+                hide-default-footer
+                :item-class="itemRowBackground"
+                dir="rtl"
+              >
+                <template v-slot:header="{ props: { headers } }">
+                  <thead>
+                    <tr>
+                      <th
+                        v-for="h in headers"
+                        :key="h.value + '4'"
+                        style="background-color: #332a7c; color: white"
+                      >
+                        <span>{{ h.text }}</span>
+                      </th>
+                    </tr>
+                  </thead>
+                </template>
+              </v-data-table>
+            </div>
+            <div v-else>
+              <v-data-table
+                :headers="firstTableHeaders"
+                :items="[selectedItem]"
+                class="shadow m-2"
+                light
+                hide-default-header
+                hide-default-footer
+                dir="rtl"
+              >
+                <template v-slot:header="{ props: { headers } }">
+                  <thead>
+                    <tr>
+                      <th
+                        v-for="h in headers"
+                        :key="h.value + '3'"
+                        :class="tableHeadersColor.one"
+                      >
+                        <span>{{ h.text }}</span>
+                      </th>
+                    </tr>
+                  </thead>
+                </template>
+              </v-data-table>
+              <v-data-table
+                :headers="secondTableHeaders"
+                :items="similarsComputed"
+                class="shadow m-2 mt-4"
+                light
+                :item-class="itemRowBackground"
+                hide-default-header
+                hide-default-footer
+                dir="rtl"
+              >
+                <template v-slot:header="{ props: { headers } }">
+                  <thead>
+                    <tr>
+                      <th
+                        v-for="h in headers"
+                        :key="h.value + '2'"
+                        :class="tableHeadersColor.two"
+                      >
+                        <span>{{ h.text }}</span>
+                      </th>
+                    </tr>
+                  </thead>
+                </template>
+              </v-data-table>
+            </div>
           </div>
         </v-dialog>
       </div>
@@ -158,6 +186,12 @@ export default {
           value: "id",
         },
         {
+          text: "پایگاه داده",
+          align: "center",
+          sortable: false,
+          value: "source",
+        },
+        {
           text: "روز تصادف",
           align: "center",
           sortable: false,
@@ -180,6 +214,12 @@ export default {
           sortable: false,
           align: "center",
           value: "longitude",
+        },
+        {
+          text: "استان",
+          sortable: false,
+          align: "center",
+          value: "province",
         },
         {
           text: "تعداد فوتی",
@@ -256,6 +296,16 @@ export default {
           : this.getDataCleaningDetail.action.countInjuredAccidents;
       return Math.ceil(totalRecords / 20);
     },
+    sameHeaders() {
+      let res =
+        this.firstTableHeaders.length === this.secondTableHeaders.length;
+      if (res) {
+        for (let i = 0; i < this.firstTableHeaders.length; i++) {
+          res &= this.firstTableHeaders[i] === this.secondTableHeaders[i];
+        }
+      }
+      return res;
+    },
     firstTableHeaders() {
       let res = [];
       this.records
@@ -298,6 +348,12 @@ export default {
       });
       return res;
     },
+    oneTableRecords() {
+      let res = [];
+      res.push({ ...this.selectedItem });
+      this.similarsComputed.forEach((x) => res.push({ ...x }));
+      return res;
+    },
     tableHeadersColor() {
       let res;
       switch (this.getDataCleaningDetail.action.actionName) {
@@ -309,25 +365,25 @@ export default {
           break;
         case "SamanehDuplicate":
           res = {
-            one: "bg-red-900 text-black",
+            one: "bg-red-900 text-white-important",
             two: "bg-green-900 text-black",
           };
           break;
         case "SamanehInternalSimilar":
           res = {
-            one: "bg-red-900 text-black",
+            one: "bg-red-900 text-white-important",
             two: "bg-green-900 text-black",
           };
           break;
         case "PoliceInternalSimilars":
           res = {
-            one: "bg-red-900 text-black",
+            one: "bg-red-900 text-white-important",
             two: "bg-green-900 text-black",
           };
           break;
         case "SimilarsOne":
           res = {
-            one: "bg-green-900 text-black",
+            one: "bg-green-900 text-white-important",
             two: "bg-green-900 text-black",
           };
           break;
@@ -420,5 +476,4 @@ tr:hover {
 .text-white-important {
   color: white !important;
 }
-
 </style>
