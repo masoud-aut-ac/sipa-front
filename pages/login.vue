@@ -87,6 +87,8 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 export default {
   layout: "login",
   auth: "guest",
@@ -104,6 +106,10 @@ export default {
     };
   },
   methods: {
+    ...mapMutations({
+      setLoggedInUser: "index/setLoggedInUser",
+      setFilterValue: "filters/setFilterValue",
+    }),
     async login() {
       this.isLoadingData = true;
       this.passwordIsIncorrect = false;
@@ -116,8 +122,22 @@ export default {
           },
         });
         if (res.data.statusCode === 200) {
-          this.$auth.setUser(res.data.detail.user);
-          this.$router.push("/");
+          const authorizeRes = await this.$axios({
+            method: "get",
+            url: "user",
+          });
+          if (authorizeRes.data.statusCode === 200) {
+            this.$auth.setUser(authorizeRes.data.detail);
+            this.setLoggedInUser(authorizeRes.data.detail);
+            if (authorizeRes.data.detail.isAdmin) {
+              this.$router.push("/");
+            } else {
+              window.location.href = window.location.origin + "/data-cleaning";
+            }
+          } else {
+            this.isLoadingData = false;
+            this.passwordIsIncorrect = true;
+          }
         } else {
           this.isLoadingData = false;
           this.passwordIsIncorrect = true;

@@ -23,7 +23,7 @@
 
       <v-divider></v-divider>
       <v-list style="direction: rtl">
-        <v-tooltip left>
+        <v-tooltip left v-if="this.getLoggedInUser.isAdmin">
           <template v-slot:activator="{ on, attrs }">
             <v-list-item to="/" v-bind="attrs" v-on="on">
               <v-list-item-icon>
@@ -45,7 +45,7 @@
           <span>نمودارها</span>
         </v-tooltip> -->
 
-        <v-tooltip left>
+        <v-tooltip left v-if="this.getLoggedInUser.isAdmin">
           <template v-slot:activator="{ on, attrs }">
             <v-list-item to="/maps" v-bind="attrs" v-on="on">
               <v-list-item-icon>
@@ -80,6 +80,16 @@
       </v-list>
       <template v-slot:append>
         <v-list>
+          <v-tooltip left>
+            <template v-slot:activator="{ on, attrs }">
+              <v-list-item to="/help" v-bind="attrs" v-on="on">
+                <v-list-item-icon>
+                  <img src="/helpItem1.svg" />
+                </v-list-item-icon>
+              </v-list-item>
+            </template>
+            <span>راهنما</span>
+          </v-tooltip>
           <v-list-item class="text-center" @click="logout">
             <v-list-item-icon>
               <v-icon>mdi-location-exit</v-icon>
@@ -92,7 +102,7 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapGetters } from "vuex";
 
 export default {
   data() {
@@ -108,6 +118,11 @@ export default {
     async logout() {
       await this.$auth.logout();
     },
+  },
+  computed: {
+    ...mapGetters({
+      getLoggedInUser: "index/getLoggedInUser",
+    }),
   },
   watch: {
     mini(value) {
@@ -140,8 +155,8 @@ export default {
   text-align: right;
 }
 .v-tooltip__content {
-  font-family: IRANSans!important;
+  font-family: IRANSans !important;
   font-size: 0.725rem !important;
-  z-index: 500!important;
+  z-index: 500 !important;
 }
 </style>

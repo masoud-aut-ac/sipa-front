@@ -12,6 +12,7 @@
   "dependencies": {
     "@nuxtjs/auth-next": "^5.0.0-1622918202.e815752",
     "@nuxtjs/axios": "^5.13.1",
+    "@pdftron/webviewer": "^8.4.1",
     "core-js": "^3.9.1",
     "highcharts": "^9.1.1",
     "highcharts-vue": "^1.4.0",

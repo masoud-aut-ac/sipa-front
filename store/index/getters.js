@@ -29,4 +29,7 @@ export default {
     getDataCleaningDetail(state) {
         return state.dataCleaningDetail;
     },
+    getLoggedInUser(state) {
+        return state.loggedInUser;
+    },
 }

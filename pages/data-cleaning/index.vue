@@ -225,6 +225,7 @@ export default {
     ...mapGetters({
       getFilters: "filters/getFilters",
       getDataCleaningDetail: "index/getDataCleaningDetail",
+      getLoggedInUser: "index/getLoggedInUser",
     }),
     policeGraphData() {
       let res = { categories: [], series: [] };
@@ -341,6 +342,10 @@ export default {
   created() {
     this.getProvinces();
     this.getDataCleaningReports();
+    if (!this.getLoggedInUser.isAdmin) {
+      this.showGraphs = false;
+      this.province = this.getLoggedInUser.provinceID;
+    }
   },
 };
 </script>

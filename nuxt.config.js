@@ -36,6 +36,7 @@ export default {
     { src: '~/plugins/vuex-persist.js', ssr: false },
     { src: '~/plugins/filters.js', ssr: false },
     { src: '~/plugins/utils.js', ssr: false },
+    // { src: '~/plugins/pdfvuer.js', ssr: false }
     // { src: '~/plugins/leaflet.ajax.min.js' },
   ],
 
@@ -65,7 +66,6 @@ export default {
 
   auth: {
     redirect: {
-      home: '/',
       logout: '/login'
     },
     user: {
@@ -109,6 +109,6 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-	babel: { compact: true }
+    babel: { compact: true },
   }
 }

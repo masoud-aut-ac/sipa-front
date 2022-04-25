@@ -41,4 +41,7 @@ export default {
     setDataCleaningDetail(state, payload) {
         state.dataCleaningDetail = payload;
     },
+    setLoggedInUser(state, payload) {
+        state.loggedInUser = payload;
+    },
 }

@@ -13,5 +13,6 @@ export default () => ({
     mapLevel: 0,
     indexType: 0,
     year: 0,
-    dataCleaningDetail: { action: null, incidentInjuryType: "" }
+    dataCleaningDetail: { action: null, incidentInjuryType: "" },
+    loggedInUser: null
 })
