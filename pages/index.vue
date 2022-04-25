@@ -138,6 +138,7 @@ export default {
     ...mapGetters({
       getSideSheet: "index/getSideSheet",
       getFilters: "filters/getFilters",
+      getLoggedInUser: "index/getLoggedInUser",
     }),
     allowedFilterTypes() {
       let res = [
@@ -235,6 +236,9 @@ export default {
     },
   },
   created() {
+    if (!this.getLoggedInUser.isAdmin)
+      window.location.href = window.location.origin + "/data-cleaning";
+
     this.fetchGeneralData();
     this.deleteRemovedFilterIds(10);
     this.setFilterValue({ id: 10, value: null });
