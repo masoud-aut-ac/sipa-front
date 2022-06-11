@@ -13,7 +13,7 @@
       :graphCategory="10"
       :title="'ماه'"
       :chartMode="'Column'"
-      class="col-span-1 lg:col-span-4 2xl:col-span-2"
+      class="col-span-1 lg:col-span-2 2xl:col-span-2"
     />
     <app-chart
       :graphCategory="11"

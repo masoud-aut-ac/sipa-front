@@ -288,6 +288,7 @@ export default {
     ...mapGetters({
       getFilters: "filters/getFilters",
       getDataCleaningDetail: "index/getDataCleaningDetail",
+      getProvinceID: "index/getProvinceID",
     }),
     totalPages() {
       var totalRecords =
@@ -444,6 +445,7 @@ export default {
         method: "post",
         url: "DataCleaningReport/Details",
         data: {
+          province: this.getProvinceID,
           actionName: vm.getDataCleaningDetail.action.actionName,
           incidentInjuryType: vm.getDataCleaningDetail.incidentInjuryType,
           startTime: vm.getFilters.startTime,

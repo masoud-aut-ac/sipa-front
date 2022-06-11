@@ -32,4 +32,7 @@ export default {
     getLoggedInUser(state) {
         return state.loggedInUser;
     },
+    getProvinceID(state){
+        return state.provinceID
+    }
 }

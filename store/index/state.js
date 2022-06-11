@@ -14,5 +14,6 @@ export default () => ({
     indexType: 0,
     year: 0,
     dataCleaningDetail: { action: null, incidentInjuryType: "" },
-    loggedInUser: null
+    loggedInUser: null,
+    provinceID : null
 })

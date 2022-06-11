@@ -44,4 +44,7 @@ export default {
     setLoggedInUser(state, payload) {
         state.loggedInUser = payload;
     },
+    setProvinceID(state, payload) {
+        state.provinceID = payload;
+    }
 }

@@ -19,7 +19,8 @@
           <div class="flex">
             <p class="mt-2 ml-2">استان:</p>
             <selectvue
-              v-model="province"
+              :value="getProvinceID"
+              @input="setProvinceID"
               :options="provinces"
               label="persianName"
               :reduce="(option) => option.id"
@@ -212,7 +213,6 @@ export default {
   data() {
     return {
       showGraphs: true,
-      province: null,
       provinces: [],
       isLoadingData: false,
       groups: [],
@@ -226,6 +226,7 @@ export default {
       getFilters: "filters/getFilters",
       getDataCleaningDetail: "index/getDataCleaningDetail",
       getLoggedInUser: "index/getLoggedInUser",
+      getProvinceID: "index/getProvinceID",
     }),
     policeGraphData() {
       let res = { categories: [], series: [] };
@@ -299,6 +300,7 @@ export default {
   methods: {
     ...mapMutations({
       setDataCleaningDetail: "index/setDataCleaningDetail",
+      setProvinceID: "index/setProvinceID",
     }),
     showSimilars(action, incidentType) {
       if (action.hasDetails) {
@@ -318,13 +320,13 @@ export default {
     },
     getDataCleaningReports() {
       let vm = this;
-      vm.showGraphs = vm.province == null;
+      vm.showGraphs = vm.getProvinceID == null;
       vm.isLoadingData = true;
       return this.$axios({
         method: "post",
         url: "DataCleaningReport",
         data: {
-          province: vm.province,
+          province: vm.getProvinceID,
           startTime: vm.getFilters.startTime,
           endTime: vm.getFilters.endTime,
         },

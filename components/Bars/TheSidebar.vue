@@ -34,7 +34,7 @@
           <span>گزارش کلی</span>
         </v-tooltip>
 
-        <!-- <v-tooltip left>
+        <v-tooltip left>
           <template v-slot:activator="{ on, attrs }">
             <v-list-item to="/charts" v-bind="attrs" v-on="on">
               <v-list-item-icon>
@@ -43,7 +43,7 @@
             </v-list-item>
           </template>
           <span>نمودارها</span>
-        </v-tooltip> -->
+        </v-tooltip>
 
         <v-tooltip left v-if="this.getLoggedInUser.isAdmin">
           <template v-slot:activator="{ on, attrs }">
