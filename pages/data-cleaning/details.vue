@@ -433,9 +433,11 @@ export default {
       this.getDataCleaningDetails();
     },
     rowClick(item) {
-      this.dialog = true;
-      this.selectedItem = item;
       this.similars = this.records.find((x) => item.id === x.Key.id).Value;
+      if (this.similars != null && this.similars.length != 0) {
+        this.dialog = true;
+        this.selectedItem = item;
+      }
     },
     getDataCleaningDetails() {
       let vm = this;

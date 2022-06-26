@@ -16,7 +16,7 @@ export default () => ({
     },
     {
         id: 5,
-        label: "شهر",
+        label: "شهرستان",
         englishLabel: "city",
         apiRequestLabel: "city",
         labelChip: "",
@@ -105,6 +105,6 @@ export default () => ({
         value: null,
         options: [],
     },
-],
+    ],
     province: null,
 })

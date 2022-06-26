@@ -49,16 +49,16 @@ export default {
     AppFilterChips,
     AppMapIDSwitch,
     AppMapLevelSwitch,
-    AppMapIndexTypeSwitch
+    AppMapIndexTypeSwitch,
   },
   computed: {
     ...mapGetters({
       getSideSheet: "index/getSideSheet",
       getFilters: "filters/getFilters",
+      getMapLevel: "index/getMapLevel",
     }),
     allowedFilterTypes() {
       let res = [
-        "province",
         "infoSource",
         "infoDevice",
         "vehicleType",
@@ -67,7 +67,9 @@ export default {
         "incidentReason",
         "incidentInjuriesType",
       ];
-      this.getFilters.province !== null ? res.push("city") : res.push("");
+      if (this.getMapLevel != 0) res.push("province");
+      if (this.getMapLevel == 2 && this.getFilters.province !== null)
+        res.push("city");
       return res;
     },
   },
