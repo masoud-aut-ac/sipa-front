@@ -49,22 +49,22 @@
       :chartMode="'Column'"
       class="col-span-1 lg:col-span-4 xl:col-span-2"
     />
-    <app-chart
+    <!-- <app-chart
       :graphCategory="4"
       :title="'تعداد وسایل در هر تصادف'"
       :chartMode="'Pie'"
       class="col-span-1 lg:col-span-2"
-    />
+    /> -->
     <app-chart
       :graphCategory="3"
-      :title="'تعداد فوتی ها هر تصادف'"
+      :title="'تعداد فوتی در هر تصادف'"
       v-show="showGraph('deadCount')"
       :chartMode="'Pie'"
       class="col-span-1 lg:col-span-2"
     />
     <app-chart
       :graphCategory="2"
-      :title="'تعداد مجروحان هر تصادف'"
+      :title="'تعداد جرحی در هر تصادف'"
       v-show="showGraph('injuredCount')"
       :chartMode="'Pie'"
       class="col-span-1 lg:col-span-2"
