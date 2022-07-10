@@ -23,7 +23,7 @@
     />
     <app-chart
       :graphCategory="8"
-      :title="'علت تامه تصادف ها'"
+      :title="'علت تامه تصادف'"
       v-show="showGraph('incidentReason')"
       :chartMode="'Column'"
       class="col-span-1 lg:col-span-4 2xl:col-span-2"
@@ -38,7 +38,7 @@
     <app-chart
       :graphCategory="6"
       :chartMode="'Column'"
-      :title="'انواع برخورد در هر تصادف'"
+      :title="'نوع برخورد'"
       v-show="showGraph('incidentType')"
       class="col-span-1 lg:col-span-4 xl:col-span-2"
     />
@@ -49,12 +49,12 @@
       :chartMode="'Column'"
       class="col-span-1 lg:col-span-4 xl:col-span-2"
     />
-    <!-- <app-chart
+    <app-chart
       :graphCategory="4"
       :title="'تعداد وسایل در هر تصادف'"
       :chartMode="'Pie'"
       class="col-span-1 lg:col-span-2"
-    /> -->
+    />
     <app-chart
       :graphCategory="3"
       :title="'تعداد فوتی در هر تصادف'"
