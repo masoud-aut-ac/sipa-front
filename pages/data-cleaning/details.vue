@@ -156,6 +156,52 @@
                   </thead>
                 </template>
               </v-data-table>
+              <v-data-table
+                :headers="thirdTableHeaders"
+                :items="emergencies"
+                class="shadow m-2 mt-4"
+                light
+                hide-default-header
+                hide-default-footer
+                dir="rtl"
+              >
+                <template v-slot:header="{ props: { headers } }">
+                  <thead>
+                    <tr>
+                      <th
+                        v-for="h in headers"
+                        :key="h.value + '2'"
+                        :class="tableHeadersColor.two"
+                      >
+                        <span>{{ h.text }}</span>
+                      </th>
+                    </tr>
+                  </thead>
+                </template>
+              </v-data-table>
+              <v-data-table
+                :headers="fourthTableHeaders"
+                :items="redCrescents"
+                class="shadow m-2 mt-4"
+                light
+                hide-default-header
+                hide-default-footer
+                dir="rtl"
+              >
+                <template v-slot:header="{ props: { headers } }">
+                  <thead>
+                    <tr>
+                      <th
+                        v-for="h in headers"
+                        :key="h.value + '2'"
+                        :class="tableHeadersColor.two"
+                      >
+                        <span>{{ h.text }}</span>
+                      </th>
+                    </tr>
+                  </thead>
+                </template>
+              </v-data-table>
             </div>
           </div>
         </v-dialog>
@@ -176,6 +222,8 @@ export default {
       dialog: false,
       records: [],
       similars: [],
+      emergencies:[],
+      redCrescents:[],
       pageNumber: 1,
       selectedItem: null,
       headers: [
@@ -281,6 +329,12 @@ export default {
           align: "center",
           value: "bonus",
         },
+        {
+          text: "آدرس",
+          sortable: false,
+          align: "center",
+          value: "address",
+        },
       ],
     };
   },
@@ -322,6 +376,26 @@ export default {
     secondTableHeaders() {
       let res = [];
       this.similars.forEach((x) => {
+        Object.keys(x).forEach((y) => {
+          if (x[y] != null) res.push(y);
+        });
+      });
+      res = this.headers.filter((x) => res.some((y) => x.value == y));
+      return res;
+    },
+    thirdTableHeader(){
+      let res = [];
+      this.emergencies.forEach((x) => {
+        Object.keys(x).forEach((y) => {
+          if (x[y] != null) res.push(y);
+        });
+      });
+      res = this.headers.filter((x) => res.some((y) => x.value == y));
+      return res;
+    },
+    fourthTableHeaders(){
+      let res = [];
+      this.redCrescents.forEach((x) => {
         Object.keys(x).forEach((y) => {
           if (x[y] != null) res.push(y);
         });
@@ -433,7 +507,10 @@ export default {
       this.getDataCleaningDetails();
     },
     rowClick(item) {
-      this.similars = this.records.find((x) => item.id === x.Key.id).Value;
+      let values = this.records.find((x) => item.id === x.Key.id).Value;
+      this.similars = values.filter(x=> x.source =='پلیس');
+      this.emergencies = values.filter(x=> x.source =='اورژانس');
+      this.redCrescents = values.filter(x=> x.source =='هلال احمر');
       if (this.similars != null && this.similars.length != 0) {
         this.dialog = true;
         this.selectedItem = item;
