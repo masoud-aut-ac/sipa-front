@@ -134,7 +134,7 @@
               </v-data-table>
               <v-data-table
                 :headers="secondTableHeaders"
-                :items="similarsComputed"
+                :items="similars"
                 class="shadow m-2 mt-4"
                 light
                 :item-class="itemRowBackground"
@@ -157,6 +157,7 @@
                 </template>
               </v-data-table>
               <v-data-table
+                v-show="emergencies.length != 0"
                 :headers="thirdTableHeaders"
                 :items="emergencies"
                 class="shadow m-2 mt-4"
@@ -181,6 +182,7 @@
               </v-data-table>
               <v-data-table
                 :headers="fourthTableHeaders"
+                v-show="redCrescents.length != 0"
                 :items="redCrescents"
                 class="shadow m-2 mt-4"
                 light
@@ -222,8 +224,8 @@ export default {
       dialog: false,
       records: [],
       similars: [],
-      emergencies:[],
-      redCrescents:[],
+      emergencies: [],
+      redCrescents: [],
       pageNumber: 1,
       selectedItem: null,
       headers: [
@@ -231,7 +233,7 @@ export default {
           text: "شناسه تصادف",
           align: "center",
           sortable: false,
-          value: "id",
+          value: "nrpID",
         },
         {
           text: "پایگاه داده",
@@ -383,7 +385,7 @@ export default {
       res = this.headers.filter((x) => res.some((y) => x.value == y));
       return res;
     },
-    thirdTableHeader(){
+    thirdTableHeaders() {
       let res = [];
       this.emergencies.forEach((x) => {
         Object.keys(x).forEach((y) => {
@@ -393,7 +395,7 @@ export default {
       res = this.headers.filter((x) => res.some((y) => x.value == y));
       return res;
     },
-    fourthTableHeaders(){
+    fourthTableHeaders() {
       let res = [];
       this.redCrescents.forEach((x) => {
         Object.keys(x).forEach((y) => {
@@ -405,28 +407,28 @@ export default {
     },
     recordsComputed() {
       let res = this.records.map((x) => x.Key);
-      res.forEach((x) => {
-        let datetime = this.$convertToDateTime(x.hisDate, x.hisTime);
-        x.hisDate = datetime.date;
-        x.hisTime = datetime.time;
-      });
+      // res.forEach((x) => {
+      //   let datetime = this.$convertToDateTime(x.hisDate, x.hisTime);
+      //   x.hisDate = datetime.date;
+      //   x.hisTime = datetime.time;
+      // });
 
       return res;
     },
-    similarsComputed() {
-      let res = this.similars.map((x) => {
-        let s = { ...x };
-        let datetime = this.$convertToDateTime(x.hisDate, x.hisTime);
-        s.hisDate = datetime.date;
-        s.hisTime = datetime.time;
-        return s;
-      });
-      return res;
-    },
+    // similarsComputed() {
+    //   let res = this.similars.map((x) => {
+    //     let s = { ...x };
+    //     let datetime = this.$convertToDateTime(x.hisDate, x.hisTime);
+    //     s.hisDate = datetime.date;
+    //     s.hisTime = datetime.time;
+    //     return s;
+    //   });
+    //   return res;
+    // },
     oneTableRecords() {
       let res = [];
       res.push({ ...this.selectedItem });
-      this.similarsComputed.forEach((x) => res.push({ ...x }));
+      this.similars.forEach((x) => res.push({ ...x }));
       return res;
     },
     tableHeadersColor() {
@@ -508,9 +510,11 @@ export default {
     },
     rowClick(item) {
       let values = this.records.find((x) => item.id === x.Key.id).Value;
-      this.similars = values.filter(x=> x.source =='پلیس');
-      this.emergencies = values.filter(x=> x.source =='اورژانس');
-      this.redCrescents = values.filter(x=> x.source =='هلال احمر');
+      this.similars = values.filter(
+        (x) => x.source != "اورژانس" && x.source != "هلال احمر"
+      );
+      this.emergencies = values.filter((x) => x.source == "اورژانس");
+      this.redCrescents = values.filter((x) => x.source == "هلال احمر");
       if (this.similars != null && this.similars.length != 0) {
         this.dialog = true;
         this.selectedItem = item;
@@ -533,7 +537,30 @@ export default {
           skip: (this.pageNumber - 1) * 20,
         },
       })
-        .then((response) => (vm.records = response.data.detail.records))
+        .then(
+          (response) =>
+            (vm.records = response.data.detail.records.map((x) => {
+              let datetime = this.$convertToDateTime(
+                x.Key.hisDate,
+                x.Key.hisTime
+              );
+              x.Key.hisDate = datetime.date;
+              x.Key.hisTime = datetime.time;
+              x.Key.deadCount =
+                x.Key.deadCount == null ? "نامشخص" : x.Key.deadCount;
+              x.Key.injuredCount =
+                x.Key.injuredCount == null ? "نامشخص" : x.Key.injuredCount;
+              x.Value.forEach((y) => {
+                let datetime2 = this.$convertToDateTime(y.hisDate, y.hisTime);
+                y.hisDate = datetime2.date;
+                y.hisTime = datetime2.time;
+                y.deadCount = y.deadCount == null ? "نامشخص" : y.deadCount;
+                y.injuredCount =
+                  y.injuredCount == null ? "نامشخص" : y.injuredCount;
+              });
+              return x;
+            }))
+        )
         .then((res) => (vm.isLoadingData = false));
     },
   },
