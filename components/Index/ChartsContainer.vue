@@ -21,13 +21,13 @@
       :chartMode="'Column'"
       class="col-span-1 lg:col-span-4 2xl:col-span-2"
     />
-    <app-chart
+    <!-- <app-chart
       :graphCategory="8"
       :title="'علت تامه تصادف'"
       v-show="showGraph('incidentReason')"
       :chartMode="'Column'"
       class="col-span-1 lg:col-span-4 2xl:col-span-2"
-    />
+    /> -->
     <app-chart
       :graphCategory="7"
       :title="'شکل برخورد'"

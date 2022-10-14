@@ -16,7 +16,7 @@ export default {
         {
           path: "../webviewer",
           initialDoc:
-            "https://pdftron.s3.amazonaws.com/downloads/pl/webviewer-demo.pdf", // replace with your own PDF file
+            "/help.pdf", // replace with your own PDF file
         },
         this.$refs.viewer
       ).then((instance) => {
