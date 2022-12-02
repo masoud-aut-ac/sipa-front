@@ -14,14 +14,14 @@ export default {
     getMapBounds(state) {
         return state.mapBounds;
     },
-    getMapID(state) {
-        return state.mapID;
+    getAggregationType(state) {
+        return state.aggregationType;
     },
     getMapLevel(state) {
         return state.mapLevel;
     },
-    getIndexType(state) {
-        return state.indexType;
+    getIndex(state) {
+        return state.index;
     },
     getYear(state) {
         return state.year;
@@ -33,6 +33,9 @@ export default {
         return state.loggedInUser;
     },
     getProvinceID(state){
-        return state.provinceID
+        return state.provinceID;
+    },
+    getDensityType(state){
+        return state.densityType;
     }
 }

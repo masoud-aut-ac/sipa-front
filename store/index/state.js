@@ -9,11 +9,12 @@ export default () => ({
         maxLat: 39.07890809706475,
         maxLon: 71.56494140625001,
     },
-    mapID: 0,
+    aggregationType: 0,
     mapLevel: 0,
-    indexType: 0,
+    index: 0,
+    densityType: 0,
     year: 0,
     dataCleaningDetail: { action: null, incidentInjuryType: "" },
     loggedInUser: null,
-    provinceID : null
+    provinceID: null
 })

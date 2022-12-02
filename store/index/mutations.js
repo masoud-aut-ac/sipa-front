@@ -26,14 +26,14 @@ export default {
     setMapMaxLng(state, payload) {
         state.mapMaxLng = payload;
     },
-    setMapID(state, payload) {
-        state.mapID = payload;
+    setAggregationType(state, payload) {
+        state.aggregationType = payload;
     },
     setMapLevel(state, payload) {
         state.mapLevel = payload;
     },
-    setIndexType(state, payload) {
-        state.indexType = payload;
+    setIndex(state, payload) {
+        state.index = payload;
     },
     setYear(state, payload) {
         state.year = payload;
@@ -46,5 +46,8 @@ export default {
     },
     setProvinceID(state, payload) {
         state.provinceID = payload;
+    },
+    setDensityType(state, payload) {
+        state.densityType = payload;
     }
 }

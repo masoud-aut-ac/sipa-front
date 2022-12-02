@@ -41,21 +41,21 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getIndexType: "index/getIndexType",
+      getIndex: "index/getIndex",
       getMapLevel: "index/getMapLevel",
     }),
   },
   methods: {
     selectType(id) {
-      if (this.getMapLevel === 2 && this.getIndexType === 2 && id !== 2)
-        this.setIndexType(1);
+      if (this.getMapLevel === 2 && this.getIndex === 2 && id !== 2)
+        this.setIndex(1);
       this.mapLevels.forEach((y) => (y.isSelected = false));
       this.mapLevels.find((y) => y.id === id).isSelected = true;
       this.setMapLevel(id);
     },
     ...mapMutations({
       setMapLevel: "index/setMapLevel",
-      setIndexType: "index/setIndexType",
+      setIndex: "index/setIndex",
     }),
   },
   created() {

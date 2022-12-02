@@ -4,8 +4,9 @@
       <div class="col-span-9 lg:col-span-3">
         <AppFilterDate class="my-2" :isMapPage="true" />
         <AppMapLevelSwitch class="my-2" />
-        <AppMapIndexTypeSwitch class="my-2" />
-        <AppMapIDSwitch class="my-2" />
+        <AppMapIndexSwitch class="my-2" />
+        <AppMapDensitySwitch v-show="getIndex != 0" class="my-2" />
+        <AppAggregationTypeSwitch class="my-2" />
         <AppFilterChips
           class="my-2 max-w-xs"
           :allowedFilterTypes="allowedFilterTypes"
@@ -30,9 +31,10 @@ import { mapGetters } from "vuex";
 import AppMap from "~/components/App/AppMap.vue";
 import AppFilterDate from "~/components/App/AppFilterDate.vue";
 import AppFilterChips from "~/components/App/AppFilterChips.vue";
-import AppMapIDSwitch from "~/components/App/AppMap/AppMapIDSwitch.vue";
+import AppAggregationTypeSwitch from "~/components/App/AppMap/AppAggregationTypeSwitch.vue";
 import AppMapLevelSwitch from "~/components/App/AppMap/AppMapLevelSwitch.vue";
-import AppMapIndexTypeSwitch from "~/components/App/AppMap/AppMapIndexTypeSwitch.vue";
+import AppMapIndexSwitch from "~/components/App/AppMap/AppMapIndexSwitch.vue";
+import AppMapDensitySwitch from "~/components/App/AppMap/AppMapDensitySwitch.vue";
 import "vue-select/dist/vue-select.css";
 
 export default {
@@ -47,15 +49,17 @@ export default {
     AppMap,
     AppFilterDate,
     AppFilterChips,
-    AppMapIDSwitch,
+    AppAggregationTypeSwitch,
     AppMapLevelSwitch,
-    AppMapIndexTypeSwitch,
+    AppMapIndexSwitch,
+    AppMapDensitySwitch
   },
   computed: {
     ...mapGetters({
       getSideSheet: "index/getSideSheet",
       getFilters: "filters/getFilters",
       getMapLevel: "index/getMapLevel",
+      getIndex: "index/getIndex",
     }),
     allowedFilterTypes() {
       let res = [

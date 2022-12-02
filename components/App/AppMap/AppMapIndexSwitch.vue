@@ -1,9 +1,9 @@
 <template>
-  <div class="bg-white rounded-lg p-2 shadow-md font-serif">
+  <div class="bg-white rounded-lg shadow-md p-2 font-serif">
     <div class="flex">
       <!-- <v-icon color="#FFA000" class="ml-2">mdi-poll</v-icon> -->
       <button
-        v-for="t in mapTypes"
+        v-for="t in mapTypesComputed"
         :key="t.id"
         class="
           p-2
@@ -14,8 +14,7 @@
           duration-100
           ease-in-out
           transform
-          hover:scale-110
-          hover:shadow-sm
+          hover:scale-110 hover:shadow-sm
         "
         :class="{ selected: t.isSelected }"
         @click="selectType(t.id)"
@@ -33,29 +32,39 @@ export default {
   data() {
     return {
       mapTypes: [
-        { id: 0, text: "تصادف", isSelected: false },
-        { id: 1, text: "مجروح", isSelected: false },
-        { id: 2, text: "متوفی", isSelected: false },
+        { id: 0, text: "تعداد", isSelected: false },
+        { id: 1, text: "تراکم", isSelected: false },
+        { id: 2, text: "همسایگی", isSelected: false },
       ],
     };
   },
   computed: {
     ...mapGetters({
-      getMapID: "index/getMapID",
+      getIndex: "index/getIndex",
+      getMapLevel: "index/getMapLevel",
     }),
+    mapTypesComputed() {
+      if (this.getMapLevel === 2) return this.mapTypes;
+      else return this.mapTypes.filter((x) => x.id != 2);
+    },
   },
   methods: {
     selectType(id) {
       this.mapTypes.forEach((y) => (y.isSelected = false));
       this.mapTypes.find((y) => y.id === id).isSelected = true;
-      this.setMapID(id);
+      this.setIndex(id);
     },
     ...mapMutations({
-      setMapID: "index/setMapID",
+      setIndex: "index/setIndex",
     }),
   },
+  watch: {
+    getIndex(val) {
+      this.selectType(val);
+    },
+  },
   created() {
-    this.mapTypes.find((x) => x.id === this.getMapID).isSelected = true;
+    this.mapTypes.find((x) => x.id === this.getIndex).isSelected = true;
   },
 };
 </script>

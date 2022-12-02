@@ -73,9 +73,10 @@ export default {
       getMapCenter: "index/getMapCenter",
       getMapBounds: "index/getMapBounds",
       getMapLevel: "index/getMapLevel",
-      getMapID: "index/getMapID",
-      getIndexType: "index/getIndexType",
+      getAggregationType: "index/getAggregationType",
+      getIndex: "index/getIndex",
       getFilters: "filters/getFilters",
+      getDensityType: "index/getDensityType",
     }),
     mapGuideDensity() {
       let res;
@@ -128,8 +129,9 @@ export default {
           url: "MapData",
           data: {
             mapLevel: this.getMapLevel,
-            mapID: this.getMapID,
-            indexType: this.getIndexType,
+            index: this.getIndex,
+            densityType : this.getDensityType,
+            aggregationType: this.getAggregationType,
             ...this.getFilters,
           },
         })
@@ -155,7 +157,7 @@ export default {
                 { opacity: 0.75 }
               );
               vm.image.addTo(vm.map);
-              if (vm.getIndexType === 0)
+              if (vm.getIndex === 0)
                 vm.drawMakers(
                   "http://" + response.data.detail.colorLevelsURI
                 ).then((res) => (vm.isLoadingData = false));
@@ -258,9 +260,9 @@ export default {
       let vm = this;
       let mapColorsGuide = vm.mapFeaturesData.mapColorsGuide;
       let len = vm.mapFeaturesData.mapColorsGuide.length;
-      console.log(len)
+      console.log(len);
       vm.mapGuide = [];
-      if (vm.getIndexType === 0) {
+      if (vm.getIndex === 0) {
         for (var i = 0; i < len + 1; i++) {
           if (i === 0)
             vm.mapGuide.push(
@@ -289,10 +291,9 @@ export default {
           }
         }
       }
-      if (vm.getIndexType > 0) {
-
-        console.log(vm.mapGuideDensity)
-        console.log(vm.mapColors)
+      if (vm.getIndex > 0) {
+        console.log(vm.mapGuideDensity);
+        console.log(vm.mapColors);
         for (var i = 0; i < len + 1; i++) {
           vm.mapGuide.push({
             caption: vm.mapGuideDensity[i],
@@ -314,15 +315,18 @@ export default {
     });
   },
   watch: {
-    getMapID(val) {
+    getAggregationType(val) {
       this.getMapData();
     },
     getMapLevel(val) {
       this.getMapData();
     },
-    getIndexType(val) {
+    getIndex(val) {
       this.getMapData();
     },
+    getDensityType(val){
+      this.getMapData();
+    }
   },
 };
 </script>
