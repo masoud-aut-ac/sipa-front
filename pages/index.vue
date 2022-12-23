@@ -188,7 +188,7 @@ export default {
     drawGraphDay() {
       let vm = this;
       let res = vm.generalData.daysDist.map((x) => {
-        return { englishName: x.Key, y: x.Value };
+        return { englishName: x.key, y: x.value };
       });
       vm.dayData = vm.days;
       vm.dayData.forEach((x) => {
@@ -200,7 +200,7 @@ export default {
     drawGraphMonth() {
       let vm = this;
       let res = vm.generalData.monthDist.map((x) => {
-        return { key: x.Key, y: x.Value };
+        return { key: x.key, y: x.value };
       });
       vm.monthData = vm.months;
       vm.monthData.forEach((x) => {
@@ -213,7 +213,7 @@ export default {
     drawGraphHour() {
       let vm = this;
       let res = vm.generalData.hoursDist.map((x) => {
-        return { key: x.Key, y: x.Value };
+        return { key: x.key, y: x.value };
       });
       vm.hourData = vm.hours;
       vm.hourData.forEach((x) => {
@@ -225,13 +225,13 @@ export default {
     drawGraphDead() {
       let vm = this;
       vm.deadData = vm.generalData.deadYearsDist.map((x) => {
-        return [x.Key, x.Value];
+        return [x.key, x.value];
       });
     },
     drawGraphInjured() {
       let vm = this;
       vm.injuredData = vm.generalData.injuredYearsDist.map((x) => {
-        return [x.Key, x.Value];
+        return [x.key, x.value];
       });
     },
   },

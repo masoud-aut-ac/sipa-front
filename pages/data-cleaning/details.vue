@@ -366,7 +366,7 @@ export default {
     firstTableHeaders() {
       let res = [];
       this.records
-        .map((x) => x.Key)
+        .map((x) => x.key)
         .forEach((x) => {
           Object.keys(x).forEach((y) => {
             if (x[y] != null) res.push(y);
@@ -406,7 +406,7 @@ export default {
       return res;
     },
     recordsComputed() {
-      let res = this.records.map((x) => x.Key);
+      let res = this.records.map((x) => x.key);
       // res.forEach((x) => {
       //   let datetime = this.$convertToDateTime(x.hisDate, x.hisTime);
       //   x.hisDate = datetime.date;
@@ -509,7 +509,7 @@ export default {
       this.getDataCleaningDetails();
     },
     rowClick(item) {
-      let values = this.records.find((x) => item.id === x.Key.id).Value;
+      let values = this.records.find((x) => item.id === x.key.id).value;
       this.similars = values.filter(
         (x) => x.source != "اورژانس" && x.source != "هلال احمر"
       );
@@ -541,16 +541,16 @@ export default {
           (response) =>
             (vm.records = response.data.detail.records.map((x) => {
               let datetime = this.$convertToDateTime(
-                x.Key.hisDate,
-                x.Key.hisTime
+                x.key.hisDate,
+                x.key.hisTime
               );
-              x.Key.hisDate = datetime.date;
-              x.Key.hisTime = datetime.time;
-              x.Key.deadCount =
-                x.Key.deadCount == null ? "نامشخص" : x.Key.deadCount;
-              x.Key.injuredCount =
-                x.Key.injuredCount == null ? "نامشخص" : x.Key.injuredCount;
-              x.Value.forEach((y) => {
+              x.key.hisDate = datetime.date;
+              x.key.hisTime = datetime.time;
+              x.key.deadCount =
+                x.key.deadCount == null ? "نامشخص" : x.key.deadCount;
+              x.key.injuredCount =
+                x.key.injuredCount == null ? "نامشخص" : x.key.injuredCount;
+              x.value.forEach((y) => {
                 let datetime2 = this.$convertToDateTime(y.hisDate, y.hisTime);
                 y.hisDate = datetime2.date;
                 y.hisTime = datetime2.time;
