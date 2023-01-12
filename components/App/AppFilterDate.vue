@@ -39,21 +39,9 @@ import VuePersianDatetimePicker from "vue-persian-datetime-picker";
 
 export default {
   props: {
-    isMapPage: {
-      type: Boolean,
-      default: false,
-    },
-    isChartsPage: {
-      type: Boolean,
-      default: false,
-    },
-    isGeneralPage: {
-      type: Boolean,
-      default: false,
-    },
-    isDataEntryHistoryPage: {
-      type: Boolean,
-      default: false,
+    onUpdateDate: {
+      type: Function,
+      default: () => {},
     },
   },
   data() {
@@ -84,19 +72,11 @@ export default {
   watch: {
     startDate(val) {
       this.setStartDate(val);
-      if (this.isMapPage) this.$nuxt.$emit("update-sipa-map");
-      else if (this.isGeneralPage) this.$nuxt.$emit("update-sipa-general");
-      else if (this.isDataEntryHistoryPage)
-        this.$nuxt.$emit("update-sipa-data-entry-history");
-      else if (this.isChartsPage) this.$nuxt.$emit("update-sipa-charts");
+      this.onUpdateDate();
     },
     endDate(val) {
       this.setEndDate(val);
-      if (this.isMapPage) this.$nuxt.$emit("update-sipa-map");
-      else if (this.isGeneralPage) this.$nuxt.$emit("update-sipa-general");
-      else if (this.isDataEntryHistoryPage)
-        this.$nuxt.$emit("update-sipa-data-entry-history");
-      else if (this.isChartsPage) this.$nuxt.$emit("update-sipa-charts");
+      this.onUpdateDate();
     },
   },
 };

@@ -77,6 +77,16 @@
           </template>
           <span>پاکسازی داده</span>
         </v-tooltip>
+        <v-tooltip left>
+          <template v-slot:activator="{ on, attrs }">
+            <v-list-item to="/public-transit" v-bind="attrs" v-on="on">
+              <v-list-item-icon>
+                <img src="/dataCleaning2.png" />
+              </v-list-item-icon>
+            </v-list-item>
+          </template>
+          <span>تصادف وسایل عمومی</span>
+        </v-tooltip>
       </v-list>
       <template v-slot:append>
         <v-list>

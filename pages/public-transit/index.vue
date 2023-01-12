@@ -4,7 +4,7 @@
       <div v-if="this.getSideSheet" class="col-span-12 lg:col-span-3">
         <AppSearchInfo
           :allowedFilterTypes="allowedFilterTypes"
-          :onUpdateFilters="this.updateSipaGeneral"
+          :isGeneralPage="true"
         />
       </div>
       <div
@@ -17,7 +17,6 @@
       >
         <div class="grid grid-cols-1 lg:grid-cols-6 gap-2">
           <AppFilterDate
-            :onUpdateDate="this.updateSipaGeneral"
             class="col-span-1 lg:col-span-2 pt-2"
           />
           <AppFilterChips
@@ -26,36 +25,61 @@
           />
         </div>
         <div class="grid grid-cols-12 gap-2 mt-2">
-          <div class="col-span-12 lg:col-span-2 flex">
-            <AppAnnualStatistics
-              class="flex-grow mb-2"
-              :generalData="generalData"
-            />
-          </div>
-          <div class="col-span-12 lg:col-span-10">
-            <div class="grid grid-cols-12 gap-2">
-              <AppAnnualTabs
-                :injuredYearData="injuredData"
-                :deadYearData="deadData"
-                class="col-span-12 lg:col-span-8"
-              />
-              <div class="col-span-12 lg:col-span-4">
-                <AppAnnualChart
-                  :graphData="dayData"
-                  :title="dayTitle"
-                  style="z-index: 500"
-                />
-                <AppAnnualChart
-                  :graphData="monthData"
-                  :title="monthTitle"
-                  style="z-index: 499"
-                />
-              </div>
-            </div>
-            <div class="col-span-12 lg:col-span-10">
-              <AppAnnualChart :graphData="hourData" :title="hourTitle" />
-            </div>
-          </div>
+          <v-progress-circular
+        v-if="isLoadingData"
+        :size="60"
+        :width="4"
+        indeterminate
+        style="margin: 10% 45%"
+        color="#FFA000"
+      ></v-progress-circular>
+      <div v-else>
+        <v-data-table
+          :headers="firstTableHeaders"
+          :items="recordsComputed"
+          class="shadow my-4 temp"
+          light
+          hide-default-header
+          hide-default-footer
+          @click:row="rowClick"
+          key="test"
+          :items-per-page="20"
+        >
+          <template v-slot:header="{ props: { headers } }">
+            <thead>
+              <tr>
+                <th
+                  v-for="h in headers"
+                  :key="h.value"
+                  :class="tableHeadersColor"
+                >
+                  <span>{{ h.text }}</span>
+                </th>
+              </tr>
+            </thead>
+          </template>
+        </v-data-table>
+        <div class="text-center">
+          <v-btn
+            fab
+            :dark="pageNumber != 1"
+            color="#ffa200"
+            x-small
+            :disabled="pageNumber == 1"
+            @click="previousPage"
+            ><v-icon large>mdi-chevron-right</v-icon></v-btn
+          >
+          <span class="mx-3">{{ pageNumber + " از " + totalPages }}</span>
+          <v-btn
+            fab
+            :dark="pageNumber != totalPages"
+            color="#ffa200"
+            x-small
+            :disabled="pageNumber == totalPages"
+            @click="nextPage"
+            ><v-icon large>mdi-chevron-left</v-icon></v-btn
+          >
+        </div>
         </div>
       </div>
     </div>
@@ -167,10 +191,6 @@ export default {
       deleteRemovedFilterIds: "filters/deleteRemovedFilterIds",
       setFilterValue: "filters/setFilterValue",
     }),
-    updateSipaGeneral(){
-      this.$nuxt.$emit("update-sipa-general");
-      this.fetchGeneralData();
-    },
     fetchGeneralData() {
       let vm = this;
       vm.$axios({

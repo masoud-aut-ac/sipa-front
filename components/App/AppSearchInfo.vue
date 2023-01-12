@@ -11,7 +11,10 @@
       :isMapPage="isMapPage"
       :isGeneralPage="isGeneralPage"
     />
-    <AppComparison v-if="!isMapPage && !isGeneralPage" :allowedFilterTypes="allowedFilterTypes" />
+    <AppComparison
+      v-if="!isMapPage && !isGeneralPage"
+      :allowedFilterTypes="allowedFilterTypes"
+    />
     <div class="mt-4" style="direction: ltr">
       <v-btn dark block color="#332A7C" @click="emitter()">اعمال فیلتر</v-btn>
     </div>
@@ -28,13 +31,9 @@ export default {
     allowedFilterTypes: {
       type: Array,
     },
-    isMapPage: {
-      type: Boolean,
-      default: false,
-    },
-    isGeneralPage: {
-      type: Boolean,
-      default: false,
+    onUpdateFilters: {
+      type: Function,
+      default: () => {},
     },
   },
   components: {
@@ -49,9 +48,7 @@ export default {
       this.setSideSheet(false);
     },
     emitter() {
-      if (this.isMapPage) this.$nuxt.$emit("update-sipa-map");
-      else if(this.isGeneralPage) this.$nuxt.$emit("update-sipa-general");
-      else this.$nuxt.$emit("update-sipa-charts");
+      this.onUpdateFilters();
     },
   },
 };

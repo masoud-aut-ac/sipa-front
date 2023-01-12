@@ -2,7 +2,10 @@
   <div class="mr-20 font-serif text-sm">
     <div class="grid grid-cols-12 gap-4">
       <div v-if="this.getSideSheet" class="col-span-12 lg:col-span-3">
-        <AppSearchInfo :allowedFilterTypes="allowedFilterTypes" />
+        <AppSearchInfo
+          :allowedFilterTypes="allowedFilterTypes"
+          :onUpdateFilters="this.updateSipaCharts"
+        />
       </div>
       <div
         :class="
@@ -16,7 +19,10 @@
             :allowedFilterTypes="allowedFilterTypes"
             class="col-span-1 lg:col-span-4"
           />
-          <AppFilterDate :isChartsPage="true" class="col-span-1 lg:col-span-2 pt-2" />
+          <AppFilterDate
+            :onUpdateDate="this.updateSipaCharts"
+            class="col-span-1 lg:col-span-2 pt-2"
+          />
         </div>
         <ChartsContainer class="mt-2" />
       </div>
@@ -36,7 +42,7 @@ export default {
   computed: {
     ...mapGetters({
       getSideSheet: "index/getSideSheet",
-      getFilters: "filters/getFilters"
+      getFilters: "filters/getFilters",
     }),
     allowedFilterTypes() {
       let res = [
@@ -47,7 +53,7 @@ export default {
         "incidentType",
         "incidentPart",
         "incidentReason",
-        "incidentInjuriesType"
+        "incidentInjuriesType",
       ];
       this.getFilters.province !== null ? res.push("city") : res.push("");
       return res;
@@ -63,6 +69,9 @@ export default {
     ...mapMutations({
       setSideSheet: "index/setSideSheet",
     }),
+    updateSipaCharts() {
+      this.$nuxt.$emit("update-sipa-charts");
+    },
   },
 };
 </script>

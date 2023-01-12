@@ -2,7 +2,7 @@
   <div class="font-serif text-sm" style="direction: rtl">
     <div class="absolute top-2 mr-20 z-40 gap-3">
       <div class="col-span-9 lg:col-span-3">
-        <AppFilterDate class="my-2" :isMapPage="true" />
+        <AppFilterDate class="my-2" :onUpdateDate="this.updateSipaMap" />
         <AppMapLevelSwitch class="my-2" />
         <AppMapIndexSwitch class="my-2" />
         <AppMapDensitySwitch v-show="getIndex != 0" class="my-2" />
@@ -19,7 +19,7 @@
     >
       <AppSearchInfo
         :allowedFilterTypes="allowedFilterTypes"
-        :isMapPage="true"
+        :onUpdateFilters="this.updateSipaMap"
       />
     </div>
     <AppMap />
@@ -52,7 +52,7 @@ export default {
     AppAggregationTypeSwitch,
     AppMapLevelSwitch,
     AppMapIndexSwitch,
-    AppMapDensitySwitch
+    AppMapDensitySwitch,
   },
   computed: {
     ...mapGetters({
@@ -86,6 +86,9 @@ export default {
       }).then((response) => {
         vm.mapTypeOptions = response.data.detail.availableMaps;
       });
+    },
+    updateSipaMap() {
+      this.$nuxt.$emit("update-sipa-map");
     },
   },
   created() {

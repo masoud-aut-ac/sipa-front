@@ -1,7 +1,7 @@
 <template>
   <div class="mr-20 text-sm max-h-screen" style="direction: rtl">
     <div class="mt-4 mb-7 ml-4">
-      <AppFilterDate :isDataEntryHistoryPage="true" class="pt-2" />
+      <AppFilterDate :onUpdateDate="this.updateSipaDataEntryHistory" class="pt-2" />
       <div class="bg-white rounded-lg shadow mt-4 p-4">
         <div class="flex">
           <v-icon x-small color="#FFA000" class="ml-2">mdi-circle</v-icon>
@@ -234,11 +234,10 @@ export default {
         .then((response) => (vm.records = response.data.detail.records))
         .then((res) => (vm.isLoadingData = false));
     },
-  },
-  beforeMount() {
-    this.$nuxt.$on("update-sipa-data-entry-history", () => {
+    updateSipaDataEntryHistory(){
+      this.$nuxt.$emit("update-sipa-data-entry-history");
       this.getInsertionHistory();
-    });
+    }
   },
 };
 </script>
