@@ -6,13 +6,9 @@
     <v-icon color="#332A7C" class="mb-2 cursor-pointer" @click="toggleSideSheet"
       >mdi-close</v-icon
     >
-    <AppFilter
-      :allowedFilterTypes="allowedFilterTypes"
-      :isMapPage="isMapPage"
-      :isGeneralPage="isGeneralPage"
-    />
+    <AppFilter :allowedFilterTypes="allowedFilterTypes" />
     <AppComparison
-      v-if="!isMapPage && !isGeneralPage"
+      v-if="showComparison"
       :allowedFilterTypes="allowedFilterTypes"
     />
     <div class="mt-4" style="direction: ltr">
@@ -34,6 +30,10 @@ export default {
     onUpdateFilters: {
       type: Function,
       default: () => {},
+    },
+    showComparison: {
+      type: Boolean,
+      default: false,
     },
   },
   components: {

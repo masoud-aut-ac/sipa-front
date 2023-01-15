@@ -1,10 +1,11 @@
 <template>
   <div class="mr-20 font-serif text-sm">
     <div class="grid grid-cols-12 gap-4">
-      <div v-if="this.getSideSheet" class="col-span-12 lg:col-span-3">
+      <div v-if="this.getSideSheet"  class="col-span-12 lg:col-span-3">
         <AppSearchInfo
           :allowedFilterTypes="allowedFilterTypes"
           :onUpdateFilters="this.updateSipaCharts"
+          :showComparison="true"
         />
       </div>
       <div

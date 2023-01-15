@@ -34,14 +34,6 @@ export default {
     allowedFilterTypes: {
       type: Array,
     },
-    isMapPage: {
-      type: Boolean,
-      default: false,
-    },
-    isGeneralPage: {
-      type: Boolean,
-      default: false,
-    },
   },
   data() {
     return {
