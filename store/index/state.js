@@ -16,5 +16,6 @@ export default () => ({
     year: 0,
     dataCleaningDetail: { action: null, incidentInjuryType: "" },
     loggedInUser: null,
-    provinceID: null
+    provinceID: null,
+    plateRecord: null
 })

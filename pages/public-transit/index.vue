@@ -1,10 +1,11 @@
 <template>
-  <div class="mr-20 font-serif text-sm max-h-screen">
+  <div class="mr-20 font-serif text-sm">
     <div class="grid grid-cols-12 gap-4">
       <div v-if="this.getSideSheet" class="col-span-12 lg:col-span-3">
         <AppSearchInfo
           :allowedFilterTypes="allowedFilterTypes"
-          :isGeneralPage="true"
+          :onUpdateFilters="this.fetchData"
+          :showComparison="false"
         />
       </div>
       <div
@@ -40,7 +41,7 @@
             <div v-else>
               <v-data-table
                 :headers="headers"
-                :items="recordsComputed"
+                :items="records"
                 class="shadow my-4"
                 hide-default-header
                 hide-default-footer
@@ -98,138 +99,24 @@ import AppSearchInfo from "~/components/App/AppSearchInfo.vue";
 import AppAnnualStatistics from "~/components/App/AppAnnual/AppAnnualStatistics.vue";
 import AppAnnualChart from "~/components/App/AppAnnual/AppAnnualChartCard.vue";
 import AppAnnualTabs from "~/components/App/AppAnnual/AppAnnualTabs.vue";
+import { headers } from "./table-headers.js";
 
 export default {
   middleware: "auth",
   data() {
     return {
-      generalData: {},
-      dayTitle: "روز تصادف‌های فوتی",
-      dayData: [],
-      days: [
-        { persianName: "شنبه", englishName: "Saturday", y: null },
-        { persianName: "یکشنبه", englishName: "Sunday", y: null },
-        { persianName: "دوشنبه", englishName: "Monday", y: null },
-        { persianName: "سه‌شنبه", englishName: "Tuesday", y: null },
-        { persianName: "چهارشنبه", englishName: "Wednesday", y: null },
-        { persianName: "پنجشنبه", englishName: "Thursday", y: null },
-        { persianName: "جمعه", englishName: "Friday", y: null },
-      ],
-      monthTitle: "ماه تصادف‌های فوتی",
-      monthData: [],
-      months: [
-        { persianName: "فروردین", key: 1, y: null },
-        { persianName: "اردیبهشت", key: 2, y: null },
-        { persianName: "خرداد", key: 3, y: null },
-        { persianName: "تیر", key: 4, y: null },
-        { persianName: "مرداد", key: 5, y: null },
-        { persianName: "شهریور", key: 6, y: null },
-        { persianName: "مهر", key: 7, y: null },
-        { persianName: "آبان", key: 8, y: null },
-        { persianName: "آذر", key: 9, y: null },
-        { persianName: "دی", key: 10, y: null },
-        { persianName: "بهمن", key: 11, y: null },
-        { persianName: "اسفند", key: 12, y: null },
-      ],
-      hourTitle: "ساعت تصادف‌های فوتی",
-      hourData: [],
-      hours: [
-        { persianName: "0", key: 0, y: null },
-        { persianName: "1", key: 1, y: null },
-        { persianName: "2", key: 2, y: null },
-        { persianName: "3", key: 3, y: null },
-        { persianName: "4", key: 4, y: null },
-        { persianName: "5", key: 5, y: null },
-        { persianName: "6", key: 6, y: null },
-        { persianName: "7", key: 7, y: null },
-        { persianName: "8", key: 8, y: null },
-        { persianName: "9", key: 9, y: null },
-        { persianName: "10", key: 10, y: null },
-        { persianName: "11", key: 11, y: null },
-        { persianName: "12", key: 12, y: null },
-        { persianName: "13", key: 13, y: null },
-        { persianName: "14", key: 14, y: null },
-        { persianName: "15", key: 15, y: null },
-        { persianName: "16", key: 16, y: null },
-        { persianName: "17", key: 17, y: null },
-        { persianName: "18", key: 18, y: null },
-        { persianName: "19", key: 19, y: null },
-        { persianName: "20", key: 20, y: null },
-        { persianName: "21", key: 21, y: null },
-        { persianName: "22", key: 22, y: null },
-        { persianName: "23", key: 23, y: null },
-      ],
-      injuredData: [],
-      deadData: [],
-      headers: [
-        {
-          text: "شناسه تصادف",
-          align: "center",
-          sortable: false,
-          value: "nrpID",
-        },
-        {
-          text: "شماره پلاک",
-          align: "center",
-          sortable: false,
-          value: "licensePlate",
-        },
-        {
-          text: "روز تصادف",
-          align: "center",
-          sortable: false,
-          value: "hisDate",
-        },
-        {
-          text: "ساعت تصادف",
-          sortable: false,
-          align: "center",
-          value: "hisTime",
-        },
-        {
-          text: "عرض جفرافیایی",
-          sortable: false,
-          align: "center",
-          value: "latitude",
-        },
-        {
-          text: "طول جغرافیایی",
-          sortable: false,
-          align: "center",
-          value: "longitude",
-        },
-        {
-          text: "استان",
-          sortable: false,
-          align: "center",
-          value: "province",
-        },
-        {
-          text: "تعداد فوتی",
-          sortable: false,
-          align: "center",
-          value: "deadCount",
-        },
-        {
-          text: "تعداد مجروح",
-          sortable: false,
-          align: "center",
-          value: "injuredCount",
-        },
-        {
-          text: "نوع برخورد",
-          sortable: false,
-          align: "center",
-          value: "incidentType",
-        }
-      ],
+      totalPages: 0,
+      pageNumber: 1,
+      recordsCountPerPage: 10,
+      records: [],
+      isLoadingData: false,
+      headers: headers,
     };
   },
   computed: {
     ...mapGetters({
       getSideSheet: "index/getSideSheet",
       getFilters: "filters/getFilters",
-      getLoggedInUser: "index/getLoggedInUser",
     }),
     allowedFilterTypes() {
       let res = [
@@ -257,14 +144,51 @@ export default {
       setSideSheet: "index/setSideSheet",
       deleteRemovedFilterIds: "filters/deleteRemovedFilterIds",
       setFilterValue: "filters/setFilterValue",
+      setPlateRecord: "index/setPlateRecord",
     }),
+    fetchData() {
+      this.isLoadingData = true;
+      let vm = this;
+      vm.$axios({
+        method: "post",
+        url: "IncidentsWithPlate",
+        data: {
+          ...this.getFilters,
+          skip: (this.pageNumber - 1) * this.recordsCountPerPage,
+          take: this.recordsCountPerPage,
+        },
+      }).then((res) => {
+        this.totalPages = Math.ceil(
+          res.data.totalCount / this.recordsCountPerPage
+        );
+        res.data.detail.forEach((x) => {
+          let datetime = this.$convertToDateTime(x.hisDate, x.hisTime);
+          x.hisDate = datetime.date;
+          x.hisTime = datetime.time;
+          x.deadCount = x.deadCount == null ? "نامشخص" : x.deadCount;
+          x.injuredCount = x.injuredCount == null ? "نامشخص" : x.injuredCount;
+        });
+        this.records = res.data.detail;
+        vm.isLoadingData = false;
+      });
+    },
+    nextPage() {
+      this.pageNumber += 1;
+      this.fetchData();
+    },
+    previousPage() {
+      this.pageNumber -= 1;
+      this.fetchData();
+    },
+    rowClick(item) {
+      this.setPlateRecord(item);
+      this.$router.push("/public-transit/plate-profile");
+    },
   },
   created() {
-    if (!this.getLoggedInUser.isAdmin)
-      window.location.href = window.location.origin + "/data-cleaning";
-
     this.deleteRemovedFilterIds(10);
     this.setFilterValue({ id: 10, value: null });
+    this.fetchData();
   },
 };
 </script>

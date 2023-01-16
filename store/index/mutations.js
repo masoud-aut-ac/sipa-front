@@ -49,5 +49,8 @@ export default {
     },
     setDensityType(state, payload) {
         state.densityType = payload;
+    },
+    setPlateRecord(state, payload) {
+        state.plateRecord = payload;
     }
 }

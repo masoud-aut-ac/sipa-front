@@ -37,5 +37,8 @@ export default {
     },
     getDensityType(state){
         return state.densityType;
+    },
+    getPlateRecord(state){
+        return state.plateRecord;
     }
 }
