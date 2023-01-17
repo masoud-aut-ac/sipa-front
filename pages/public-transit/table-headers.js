@@ -59,4 +59,10 @@ export const headers = [
         align: "center",
         value: "incidentType",
     },
+    {
+        text: "اطلاعات پروفایل",
+        sortable: false,
+        align: "center",
+    },
+
 ]

@@ -81,11 +81,11 @@
           <template v-slot:activator="{ on, attrs }">
             <v-list-item to="/public-transit" v-bind="attrs" v-on="on">
               <v-list-item-icon>
-                <img src="/dataCleaning2.png" />
+                <v-icon style="font-size:26px">mdi-account-check</v-icon>
               </v-list-item-icon>
             </v-list-item>
           </template>
-          <span>تصادف وسایل عمومی</span>
+          <span>پروفایل تصادفات وسایل عمومی</span>
         </v-tooltip>
       </v-list>
       <template v-slot:append>

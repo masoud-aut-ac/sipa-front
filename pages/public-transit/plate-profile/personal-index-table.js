@@ -16,31 +16,14 @@ export const personalIndexHeaders = [
 const indexes = [
     {
         index: "distance",
-        persianTitle: "مسافت پیموده شده",
+        persianTitle: "مسافت پیموده شده (کیلومتر)",
         value: 0,
         convert(x) {
             if (x != 0) {
-                this.value = x + "کیلومتر";
+                this.value = x;
             }
             else {
                 this.value = "نامشخص";
-            }
-        },
-    },
-    {
-        index: "averageCrimePerKKM",
-        persianTitle: "تعداد تخلف بر هزار کیلومتر رانندگی",
-        value: 0,
-        convert(distance, crimeCodes) {
-            if (distance != 0) {
-                if (crimeCodes != 0) {
-                    let crimesCount = crimeCodes
-                        .map(x => x[0].length)
-                        .reduce((res, x) => res + x, 0);
-
-                    this.value = crimesCount * 100 / distance;
-                }
-                this._show = true;
             }
         },
     },
@@ -76,31 +59,7 @@ const indexes = [
         persianTitle: "تعداد مشاهده درایستگاه‌های نزدیک سانحه",
         value: 0,
         convert(x) { this.value = x }
-    },
-    {
-        index: "distance_rank",
-        persianTitle: "صدک خودرو براساس مسافت پیموده شده",
-        value: 0,
-        convert(x) { this.value = x }
-    },
-    {
-        index: "hazard_Percentile",
-        persianTitle: "صدک رانندگی خطرناک",
-        value: 0,
-        convert(x) { this.value = x }
-    },
-    {
-        index: "crime_rank_all_plate_in_group",
-        persianTitle: "صدک تخلف بین خودروهای همگروه",
-        value: 0,
-        convert(x) { this.value = x }
-    },
-    {
-        index: "crime_rank_only_criminal_in_group",
-        persianTitle: "صدک تخلف بین خودروهای متخلف",
-        value: 0,
-        convert(x) { this.value = x }
-    },
+    }
 ]
 
 export function profileToPersonalIndexes(profile) {
@@ -110,8 +69,6 @@ export function profileToPersonalIndexes(profile) {
             .forEach(x => {
                 x.convert(profile[x.index]);
             });
-        indexes.find(x => x.index == "averageCrimePerKKM")
-            .convert(profile.distance, profile.crimeCodes);
     }
     return indexes;
 }

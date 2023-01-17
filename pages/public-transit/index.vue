@@ -45,7 +45,6 @@
                 class="shadow my-4"
                 hide-default-header
                 hide-default-footer
-                @click:row="rowClick"
                 key="test"
                 :items-per-page="20"
               >
@@ -61,6 +60,31 @@
                       </th>
                     </tr>
                   </thead>
+                </template>
+                <template v-slot:item="row">
+                  <tr @click="rowClick(row.item)">
+                    <td
+                      v-for="h in headers.filter((x) => x.value != null)"
+                      :key="row.item[h.value].vehicleInfoID"
+                      class="text-center"
+                    >
+                      {{ row.item[h.value] }}
+                    </td>
+                    <td class="text-center">
+                      <v-icon v-if="row.item.hasProfiles"
+                        >mdi-account-check-outline</v-icon
+                      >
+                      <!-- <v-btn
+                        v-for="p in periods"
+                        :key="row.item.vehicleInfoID + '' + p"
+                        fab
+                        :disabled="!row.item.availableProfiles.find((x) => x === p)"
+                        color="#ffa200"
+                        x-small
+                        ><v-icon>{{p}}</v-icon></v-btn
+                      > -->
+                    </td>
+                  </tr>
                 </template>
               </v-data-table>
               <div class="text-center">
@@ -109,8 +133,10 @@ export default {
       pageNumber: 1,
       recordsCountPerPage: 10,
       records: [],
+      periods: [1, 3, 6],
       isLoadingData: false,
       headers: headers,
+      html: '<v-btn fab dark color="#ffa200" x-small disabled ><v-icon large>mdi-chevron-right</v-icon></v-btn>',
     };
   },
   computed: {
@@ -158,17 +184,18 @@ export default {
           take: this.recordsCountPerPage,
         },
       }).then((res) => {
-        this.totalPages = Math.ceil(
+        vm.totalPages = Math.ceil(
           res.data.totalCount / this.recordsCountPerPage
         );
         res.data.detail.forEach((x) => {
-          let datetime = this.$convertToDateTime(x.hisDate, x.hisTime);
+          let datetime = vm.$convertToDateTime(x.hisDate, x.hisTime);
           x.hisDate = datetime.date;
           x.hisTime = datetime.time;
           x.deadCount = x.deadCount == null ? "نامشخص" : x.deadCount;
           x.injuredCount = x.injuredCount == null ? "نامشخص" : x.injuredCount;
+          x.hasProfiles = x.profiles.length;
         });
-        this.records = res.data.detail;
+        vm.records = res.data.detail;
         vm.isLoadingData = false;
       });
     },
@@ -181,8 +208,10 @@ export default {
       this.fetchData();
     },
     rowClick(item) {
-      this.setPlateRecord(item);
-      this.$router.push("/public-transit/plate-profile");
+      if (item.hasProfiles) {
+        this.setPlateRecord(item);
+        this.$router.push("/public-transit/plate-profile");
+      }
     },
   },
   created() {
