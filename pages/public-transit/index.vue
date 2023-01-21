@@ -17,7 +17,7 @@
         style="direction: rtl"
       >
         <div class="grid grid-cols-1 lg:grid-cols-6 gap-2">
-          <AppFilterDate class="col-span-1 lg:col-span-2 pt-2" />
+          <AppFilterDate class="col-span-1 lg:col-span-2 pt-2" :onUpdateDate="this.fetchData" />
           <AppFilterChips
             :allowedFilterTypes="allowedFilterTypes"
             class="col-span-1 lg:col-span-4"
