@@ -1,29 +1,19 @@
 <template>
   <div>
-    <div
-      id="map-wrap"
-      class="z-0 rounded-lg shadow-md"
-      style="direction: rtl; height: 100vh"
-    >
-      <div
-        class="
-          absolute
-          bottom-0
-          left-0
-          min-w-full
-          bg-white bg-opacity-50
-          text-center
-          py-2
-          pr-6
-        "
-        style="z-index: 500; direction: rtl"
-      >
+    <div id="map-wrap" class="z-0 rounded-lg shadow-md" style="direction: rtl; height: 100vh">
+      <div class="
+              absolute
+              bottom-0
+              left-0
+              min-w-full
+              bg-white bg-opacity-50
+              text-center
+              py-2
+              pr-6
+            " style="z-index: 500; direction: rtl">
         <div v-for="m in this.mapGuide" :key="m.id" class="inline-block">
           <div class="flex items-stretch mx-2">
-            <div
-              class="w-4 h-4 m-2"
-              :style="{ 'background-color': m.color }"
-            ></div>
+            <div class="w-4 h-4 m-2" :style="{ 'background-color': m.color }"></div>
             <p class="font-serif text-sm my-2">
               {{ m.caption }}
             </p>
@@ -33,11 +23,7 @@
     </div>
     <div v-if="isLoadingData" class="text-center">
       <v-overlay :value="true" z-index="510">
-        <v-progress-circular
-          indeterminate
-          :size="64"
-          color="#FFA000"
-        ></v-progress-circular>
+        <v-progress-circular indeterminate :size="64" color="#FFA000"></v-progress-circular>
         <p class="mt-4">در حال بارگذاری اطلاعات</p>
       </v-overlay>
     </div>
@@ -82,16 +68,21 @@ export default {
       let res;
       switch (this.mapFeaturesData.mapColorsGuide.length) {
         case 4:
-          res = ["کم‌خطر", "نسبتا کم‌خطر", "خطر متوسط", "نسبتا پرخطر", "پرخطر"];
+          res = ["کم‌تصادف", "نسبتا کم‌تصادف", "تصادف متوسط", "نسبتا پرتصادف", "پرتصادف"];
           break;
         case 3:
-          res = ["کم‌خطر", "نسبتا کم‌خطر", "نسبتا پرخطر", "پرخطر"];
+          res = ["کم‌تصادف", "نسبتا کم‌تصادف", "نسبتا پرتصادف", "پرتصادف"];
           break;
         case 2:
-          res = ["کم‌خطر", "خطر متوسط", "پرخطر"];
+          res = ["کم‌تصادف", "تصادف متوسط", "پرتصادف"];
           break;
         default:
-          res = ["کم‌خطر", "پرخطر"];
+          res = ["کم‌تصادف", "پرتصادف"];
+      }
+      if (this.getIndex > 0 && this.getAggregationType > 2) {
+        for (let i = 0; i < res.length; i++) {
+          res[i] = res[i].replace("تصادف", "");
+        }
       }
       return res;
     },
@@ -130,7 +121,7 @@ export default {
           data: {
             mapLevel: this.getMapLevel,
             index: this.getIndex,
-            densityType : this.getDensityType,
+            densityType: this.getDensityType,
             aggregationType: this.getAggregationType,
             ...this.getFilters,
           },
@@ -269,13 +260,13 @@ export default {
               // len !== 1
               mapColorsGuide[0] !== 0
                 ? {
-                    caption: "کمتر از " + mapColorsGuide[i],
-                    color: vm.mapColors[i],
-                  }
+                  caption: "کمتر از " + mapColorsGuide[i],
+                  color: vm.mapColors[i],
+                }
                 : {
-                    caption: mapColorsGuide[i],
-                    color: vm.mapColors[i],
-                  }
+                  caption: mapColorsGuide[i],
+                  color: vm.mapColors[i],
+                }
             );
           else if (i !== len)
             vm.mapGuide.push({
@@ -324,7 +315,7 @@ export default {
     getIndex(val) {
       this.getMapData();
     },
-    getDensityType(val){
+    getDensityType(val) {
       this.getMapData();
     }
   },
@@ -335,17 +326,21 @@ export default {
 .leaflet-measure-resultpopup {
   font-family: "IRANSans";
 }
+
 .leaflet-control-measure {
   font-family: "IRANSans";
 }
+
 .leaflet-control-geosearch form input {
   height: 30px !important;
   direction: ltr;
 }
+
 .leaflet-touch .leaflet-bar a:last-child {
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
 }
+
 .leaflet-control-attribution {
   visibility: hidden !important;
 }
@@ -385,6 +380,7 @@ export default {
 .leaflet-oldie .marker-cluster-small {
   background-color: rgb(181, 226, 140);
 }
+
 .leaflet-oldie .marker-cluster-small div {
   background-color: rgb(110, 204, 57);
 }
@@ -392,6 +388,7 @@ export default {
 .leaflet-oldie .marker-cluster-medium {
   background-color: rgb(241, 211, 87);
 }
+
 .leaflet-oldie .marker-cluster-medium div {
   background-color: rgb(240, 194, 12);
 }
@@ -399,6 +396,7 @@ export default {
 .leaflet-oldie .marker-cluster-large {
   background-color: rgb(253, 156, 115);
 }
+
 .leaflet-oldie .marker-cluster-large div {
   background-color: rgb(241, 128, 23);
 }
@@ -407,6 +405,7 @@ export default {
   background-clip: padding-box;
   border-radius: 20px;
 }
+
 .marker-cluster div {
   /* width: 30px; */
   height: 30px;
@@ -417,6 +416,7 @@ export default {
   border-radius: 15px;
   font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
+
 .marker-cluster span {
   line-height: 30px;
 }
