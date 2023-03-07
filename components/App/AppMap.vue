@@ -2,15 +2,15 @@
   <div>
     <div id="map-wrap" class="z-0 rounded-lg shadow-md" style="direction: rtl; height: 100vh">
       <div class="
-              absolute
-              bottom-0
-              left-0
-              min-w-full
-              bg-white bg-opacity-50
-              text-center
-              py-2
-              pr-6
-            " style="z-index: 500; direction: rtl">
+                absolute
+                bottom-0
+                left-0
+                min-w-full
+                bg-white bg-opacity-50
+                text-center
+                py-2
+                pr-6
+              " style="z-index: 500; direction: rtl">
         <div v-for="m in this.mapGuide" :key="m.id" class="inline-block">
           <div class="flex items-stretch mx-2">
             <div class="w-4 h-4 m-2" :style="{ 'background-color': m.color }"></div>
@@ -81,7 +81,7 @@ export default {
       }
       if (this.getIndex > 0 && this.getAggregationType > 2) {
         for (let i = 0; i < res.length; i++) {
-          res[i] = res[i].replace("تصادف", "");
+          res[i] = res[i].replace("تصادف", "").replace("پر", "زیاد");
         }
       }
       return res;
